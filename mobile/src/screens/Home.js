@@ -1,14 +1,26 @@
-import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import React, { Component } from "react";
+import { Text, StyleSheet, View, Button } from "react-native";
+import Firebase from "./providers/firebase/firebase";
 
-export default class Home extends Component {
-  render() {
-    return (
-      <View style={{backgroundColor: 'black' }}>
-        <Text> Home </Text>
-      </View>
-    )
-  }
+export default function Home(props) {
+  return (
+    <View style={{ justifyContent: "center", flex: 1, alignItems: "center" }}>
+      <Button
+        title="logout"
+        onPress={() => {
+          Firebase.auth()
+            .signOut()
+            .then(() => {
+              props.navigation.navigate("Welcome")
+            })
+            .catch(error => {
+              console.log(error)
+            });
+        }}
+      />
+      <Text> Home </Text>
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
