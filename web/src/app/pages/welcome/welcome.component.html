@@ -1,0 +1,27 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+    <ng-lottie
+        width="600px"
+        height="500px"
+        [options]="options"
+    ></ng-lottie>
+    <div>
+        <p class="title">One tap to connect your life.</p>
+        <mat-card class="card">
+            <mat-card-content>
+                <div class="form-inline">
+                    <div style="margin-left: auto; margin-right: auto;">
+                        <input type="text" class="form-control" placeholder="Enter you email" id="inputEmail">
+                        <button type="button" class="btn btn-black">Get started</button>
+                    </div>
+                </div>
+                <h1>or</h1>
+                <div class="form-inline">
+                    <div style="margin-left: auto; margin-right: auto;">
+                        <button (click)="connectViaGoogle()" type="button" class="btn btn-red" style="margin-right: 20px !important;">Continue with google</button>
+                        <button (click)="connectViaFacebook()" type="button" class="btn btn-blue">Continue with Facebook</button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

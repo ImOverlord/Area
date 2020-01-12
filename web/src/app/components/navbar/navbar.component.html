@@ -1,0 +1,17 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a routerLink="/" class="navbar-brand" href="#"><b>AREA</b></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav ml-auto">
+            <li *ngIf="!auth.isAuthenticated" class="nav-item active">
+                <button routerLink="/login" type="button" class="btn sign-in btn-white">Sign in</button>
+            </li>
+            <li *ngIf="!auth.isAuthenticated" class="nav-item">
+                <button routerLink="/register" type="button" class="btn btn-black">Sign up</button>
+            </li>
+        </ul>
+    </div>
+</nav>
