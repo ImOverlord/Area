@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AnimationOptions } from 'ngx-lottie';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/provider/auth.service';
 
 @Component({
@@ -26,10 +26,15 @@ export class RegisterComponent implements OnInit {
 
     constructor(
         private auth: AuthService,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
+        this.route.queryParams
+        .subscribe(params => {
+            this.email = params.email;
+        });
     }
 
     public register() {

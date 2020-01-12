@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AnimationOptions } from 'ngx-lottie';
 import { AuthService } from 'src/app/provider/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -23,10 +23,15 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private auth: AuthService,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
+        this.route.queryParams
+        .subscribe(params => {
+            this.email = params.email;
+        });
     }
 
     public login() {
@@ -49,6 +54,7 @@ export class LoginComponent implements OnInit {
             } else if (err.code === 'auth/wrong-password') {
                 this.passwordError = true;
             }
+            console.log(err);
         });
     }
 

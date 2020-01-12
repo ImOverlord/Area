@@ -10,8 +10,8 @@
             <mat-card-content>
                 <div class="form-inline">
                     <div style="margin-left: auto; margin-right: auto;">
-                        <input type="text" class="form-control" placeholder="Enter you email" id="inputEmail">
-                        <button type="button" class="btn btn-black">Get started</button>
+                        <input [(ngModel)]="email" type="text" class="form-control" placeholder="Enter you email" id="inputEmail">
+                        <button (click)="dispatchUser();" type="button" class="btn btn-black">Get started</button>
                     </div>
                 </div>
                 <h1>or</h1>

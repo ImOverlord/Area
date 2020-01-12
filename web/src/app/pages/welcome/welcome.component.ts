@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AnimationOptions } from 'ngx-lottie';
 import { AuthService } from 'src/app/provider/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-welcome',
@@ -9,14 +10,18 @@ import { AuthService } from 'src/app/provider/auth.service';
 })
 export class WelcomeComponent implements OnInit {
 
-    options: AnimationOptions = {
+    @Input()
+    public email = '';
+
+    public options: AnimationOptions = {
         path: '../../../assets/animations/welcome.json',
         autoplay: true,
         loop: true
     }; // 50 à 218
 
     constructor(
-        private auth: AuthService
+        private auth: AuthService,
+        private router: Router
     ) { }
 
     ngOnInit() {
@@ -36,7 +41,20 @@ export class WelcomeComponent implements OnInit {
     }
 
     public connectViaFacebook() {
-        
+
     }
 
+    public dispatchUser() {
+        this.auth.login(this.email, '')
+        .then((user) => {
+        })
+        .catch((err) => {
+            if (err.code === 'auth/wrong-password') {
+                this.router.navigate(['/login'], { queryParams: { email: this.email} });
+            } else {
+                this.router.navigate(['/register'], { queryParams: { email: this.email} });
+            }
+        });
+
+    }
 }
