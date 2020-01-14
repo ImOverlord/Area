@@ -24,6 +24,7 @@ import player from 'lottie-web';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 export function playerFactory() {
     return player;
@@ -37,7 +38,8 @@ export function playerFactory() {
         WelcomeComponent,
         LoginComponent,
         RegisterComponent,
-        HomeComponent
+        HomeComponent,
+        FooterComponent
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),

@@ -1,13 +1,13 @@
 .title {
-    font-size: xx-large;
+    font-size: 5em;//xx-large;
     font-weight: 900;
     font-style: normal;
     letter-spacing: 0;
     color: #000000;
 }
 
-.card {
-    max-width: 400px;
+mat-card-content {
+    width: 530px;
 }
 
 h1 {
@@ -28,4 +28,9 @@ h1:before, h1:after {
 }
 h1:after {
     margin: 0 -55% 0 .5em;
+}
+
+.btn {
+    font-size: 130% !important;
+    font-weight: 900 !important;
 }

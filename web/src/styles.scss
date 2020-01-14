@@ -190,6 +190,15 @@ $area-theme: mat-light-theme($area-primary, $area-accent, $area-warn);
           box-shadow: 0 0 0 0.2rem rgba(39, 33, 32, 0.5);
 };
 
-// #3a65ac
+/** Fix the input shadow (Red to black) **/
+.form-control:focus {
+    color: #444;
+    background-color: #fff;
+    border-color: black;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(39, 33, 32, 0.5);
+            box-shadow: 0 0 0 0.2rem rgba(39, 33, 32, 0.5);
+}
+
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Avenir', "Helvetica Neue", sans-serif; }

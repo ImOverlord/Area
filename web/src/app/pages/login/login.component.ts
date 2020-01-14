@@ -35,8 +35,12 @@ export class LoginComponent implements OnInit {
     }
 
     public login() {
-        if (this.email.length === 0 || this.password.length === 0)
+        if (!this.email || !this.password) {
+            this.textError = 'The email or the password field is empty';
+            this.mailError = true;
+            this.passwordError = true;
             return;
+        }
         this.mailError = false;
         this.passwordError = false;
         this.textError = '';
