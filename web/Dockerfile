@@ -1,11 +1,9 @@
-FROM teracy/angular-cli:latest
-
-EXPOSE 8081
+FROM node:lts-jessie
 
 WORKDIR /app
-
+COPY package.json .
+RUN npm i
 COPY . .
+EXPOSE 4200
 
-RUN npm ci
-
-CMD ng serve --port 8081 --proxy-config proxy.conf.json
+CMD ["npm", "start", "--", "--host", "0.0.0.0"]
