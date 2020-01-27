@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-    private authorsList = ['Hugo', 'Julien', 'Nicolas Gardes', 'Thibault-Alexandre'];
+    private authorsList = ['Hugo', 'Julien', 'Nicolas', 'Thibault-Alexandre'];
     private authors = '';
 
     constructor() { }

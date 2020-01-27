@@ -190,6 +190,50 @@ $area-theme: mat-light-theme($area-primary, $area-accent, $area-warn);
           box-shadow: 0 0 0 0.2rem rgba(39, 33, 32, 0.5);
 };
 
+/**  CUSTOM NO BG BUTTON  **/
+.btn-no-bg {
+    background-image: none !important;
+    border: none !important;
+};
+
+.btn-no-bg {
+    color: #212529;
+    background: none;
+    // border-color: ;
+}
+
+.btn-no-bg:hover {
+    color: #212529;
+    background: none;
+}
+
+.btn-no-bg:focus, .btn-no-bg.focus {
+    color: #212529;
+    background: none;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(222, 222, 223, 0.5);
+            box-shadow: 0 0 0 0.2rem rgba(222, 222, 223, 0.5);
+}
+
+.btn-no-bg.disabled, .btn-no-bg:disabled {
+    color: #212529;
+    background: none;
+    border-color: #fff;
+}
+
+.btn-no-bg:not(:disabled):not(.disabled):active, .btn-no-bg:not(:disabled):not(.disabled).active,
+.show > .btn-no-bg.dropdown-toggle {
+    color: #212529;
+    background: none;
+    border-color: #dfdfdf;
+}
+
+.btn-no-bg:not(:disabled):not(.disabled):active:focus, .btn-no-bg:not(:disabled):not(.disabled).active:focus,
+.show > .btn-no-bg.dropdown-toggle:focus {
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(222, 222, 223, 0.5);
+            box-shadow: 0 0 0 0.2rem rgba(222, 222, 223, 0.5);
+}
+
+
 /** Fix the input shadow (Red to black) **/
 .form-control:focus {
     color: #444;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/provider/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-navbar',
@@ -8,13 +9,22 @@ import { AuthService } from 'src/app/provider/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-    private isNavbarCollapsed = true;
-
     constructor(
-        private auth: AuthService
+        private auth: AuthService,
+        private router: Router
     ) { }
 
     ngOnInit() {
+    }
+
+    public disconnect() {
+        this.auth.disconnect()
+        .then(() => {
+            this.router.navigate(['']);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
 }

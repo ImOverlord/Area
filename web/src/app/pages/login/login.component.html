@@ -1,4 +1,5 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center center">
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+    <p class="title">Sign in</p>
     <mat-card>
         <mat-card-content>
             <div class="form-inline">
@@ -6,7 +7,7 @@
                     <input [className]="mailError ? 'is-invalid form-control' : 'form-control'" [(ngModel)]="email" style="margin-bottom: 10px;" type="text" placeholder="Enter your email">
                     <input [className]="passwordError ? 'is-invalid form-control' : 'form-control'" [(ngModel)]="password" style="margin-bottom: 10px;" type="password" placeholder="Enter your password">
                     <div style="margin-bottom: 10px;" *ngIf="textError.length !== 0" class="invalid-feedback">{{textError}}</div>
-                    <button [disabled]="connecting" (click)="login()" type="button" class="btn btn-black">Login</button>
+                    <button [disabled]="connecting" (click)="login()" type="button" class="btn btn-black">Sign in</button>
                 </div>
             </div>
             <h1>or</h1>
