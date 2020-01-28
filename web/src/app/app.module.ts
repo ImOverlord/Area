@@ -25,12 +25,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { ExploreComponent } from './pages/explore/explore.component';
-import { ServiceCardComponent } from './components/service-card/service-card.component';
-import { ServiceComponent } from './pages/service/service.component';
-import { AppCardComponent } from './components/app-card/app-card.component';
-
-// import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap/dropdown/dropdown';
 
 export function playerFactory() {
     return player;
@@ -45,11 +39,7 @@ export function playerFactory() {
         LoginComponent,
         RegisterComponent,
         HomeComponent,
-        FooterComponent,
-        ExploreComponent,
-        ServiceCardComponent,
-        ServiceComponent,
-        AppCardComponent
+        FooterComponent
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),
@@ -61,15 +51,11 @@ export function playerFactory() {
         AppRoutingModule,
         NgbModule,
         FormsModule,
-        // OAuthModule,
         FlexLayoutModule,
         LottieModule.forRoot({ player: playerFactory }),
         MatCardModule,
         MatButtonModule,
         MatDividerModule,
-        // DragDropModule
-        // BrowserModule,
-        // AppRoutingModule
     ],
     providers: [],
     bootstrap: [AppComponent]
