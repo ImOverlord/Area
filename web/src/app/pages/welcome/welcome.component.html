@@ -10,7 +10,7 @@
             <mat-card-content>
                 <div class="form-inline">
                     <div style="margin-left: auto; margin-right: auto;">
-                        <input [(ngModel)]="email" type="text" class="form-control" placeholder="Enter you email" id="inputEmail">
+                        <input (keyup.enter)="dispatchUser()" [(ngModel)]="email" type="text" class="form-control" placeholder="Enter you email" id="inputEmail">
                         <button (click)="dispatchUser();" type="button" class="btn btn-black">Get started</button>
                     </div>
                 </div>

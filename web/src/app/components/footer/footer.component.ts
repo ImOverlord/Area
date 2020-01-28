@@ -19,6 +19,7 @@ export class FooterComponent implements OnInit {
             if (i < this.authorsList.length - 1)
                 this.authors += ', ';
         }
+        this.authors += ' and the Open-Source community';
     }
 
 }

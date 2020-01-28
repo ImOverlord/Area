@@ -28,12 +28,7 @@ export class WelcomeComponent implements OnInit {
     }
 
     public connectViaGoogle() {
-        this.auth.doGoogleLogin()
-        .then((user) => {
-            console.log('Success');
-            console.log(user);
-            localStorage.setItem('google', JSON.stringify(user));
-        })
+        this.auth.loginViaGoogle()
         .catch((err) => {
             console.log('Error');
             console.log(err);
