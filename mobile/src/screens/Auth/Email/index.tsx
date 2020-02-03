@@ -4,7 +4,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   SafeAreaView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,56 +11,10 @@ import {
   View
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
-import BackArrow from "../../../assets/left-arrow.svg";
-import Firebase from "../../providers/firebase";
-import Log from "../../utils/Log";
-
-const styles = StyleSheet.create({
-  title: {
-    marginTop: 32,
-    marginHorizontal: 32,
-    marginBottom: 52,
-    fontFamily: "Avenir",
-    fontSize: 25,
-    fontWeight: "700",
-    fontStyle: "normal"
-  },
-  button: {
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#000000",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 32,
-    marginVertical: 32
-  },
-  buttonDisabled: {
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "grey",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 32,
-    marginVertical: 32
-  },
-  buttonText: {
-    fontFamily: "Avenir",
-    fontSize: 22,
-    fontWeight: "900",
-    fontStyle: "normal",
-    color: "#ffffff"
-  },
-  input: {
-    fontFamily: "Avenir",
-    fontSize: 25,
-    marginBottom: 32,
-    height: 40,
-    borderBottomWidth: 1,
-    borderColor: "black",
-    fontWeight: "900",
-    marginHorizontal: 32
-  }
-});
+import BackArrow from "../../../../assets/left-arrow.svg";
+import styles from "./styles";
+import validateEmail from "../../../utils/Validator";
+import { checkEmailOnFirebase } from "../../../api/Auth";
 
 export default () => {
   const { goBack, navigate } = useNavigation();
@@ -69,33 +22,16 @@ export default () => {
   const [email, setEmail] = useState("");
   const [isValid, setIsValid] = useState(false);
 
-  function validateEmail(text: string) {
-    // eslint-disable-next-line max-len
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(text).toLowerCase());
-  }
-
   const goToPassword = () => {
     Keyboard.dismiss();
     setLoading(true);
-    if (validateEmail(email)) {
-      Firebase.auth()
-        .fetchSignInMethodsForEmail(email)
-        .then(response => {
-          setLoading(false);
-          if (response.includes("password")) {
-            navigate("Password", {
-              mail: email,
-              status: true
-            });
-          } else {
-            navigate("Password", {
-              mail: email,
-              status: false
-            });
-          }
-        });
-    }
+    checkEmailOnFirebase(email).then(res => {
+      setLoading(false);
+      navigate("Password", {
+        mail: email,
+        status: res
+      });
+    });
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>

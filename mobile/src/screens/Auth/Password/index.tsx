@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   SafeAreaView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -11,54 +10,10 @@ import {
   View
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
-import BackArrow from "../../../assets/left-arrow.svg";
-import Firebase from "../../providers/firebase";
-import Log from "../../utils/Log";
-
-const styles = StyleSheet.create({
-  title: {
-    marginTop: 32,
-    marginBottom: 52,
-    fontFamily: "Avenir",
-    fontSize: 25,
-    fontWeight: "700",
-    fontStyle: "normal"
-  },
-  button: {
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#000000",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 32,
-    marginVertical: 32
-  },
-  buttonText: {
-    fontFamily: "Avenir",
-    fontSize: 22,
-    fontWeight: "900",
-    fontStyle: "normal",
-    color: "#ffffff"
-  },
-  input: {
-    fontFamily: "Avenir",
-    fontSize: 25,
-    marginBottom: 32,
-    height: 40,
-    borderBottomWidth: 1,
-    borderColor: "black",
-    fontWeight: "900"
-  },
-  buttonDisabled: {
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "grey",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 32,
-    marginVertical: 32
-  }
-});
+import BackArrow from "../../../../assets/left-arrow.svg";
+import Firebase from "../../../providers/firebase";
+import Log from "../../../utils/Log";
+import styles from "./styles";
 
 export default () => {
   const { navigate, goBack, getParam } = useNavigation();

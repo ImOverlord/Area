@@ -4,11 +4,12 @@
 import * as GoogleSignIn from "expo-google-sign-in";
 import firebase from "firebase";
 
-import {
+import Firebase, {
   GOOGLE_CLIENT_IOS_STAND,
   WEB_CLIENT_ID,
   WEB_CLIENT_SECRET
 } from "../providers/firebase";
+import validateEmail from "../utils/Validator";
 
 export const loginGoogleStandalone = async () => {
   return new Promise(async (resolve, reject) => {
@@ -25,36 +26,47 @@ export const loginGoogleStandalone = async () => {
       await GoogleSignIn.askForPlayServicesAsync();
       const { type, user } = await GoogleSignIn.signInAsync();
 
-      if (user) {
-        if (type === "success") {
-          fetch(
-            `https://oauth2.googleapis.com/token?code=${user.serverAuthCode}&client_id=${WEB_CLIENT_ID}&client_secret=${WEB_CLIENT_SECRET}&grant_type=authorization_code`,
-            {
-              method: "POST"
-            }
-          )
-            .then(response => response.json())
-            .then(data => {
-              const token = {
-                accessToken: data.access_token,
-                idToken: user.auth.idToken,
-                refreshToken: data.refresh_token
-              };
-              const credential = firebase.auth.GoogleAuthProvider.credential(
-                token.idToken,
-                token.accessToken
-              );
-              firebase
-                .auth()
-                .signInWithCredential(credential)
-                .then(() => {
-                  resolve("SUCCESS");
-                });
-            });
-        }
+      if (type === "success") {
+        fetch(
+          `https://oauth2.googleapis.com/token?code=${user.serverAuthCode}&client_id=${WEB_CLIENT_ID}\
+          &client_secret=${WEB_CLIENT_SECRET}&grant_type=authorization_code`,
+          {
+            method: "POST"
+          }
+        )
+          .then(response => response.json())
+          .then(data => {
+            const token = {
+              accessToken: data.access_token,
+              idToken: user.auth.idToken,
+              refreshToken: data.refresh_token
+            };
+            const credential = firebase.auth.GoogleAuthProvider.credential(
+              token.idToken,
+              token.accessToken
+            );
+            firebase
+              .auth()
+              .signInWithCredential(credential)
+              .then(() => {
+                resolve("SUCCESS");
+              });
+          });
       }
     } catch ({ message }) {
       reject(message);
     }
+  });
+};
+
+export const checkEmailOnFirebase = (email: string): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    Firebase.auth()
+      .fetchSignInMethodsForEmail(email)
+      .then(response => {
+        if (response.includes("password")) resolve(true);
+        resolve(false);
+      })
+      .catch(err => reject(err));
   });
 };

@@ -4,7 +4,10 @@ import Welcome from "../screens/Auth/Welcome";
 import Email from "../screens/Auth/Email";
 import Password from "../screens/Auth/Password";
 import Home from "../screens/Home";
+import Settings from "../screens/Settings";
+
 import AppLoading from "../screens/AppLoading";
+
 const AuthStack = createStackNavigator(
   {
     Welcome,
@@ -18,7 +21,8 @@ const AuthStack = createStackNavigator(
 
 const AppStack = createStackNavigator(
   {
-    Home
+    Home,
+    Settings
   },
   {
     headerMode: "none"

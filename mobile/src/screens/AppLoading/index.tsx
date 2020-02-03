@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Firebase from "../providers/firebase";
-import Log from "../utils/Log";
+import Firebase from "../../providers/firebase";
+import Log from "../../utils/Log";
 
 export default () => {
   const { navigate } = useNavigation();

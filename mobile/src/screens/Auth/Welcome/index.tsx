@@ -3,56 +3,13 @@ import {
   Alert,
   SafeAreaView,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
-import Log from "../../utils/Log";
-import { loginGoogleStandalone } from "../../api/Auth";
-
-const styles = StyleSheet.create({
-  title: {
-    fontFamily: "Avenir",
-    fontSize: 42,
-    fontWeight: "900",
-    marginLeft: 32
-  },
-  subtitle: {
-    marginHorizontal: 32,
-    fontFamily: "Avenir",
-    fontSize: 32,
-    fontWeight: "700",
-    lineHeight: 40,
-    marginTop: 12
-  },
-  subtitle2: {
-    width: "100%",
-    fontFamily: "Avenir",
-    fontSize: 22,
-    fontWeight: "900",
-    fontStyle: "normal",
-    textAlign: "center"
-  },
-  button: {
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#d24a3b",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  emailButton: {
-    backgroundColor: "#000000"
-  },
-  buttonText: {
-    fontFamily: "Avenir",
-    fontSize: 22,
-    fontWeight: "900",
-    fontStyle: "normal",
-    color: "#ffffff"
-  }
-});
+import { loginGoogleStandalone } from "../../../api/Auth";
+import styles from "./styles";
 
 export default () => {
   const { navigate } = useNavigation();
