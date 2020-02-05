@@ -27,7 +27,7 @@ export default () => {
       Firebase.auth()
         .signInWithEmailAndPassword(getParam("mail", ""), password)
         .then(() => {
-          Log("User Created");
+          Log("User Logged");
           setLoading(false);
           navigate("Home");
         })

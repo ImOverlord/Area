@@ -9,7 +9,6 @@ import Firebase, {
   WEB_CLIENT_ID,
   WEB_CLIENT_SECRET
 } from "../providers/firebase";
-import validateEmail from "../utils/Validator";
 
 export const loginGoogleStandalone = async () => {
   return new Promise(async (resolve, reject) => {

@@ -1,18 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  topContainer: {
-    padding: 24,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  bottomContainer: {
-    padding: 24,
-    backgroundColor: "black",
-    justifyContent: "center",
-    alignItems: "center"
-  },
   title: {
     fontFamily: "Avenir Next",
     fontSize: 42,
@@ -20,20 +8,32 @@ const styles = StyleSheet.create({
   },
   email: {
     fontFamily: "Avenir Next",
-    fontSize: 14,
-    fontWeight: "700"
-  },
-  bottomButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: "#3d3d3d",
-    borderRadius: 25
-  },
-  bottomButtonText: {
-    fontFamily: "Avenir Next",
-    fontSize: 18,
+    margin: 15,
+    fontSize: 21,
     fontWeight: "700",
-    color: "white"
+    alignSelf: "center"
+  },
+  safeAreaView: { flex: 1, backgroundColor: "white" },
+  topContainer: {
+    marginHorizontal: 32,
+    borderBottomWidth: 3,
+    borderBottomColor: "rgba(0,0,0,0.02)"
+  },
+  avatar: {
+    height: 128,
+    width: 128,
+    borderRadius: 64,
+    alignSelf: "center"
+  },
+  scrollViewWrapper: {
+    marginHorizontal: 32,
+    marginVertical: 16,
+    height: "100%"
+  },
+  itemText: {
+    fontFamily: "Avenir Next",
+    fontSize: 24,
+    fontWeight: "700"
   }
 });
 

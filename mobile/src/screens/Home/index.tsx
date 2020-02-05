@@ -10,27 +10,24 @@ import {
 import { useNavigation } from "react-navigation-hooks";
 import RBSheet from "react-native-raw-bottom-sheet";
 import styles from "./styles";
+import Firebase from "../../providers/firebase";
 
 export default () => {
   const { navigate } = useNavigation();
   const bs = useRef(null);
 
-  const renderContent = () => (
-    <View style={{ padding: 16, backgroundColor: "white", height: "100%" }}>
-      <Text>Coucou</Text>
-    </View>
-  );
-
   return (
     <>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
+      <SafeAreaView style={styles.topSafeAreaView} />
+      <SafeAreaView style={styles.bottomSafeAreaView}>
         <StatusBar barStyle="dark-content" />
-        <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+        <ScrollView style={styles.scrollView}>
           <View style={styles.topContainer}>
             <Text style={styles.title}>AREA</Text>
             <TouchableOpacity onPress={() => navigate("Settings")}>
-              <Text style={styles.email}>hugo.courthias@gmail.com</Text>
+              <Text style={styles.email}>
+                {Firebase.auth().currentUser.email}
+              </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -43,8 +40,23 @@ export default () => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <RBSheet ref={bs} closeOnDragDown>
-        <View style={{ padding: 16, backgroundColor: "white", height: "100%" }}>
+      <RBSheet
+        ref={bs}
+        customStyles={{
+          container: {
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            alignItems: "center"
+          },
+          draggableIcon: {
+            backgroundColor: "black"
+          }
+        }}
+        closeOnDragDown
+        height={800}
+        duration={400}
+      >
+        <View style={styles.bsWrapper}>
           <Text>Coucou</Text>
         </View>
       </RBSheet>
