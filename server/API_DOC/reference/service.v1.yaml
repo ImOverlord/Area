@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  title: Area Server
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /subscribe:
+    get:
+      summary: Subsribe to an AREA
+      tags: []
+      responses: {}
+      operationId: get-subscribe
+  '/reactions/{name}':
+    parameters:
+      - schema:
+          type: string
+        name: name
+        in: path
+        required: true
+        description: Name of the service
+    get:
+      summary: View Reactions for a Service
+      tags: []
+      responses: {}
+      operationId: get-actions-name
+      description: Endpoint to get all the `Reactions` on a Service.
+  '/actions/{name}':
+    parameters:
+      - schema:
+          type: string
+        name: name
+        in: path
+        required: true
+        description: Name of the Service
+    get:
+      summary: View Actions for a Service
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  text:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      actions:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            form:
+                              type: object
+                              properties:
+                                selectionBox:
+                                  type: object
+                                  properties:
+                                    title:
+                                      type: string
+                                    values:
+                                      type: array
+                                      items:
+                                        type: string
+              examples:
+                Actions For Time Service:
+                  value:
+                    code: '00'
+                    text: Actions for Time Service
+                    data:
+                      actions:
+                        - name: Every Day At
+                          description: This Trigger fires every single day at a specific time set by you.
+                          form:
+                            - selectionBox:
+                                title: Time
+                                values:
+                                  - 12am
+                                  - 1pm
+      operationId: get-reactions-name
+      description: Endpoint to get all the `Actions` on a Service.
+components:
+  schemas: {}
