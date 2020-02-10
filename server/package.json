@@ -1,0 +1,28 @@
+{
+    "name": "server",
+    "version": "0.0.1",
+    "description": "Booster-TS Project",
+    "main": "dist/app.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "node -r tsconfig-paths/register .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@booster-ts/core": "^0.2.2",
+        "@booster-ts/express-module": "0.0.1",
+        "express": "^4.17.1",
+        "node-cron": "^2.0.3",
+        "tsconfig-paths": "^3.9.0"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.2",
+        "@types/node-cron": "^2.0.2",
+        "typescript": "^3.7.3"
+    },
+    "keywords": [],
+    "author": "Booster-TS",
+    "booster": {
+        "default-creator": "1.0.0"
+    }
+}
