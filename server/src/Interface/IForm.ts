@@ -2,7 +2,7 @@ export interface IForm {
     slider?: ISlider;
     input?: IInput;
     checkbox?: ICheckBox;
-    selectionBox?: ISelectionBox
+    selectionBox?: ISelectionBox;
 }
 
 export interface IField {

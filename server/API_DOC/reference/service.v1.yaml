@@ -1,16 +1,100 @@
 openapi: 3.0.0
 info:
-  title: Area Server
+  title: Service
   version: '1.0'
 servers:
   - url: 'http://localhost:3000'
 paths:
   /subscribe:
-    get:
-      summary: Subsribe to an AREA
-      tags: []
-      responses: {}
-      operationId: get-subscribe
+    put:
+      summary: ''
+      operationId: put-subscribe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  text:
+                    type: string
+                required:
+                  - code
+                  - text
+              examples:
+                Success:
+                  value:
+                    code: '00'
+                    text: Area Was added to account
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  text:
+                    type: string
+              examples:
+                Incorrect Authorization token:
+                  value:
+                    code: '02'
+                    text: Wrong Credentials
+        '500':
+          description: |-
+            Internal Server Error
+
+            May occure on Firebase Error, Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  text:
+                    type: string
+              examples:
+                Firebase Error:
+                  value:
+                    code: '00'
+                    text: Server Error
+                Service Error:
+                  value:
+                    code: '00'
+                    text: Server Error
+      description: Add an Area to a User.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Firebase User JWT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                actionName:
+                  type: string
+                actionData:
+                  type: object
+                reactionName:
+                  type: string
+                reactionData:
+                  type: object
+              required:
+                - actionName
+                - actionData
+                - reactionName
+                - reactionData
   '/reactions/{name}':
     parameters:
       - schema:

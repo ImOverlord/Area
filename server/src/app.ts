@@ -1,14 +1,15 @@
 import { inject, loadFiles } from './injector';
-import { EveryDayAtAction } from './Actions/EveryDayAt/EveryDayAt';
 import { ExpressModule } from './Modules/Express/Express';
 import { IAction } from './Interface/IAction';
+import { Firebase } from './Modules/Firebase/Firebase';
 
 /** This is the entrypoint */
 
 loadFiles("Actions/");
 
 Promise.all([
-    inject.inject(ExpressModule).init()
+    inject.inject(ExpressModule).init(),
+    inject.inject(Firebase).init()
 ])
 .then(() => {
     loadFiles("Routes/");

@@ -11,8 +11,10 @@
     },
     "dependencies": {
         "@booster-ts/core": "^0.2.2",
+        "@booster-ts/error-module": "0.1.0-alpha.0",
         "@booster-ts/express-module": "0.0.1",
         "express": "^4.17.1",
+        "firebase-admin": "^8.9.2",
         "node-cron": "^2.0.3",
         "tsconfig-paths": "^3.9.0"
     },
@@ -27,6 +29,7 @@
     "keywords": [],
     "author": "Booster-TS",
     "booster": {
-        "default-creator": "1.0.0"
+        "default-creator": "1.0.0",
+        "error-module": "errorCode.config.json"
     }
 }

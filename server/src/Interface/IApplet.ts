@@ -5,3 +5,8 @@ export interface IApplet {
     getDescription(): string;
     getForm(): Array<IForm>;
 }
+
+export interface IAppletInfo<T extends object = {}> {
+    name: string;
+    data: T;
+}

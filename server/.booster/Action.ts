@@ -23,7 +23,7 @@ export class <%= name %>Action implements IAction {
      * getName
      * @description Get Action Name
      */
-    public getName() {
+    public getName(): string {
         return "<%= name %>";
     }
 
@@ -31,7 +31,7 @@ export class <%= name %>Action implements IAction {
      * getDescription
      * @description Action Description
      */
-    public getDescription() {
+    public getDescription(): string {
         return "<%= name %> Action";
     }
 

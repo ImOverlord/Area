@@ -28,7 +28,7 @@ export class EveryDayAtAction implements IAction {
      * getName
      * @description Get Action Name
      */
-    public getName() {
+    public getName(): string {
         return "Every Day At";
     }
 
@@ -36,7 +36,7 @@ export class EveryDayAtAction implements IAction {
      * getDescription
      * @description Action Description
      */
-    public getDescription() {
+    public getDescription(): string {
         return "This Trigger fires every single day at a specific time set by you.";
     }
 
