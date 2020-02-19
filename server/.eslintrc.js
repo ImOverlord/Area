@@ -10,6 +10,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
     ],
     rules: {
-        "@typescript-eslint/interface-name-prefix": 0
+        "@typescript-eslint/interface-name-prefix": 0,
+        "@typescript-eslint/semi": ["error", "always"]
     }
 };

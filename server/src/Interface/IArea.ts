@@ -5,5 +5,5 @@ export interface IArea {
     user: string;
     action: IAppletInfo;
     reaction: IAppletInfo;
-    time: number;
+    dateAdded: number;
 }

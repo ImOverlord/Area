@@ -1,14 +1,15 @@
 import { booster } from '@booster-ts/core';
-import { inject } from '<%= source %>/injector';
-import { IAction } from '<%= source %>/Interface/IAction';
-import { IForm } from '<%= source %>/Interface/IForm';
+import { inject } from '../../injector';
+import { IReaction } from '../../Interface/IReaction';
+import { IForm } from '../../Interface/IForm';
+import { ISendMail } from './ISendMail';
 
 @booster({
     serviceName: "",
-    name: "<%= name %>",
+    name: "SendMail",
     type: "action"
 })
-export class <%= name %>Action implements IAction {
+export class SendMailAction implements IReaction {
 
     /**
      * init
@@ -23,7 +24,7 @@ export class <%= name %>Action implements IAction {
      * @description Get Action Name
      */
     public getName(): string {
-        return "<%= name %>";
+        return "SendMail";
     }
 
     /**
@@ -31,7 +32,7 @@ export class <%= name %>Action implements IAction {
      * @description Action Description
      */
     public getDescription(): string {
-        return "<%= name %> Action";
+        return "SendMail Action";
     }
 
     /**
@@ -46,10 +47,11 @@ export class <%= name %>Action implements IAction {
      * listener
      * @description Action Call Back
      */
-    public listener(req: Request, res: Response): Promise<any> {
+    public execute(reactionInfo: ISendMail): Promise<void> {
+        console.log(reactionInfo);
         return Promise.resolve();
     }
 
 }
 
-inject.register("<%= name %>Action", <%= name %>Action);
+inject.register("SendMailAction", SendMailAction);

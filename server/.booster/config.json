@@ -1,5 +1,5 @@
 {
     "root": "src/",
     "action": "Actions/",
-    "Reaction": "Reactions/"
+    "reaction": "Reactions/"
 }

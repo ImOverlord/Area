@@ -6,6 +6,7 @@ export interface IForm {
 }
 
 export interface IField {
+    name: string;
     title: string;
 }
 

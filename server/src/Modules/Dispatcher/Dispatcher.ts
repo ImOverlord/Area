@@ -10,13 +10,13 @@ import { ErrorModule } from '@booster-ts/error-module';
 @booster()
 export class Dispatcher {
 
-    private db: firebase.database.Database;
+    private db: firebase.firestore.Firestore;
 
     constructor(
         private firebase: Firebase,
         private error: ErrorModule
     ) {
-        this.db = this.firebase.getApp().database()
+        this.db = this.firebase.getApp().firestore();
     }
 
     /**
@@ -24,7 +24,13 @@ export class Dispatcher {
      * @description Calls Correct Reaction for Action
      */
     public dispatchAction(name: string, data: any): Promise<void> {
-        return Promise.reject();
+        const filter: IAppletInfo = {
+            name,
+            data
+        };
+        console.log(`Dispatcher Called`);
+        this.db.collection('/Area').where('action', '==', filter);
+        return Promise.resolve();
     }
 
     /**
@@ -38,23 +44,17 @@ export class Dispatcher {
             user: user.email,
             action: actionInfo,
             reaction: reactionInfo,
-            time: Date.now()
+            dateAdded: Date.now()
         };
 
-        return new Promise((resolve, reject) => {
-            this.db.ref('/area/').push(info, (error) => {
-                if (error) {
-                    reject(this.error.createError("99", "subscribeArea", {}, error));
-                } else {
-                    action.subscribe(actionInfo.data)
-                    .then(() => {
-                        resolve();
-                    })
-                    .catch((error) => {
-                        reject(this.error.createError("99", `subscribe${actionInfo.name}`, {}, error));
-                    });
-                }
-            });
+        if (!action)
+            return Promise.reject(this.error.createError("04", "subscribeArea", {why: "Action does not exist"}));
+        return this.db.collection('/Area').add(info)
+        .then(() => {
+            return action.subscribe(actionInfo.data);
+        })
+        .catch((error) => {
+            return Promise.reject(this.error.createError("99", "subscribeArea", {}, error));
         });
     }
 

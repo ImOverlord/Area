@@ -11,9 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@booster-ts/core");
 const injector_1 = require("../../injector");
+const Firebase_1 = require("../Firebase/Firebase");
 let InfoModule = class InfoModule {
-    constructor() {
-        this.services = ['Time']; /** @todo Replace with firebase */
+    constructor(firebase) {
+        this.firebase = firebase;
+        this.services = [];
+        this.db = this.firebase.getApp().firestore();
+    }
+    /**
+     * init
+     */
+    init() {
+        return new Promise((resolve, reject) => {
+            this.db.collection('/Services').get()
+                .then((snapshot) => {
+                snapshot.forEach((service) => {
+                    this.services.push(service.get('name'));
+                });
+                resolve();
+            }).catch(reject);
+        });
     }
     /**
      * getAbout
@@ -66,6 +83,6 @@ let InfoModule = class InfoModule {
 };
 InfoModule = __decorate([
     core_1.booster(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [Firebase_1.Firebase])
 ], InfoModule);
 exports.InfoModule = InfoModule;

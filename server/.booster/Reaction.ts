@@ -1,14 +1,14 @@
 import { booster } from '@booster-ts/core';
 import { inject } from '<%= source %>/injector';
-import { IAction } from '<%= source %>/Interface/IAction';
+import { IReaction } from '<%= source %>/Interface/IReaction';
 import { IForm } from '<%= source %>/Interface/IForm';
 
 @booster({
     serviceName: "",
     name: "<%= name %>",
-    type: "action"
+    type: "reaction"
 })
-export class <%= name %>Action implements IAction {
+export class <%= name %>Action implements IReaction {
 
     /**
      * init
@@ -43,10 +43,10 @@ export class <%= name %>Action implements IAction {
     }
 
     /**
-     * listener
-     * @description Action Call Back
+     * excute
+     * @description Reaction Call Back
      */
-    public listener(req: Request, res: Response): Promise<any> {
+    public execute(reactionInfo: any): Promise<void> {
         return Promise.resolve();
     }
 

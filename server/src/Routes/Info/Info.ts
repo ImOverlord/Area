@@ -26,7 +26,8 @@ export class InfoRoute {
                 host: req.headers['x-forwarded-for'] || req.connection.remoteAddress
             },
             server: {
-                current_time: parseInt((Date.now() / 1000).toFixed(0)),
+                /** Prevent ESLint Error */
+                "current_time": parseInt((Date.now() / 1000).toFixed(0)),
                 services
             }
         };

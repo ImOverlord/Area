@@ -6,7 +6,7 @@ import firebase = require("firebase-admin");
 export class Firebase {
 
     /** Firebase Info */
-    private serviceAccount = require("area-3e80d-firebase-adminsdk-x2u3s-3943147a78.json");
+    private serviceAccount = require("../../../area-3e80d-firebase-adminsdk-x2u3s-3943147a78.json");
     /** Firebase App */
     private app: firebase.app.App;
 
@@ -22,7 +22,7 @@ export class Firebase {
         this.app = firebase.initializeApp({
             credential: firebase.credential.cert(this.serviceAccount),
             databaseURL: "https://area-3e80d.firebaseio.com"
-        })
+        });
         return Promise.resolve();
     }
 

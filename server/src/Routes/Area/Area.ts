@@ -1,5 +1,5 @@
 import { booster } from '@booster-ts/core';
-import { Request, Response, Express } from 'express';
+import { Request, Response, Express, NextFunction } from 'express';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
 import { inject } from '../../injector';
@@ -34,11 +34,11 @@ export class AreaRoute {
         const reactionInfo: IAppletInfo = {
             name: reactionName,
             data: reactionData
-        }
+        };
 
         this.firebase.validateToken(token)
         .then((user) => {
-            return this.dispatcher.subscribeArea(user , actionInfo, reactionInfo)
+            return this.dispatcher.subscribeArea(user , actionInfo, reactionInfo);
         })
         .then(() => {
             res.status(200).send({

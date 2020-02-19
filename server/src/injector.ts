@@ -9,7 +9,7 @@ export const inject = new Injector();
  * @description Imports Recursively all files
  * @param dirName where to search the files
  */
-export const loadFiles = (dirName: string) => {
+export const loadFiles = (dirName: string): void => {
     let fileLoaded = false;
     let relativeDir;
     if (!path.isAbsolute(dirName))

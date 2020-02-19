@@ -1,14 +1,35 @@
 import { booster } from '@booster-ts/core';
 import { inject } from '../../injector';
 import { IApplet } from '../../Interface/IApplet';
-import { IAction } from '../../Interface/IAction';
+import firebase = require("firebase-admin");
+import { Firebase } from '../Firebase/Firebase';
 
 @booster()
 export class InfoModule {
 
-    private services = ['Time'] /** @todo Replace with firebase */
+    private db: firebase.firestore.Firestore;
+    private services = [];
 
-    constructor() { }
+    constructor(
+        private firebase: Firebase
+    ) {
+        this.db = this.firebase.getApp().firestore();
+    }
+
+    /**
+     * init
+     */
+    public init(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.db.collection('/Services').get()
+            .then((snapshot) => {
+                snapshot.forEach((service) => {
+                    this.services.push(service.get('name'));
+                });
+                resolve();
+            }).catch(reject);
+        });
+    }
 
     /**
      * getAbout
