@@ -35,11 +35,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "white"
   },
-  bsWrapper: {
-    padding: 16,
-    backgroundColor: "white",
-    height: "100%"
-  },
   topSafeAreaView: { flex: 0, backgroundColor: "white" },
   bottomSafeAreaView: { flex: 1, backgroundColor: "black" },
   scrollView: { flex: 1, backgroundColor: "white" }

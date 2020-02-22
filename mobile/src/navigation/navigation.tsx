@@ -5,7 +5,8 @@ import Email from "../screens/Auth/Email";
 import Password from "../screens/Auth/Password";
 import Home from "../screens/Home";
 import Settings from "../screens/Settings";
-
+import New from "../screens/New";
+import ServiceSelector from "../screens/ServiceSelector";
 import AppLoading from "../screens/AppLoading";
 
 const AuthStack = createStackNavigator(
@@ -22,7 +23,9 @@ const AuthStack = createStackNavigator(
 const AppStack = createStackNavigator(
   {
     Home,
-    Settings
+    Settings,
+    New,
+    ServiceSelector
   },
   {
     headerMode: "none"

@@ -3,7 +3,6 @@
 /* eslint-disable import/prefer-default-export */
 import * as GoogleSignIn from "expo-google-sign-in";
 import firebase from "firebase";
-
 import Firebase, {
   GOOGLE_CLIENT_IOS_STAND,
   WEB_CLIENT_ID,

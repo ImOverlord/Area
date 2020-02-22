@@ -8,7 +8,9 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@babel/runtime": "^7.8.4",
     "@expo/vector-icons": "^10.0.6",
+    "@hugocourthias/expo-twitter-login": "file:../../expo-twitter-login",
     "@react-native-community/masked-view": "^0.1.6",
     "eslint": "^6.8.0",
     "eslint-config-react-native-wcandillon": "^2.6.0",
@@ -16,6 +18,8 @@
     "expo-google-sign-in": "^8.0.0",
     "firebase": "^7.7.0",
     "lottie-react-native": "^3.3.2",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.1.4",
     "react": "~16.9.0",
     "react-dom": "^16.9.0",
     "react-firebase-hooks": "^2.1.1",
@@ -28,6 +32,7 @@
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-svg": "9.13.3",
     "react-native-svg-transformer": "^0.14.3",
+    "react-native-twitter": "^0.2.1",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.0.10",
     "react-navigation-hooks": "^1.1.0",

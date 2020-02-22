@@ -34,32 +34,12 @@ export default () => {
         <View style={styles.bottomContainer}>
           <TouchableOpacity
             style={styles.bottomButton}
-            onPress={() => bs.current.open()}
+            onPress={() => navigate("New")}
           >
-            <Text style={styles.bottomButtonText}>Get more</Text>
+            <Text style={styles.bottomButtonText}>New</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <RBSheet
-        ref={bs}
-        customStyles={{
-          container: {
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            alignItems: "center"
-          },
-          draggableIcon: {
-            backgroundColor: "black"
-          }
-        }}
-        closeOnDragDown
-        height={800}
-        duration={400}
-      >
-        <View style={styles.bsWrapper}>
-          <Text>Coucou</Text>
-        </View>
-      </RBSheet>
     </>
   );
 };
