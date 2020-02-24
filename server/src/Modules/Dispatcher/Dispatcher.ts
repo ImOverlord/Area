@@ -50,6 +50,7 @@ export class Dispatcher {
      * @description Subscribe a user to a new Action
      */
     public subscribeArea<A extends object = {}, R extends object = {}>(user: firebase.auth.UserRecord, actionInfo: IAppletInfo<A>, reactionInfo: IAppletInfo<R>): Promise<void> {
+        console.log("Subscribe");
         const action = inject.getByValue<IAction>('name', actionInfo.name)[0];
         const info: IArea = {
             idUser: user.uid,

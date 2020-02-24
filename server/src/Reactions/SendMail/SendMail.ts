@@ -25,12 +25,12 @@ export class SendMailAction implements IReaction {
         .then((account) => {
             this.testAccount = account;
             this.transporter = createTransport({
-                host: "smtp.ethereal.email",
+                host: "smtp.gmail.com",
                 port: 587,
                 secure: false, // true for 465, false for other ports
                 auth: {
-                    user: account.user, // generated ethereal user
-                    pass: account.pass // generated ethereal password
+                    user: 'area2020epi@gmail.com', // generated ethereal user
+                    pass: 'Epitech2020' // generated ethereal password
                 }
             });
             return Promise.resolve();
@@ -84,11 +84,16 @@ export class SendMailAction implements IReaction {
      * @description Action Call Back
      */
     public execute(reactionInfo: ISendMail): Promise<void> {
+        console.log(reactionInfo);
         return this.transporter.sendMail({
-            from: '"Area" <foo@example.com>',
-            to: reactionInfo.mail,
-            subject: "Hello",
+            from: '"Area" <area2020epi@gmail.com>',
+            to: reactionInfo.mail, // list of receivers
+            subject: reactionInfo.title,
             text: reactionInfo.content,
+        })
+        .catch(() => {
+            /** Skip Errors */
+            return Promise.resolve();
         });
     }
 
