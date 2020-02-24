@@ -24,7 +24,7 @@ export class Dispatcher {
      * dispatchAction
      * @description Calls Correct Reaction for Action
      */
-    public dispatchAction(name: string, data: any): Promise<void> {
+    public dispatchAction(name: string, data: unknown): Promise<void> {
         const filter: IAppletInfo = {
             name,
             data

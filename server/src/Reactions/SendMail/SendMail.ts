@@ -62,6 +62,7 @@ export class SendMailAction implements IReaction {
             input: {
                 name: 'email',
                 title: 'Email',
+                //eslint-disable-next-line
                 regex: `^[a-zA-Z0-9.!#$%&'*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$`
             }
         }, {

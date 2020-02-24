@@ -1,6 +1,6 @@
 import { booster } from '@booster-ts/core';
 import express = require("express");
-import { Express } from 'express'
+import { Express } from 'express';
 
 @booster()
 export class ExpressModule {

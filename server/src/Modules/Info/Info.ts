@@ -34,7 +34,7 @@ export class InfoModule {
     /**
      * getAbout
      */
-    public getAbout() {
+    public getAbout(): unknown {
         const services = [];
         for (const service of this.services) {
             const serviceInformation = {
@@ -57,18 +57,18 @@ export class InfoModule {
     /**
      * getActions
      */
-    public getActions(service: string) {
+    public getActions(service: string): unknown {
         return this.getApplet(service, 'action');
     }
 
     /**
      * getReactions
      */
-    public getReactions(service: string) {
+    public getReactions(service: string): unknown {
         return this.getApplet(service, 'reaction');
     }
 
-    private getApplet(service: string, type: 'action' | 'reaction') {
+    private getApplet(service: string, type: 'action' | 'reaction'): unknown {
         const containers = inject.getContainerByValue<IApplet, {type: string}>('serviceName', service);
         const applets = [];
         

@@ -87,7 +87,7 @@ export class EveryDayAtAction implements IAction {
      * subscribe
      * @description Subscribe a new user to applets
      */
-    public subscribe(data: IData): Promise<void> {
+    public subscribe(): Promise<void> {
         return Promise.resolve();
     }
 
