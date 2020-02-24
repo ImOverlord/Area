@@ -47,6 +47,7 @@ export class AreaRoute {
             });
         })
         .catch((error: IError) => {
+            console.log(error);
             res.status(error.httpResponse)
             .send({
                 code: error.code,

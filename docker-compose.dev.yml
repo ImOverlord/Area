@@ -10,3 +10,10 @@ services:
     volumes:
       - ./web:/app
       - /app/node_modules
+
+  back:
+    build:
+      context: server/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
