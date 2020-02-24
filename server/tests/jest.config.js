@@ -4,7 +4,9 @@ module.exports = {
         "<rootDir>/tests/"
     ],
     modulePathIgnorePatterns: [
-        "<rootDir>/tests/env.ts"
+        "<rootDir>/tests/env.ts",
+        "<rootDir>/tests/init.ts",
+        "<rootDir>/tests/teardown.ts"
     ],
     transform: {
         "^.+\\.tsx?$": "ts-jest"
@@ -19,4 +21,6 @@ module.exports = {
         "node"
     ],
     collectCoverage: false,
+    globalSetup: "<rootDir>/tests/init.ts",
+    globalTeardown: "<rootDir>/tests/teardown.ts"
 };
