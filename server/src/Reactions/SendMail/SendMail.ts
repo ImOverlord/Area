@@ -13,7 +13,6 @@ import Mail = require('nodemailer/lib/mailer');
 })
 export class SendMailAction implements IReaction {
 
-    private testAccount: TestAccount;
     private transporter: Mail;
 
     /**
@@ -21,20 +20,16 @@ export class SendMailAction implements IReaction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        return createTestAccount()
-        .then((account) => {
-            this.testAccount = account;
-            this.transporter = createTransport({
-                host: "smtp.gmail.com",
-                port: 587,
-                secure: false, // true for 465, false for other ports
-                auth: {
-                    user: 'area2020epi@gmail.com', // generated ethereal user
-                    pass: 'Epitech2020' // generated ethereal password
-                }
-            });
-            return Promise.resolve();
+        this.transporter = createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            auth: {
+                user: 'area2020epi@gmail.com',
+                pass: 'Epitech2020'
+            }
         });
+        return Promise.resolve();
     }
 
     /**
