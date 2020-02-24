@@ -28,12 +28,18 @@ export class EveryDayAtAction implements IAction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.cron = cron.schedule('*/15 * * * *', () => {
+        console.log("Init");
+        this.cron = cron.schedule('* * * * *', () => {
             const time = new Date;
+            console.log("Hello");
             this.dispatcher.dispatchAction('EveryDayAt', {
-                hour: time.getHours().toString().padStart(2, '0'),
-                minute: time.getMinutes().toString().padStart(2, '0')
+                hour: '00',
+                minute: '00'
             });
+            // this.dispatcher.dispatchAction('EveryDayAt', {
+            //     hour: time.getHours().toString().padStart(2, '0'),
+            //     minute: time.getMinutes().toString().padStart(2, '0')
+            // });
         });
         return Promise.resolve();
     }

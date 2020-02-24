@@ -6,6 +6,7 @@ import firebase = require("firebase-admin");
 import { IAppletInfo } from '../../Interface/IApplet';
 import { IArea } from '../../Interface/IArea';
 import { ErrorModule } from '@booster-ts/error-module';
+import { IReaction } from '../../Interface/IReaction';
 
 @booster()
 export class Dispatcher {
@@ -29,8 +30,19 @@ export class Dispatcher {
             data
         };
         console.log(`Dispatcher Called`);
-        this.db.collection('/Area').where('action', '==', filter);
-        return Promise.resolve();
+        return this.db.collection('/Area').where('action', '==', filter)
+        .get()
+        .then((snapshots) => {
+            if (snapshots.empty)
+                return Promise.resolve();
+            snapshots.forEach((snapshot) => {
+                const area = snapshot.data() as IArea;
+                const reaction = inject.getByValue<IReaction>('name', area.reaction.name)[0];
+                if (reaction)
+                    reaction.execute(area.reaction.data);
+            });
+            return Promise.resolve();
+        });
     }
 
     /**

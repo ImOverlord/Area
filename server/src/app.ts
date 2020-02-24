@@ -13,6 +13,7 @@ Promise.all([
 .then(() => {
     loadFiles("Routes/");
     loadFiles("Actions/");
+    loadFiles("Reactions/");
     const actions = inject.getByValue<IAction>('type', 'action');
     const promises = [
         inject.inject(InfoModule).init()

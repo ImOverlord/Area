@@ -18,12 +18,14 @@
         "express": "^4.17.1",
         "firebase-admin": "^8.9.2",
         "node-cron": "^2.0.3",
+        "nodemailer": "^6.4.3",
         "tsconfig-paths": "^3.9.0"
     },
     "devDependencies": {
         "@types/express": "^4.17.2",
         "@types/jest": "^25.1.2",
         "@types/node-cron": "^2.0.2",
+        "@types/nodemailer": "^6.4.0",
         "@types/superagent": "^4.1.7",
         "@typescript-eslint/eslint-plugin": "^2.19.0",
         "@typescript-eslint/parser": "^2.19.0",

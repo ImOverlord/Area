@@ -1,5 +1,5 @@
 import { booster } from '@booster-ts/core';
-import { Request, Response, Express, NextFunction } from 'express';
+import { Request, Response, Express } from 'express';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
 import { inject } from '../../injector';
