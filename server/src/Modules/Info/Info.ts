@@ -69,13 +69,14 @@ export class InfoModule {
     }
 
     private getApplet(service: string, type: 'action' | 'reaction'): unknown {
-        const containers = inject.getContainerByValue<IApplet, {type: string}>('serviceName', service);
+        const containers = inject.getContainerByValue<IApplet, {type: string; name: string}>('serviceName', service);
         const applets = [];
         
         for (const container of containers) {
             if (container.data.type !== type)
                 continue;
             applets.push({
+                slugName: container.data.name,
                 name: container.class.getName(),
                 description: container.class.getDescription(),
                 form: container.class.getForm()
