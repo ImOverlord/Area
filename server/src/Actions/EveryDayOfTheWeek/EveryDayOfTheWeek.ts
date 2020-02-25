@@ -5,19 +5,24 @@ import { IForm } from '../../Interface/IForm';
 import cron = require("node-cron");
 import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
 
-interface IData {
-    hour: string;
-    minute: string;
-}
 
 @booster({
-    serviceName: "Time",
-    name: "EveryDayAt",
+    serviceName: "",
+    name: "EveryDayOfTheWeek",
     type: "action"
 })
-export class EveryDayAtAction implements IAction {
+export class EveryDayOfTheWeekAction implements IAction {
 
     private cron: cron.ScheduledTask;
+    private weekday = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
 
     constructor(
         private dispatcher: Dispatcher
@@ -30,7 +35,8 @@ export class EveryDayAtAction implements IAction {
     public init(): Promise<void> {
         this.cron = cron.schedule('*/15 * * * *', () => {
             const time = new Date;
-            this.dispatcher.dispatchAction('EveryDayAt', {
+            this.dispatcher.dispatchAction('EveryDayOfTheWeek', {
+                day: this.weekday[time.getDay()],
                 hour: time.getHours().toString().padStart(2, '0'),
                 minute: time.getMinutes().toString().padStart(2, '0')
             });
@@ -43,7 +49,7 @@ export class EveryDayAtAction implements IAction {
      * @description Get Action Name
      */
     public getName(): string {
-        return "Every Day At";
+        return "Every Day Of The Week";
     }
 
     /**
@@ -51,7 +57,7 @@ export class EveryDayAtAction implements IAction {
      * @description Action Description
      */
     public getDescription(): string {
-        return "This Trigger fires every single day at a specific time set by you.";
+        return "Every Day Of The Week Action";
     }
 
     /**
@@ -62,7 +68,7 @@ export class EveryDayAtAction implements IAction {
         return [{
             selectionBox: {
                 name: 'hour',
-                title: 'Time',
+                title: 'Time of the Day',
                 values: [
                     "00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"
                 ]
@@ -70,17 +76,23 @@ export class EveryDayAtAction implements IAction {
         }, {
             selectionBox: {
                 name: 'minute',
-                title: "",
+                title: '',
                 values: [
                     "00", "15", "30", "45"
                 ]
+            }
+        }, {
+            selectionBox: {
+                name: 'Day of the week',
+                title: 'day',
+                values: this.weekday
             }
         }];
     }
 
     /**
-     * subscribe
-     * @description Subscribe a new user to applets
+     * listener
+     * @description Action Call Back
      */
     public subscribe(): Promise<void> {
         return Promise.resolve();
@@ -88,4 +100,4 @@ export class EveryDayAtAction implements IAction {
 
 }
 
-inject.register("EveryDayAtAction", EveryDayAtAction);
+inject.register("EveryDayOfTheWeekAction", EveryDayOfTheWeekAction);

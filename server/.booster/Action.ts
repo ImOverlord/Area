@@ -46,7 +46,7 @@ export class <%= name %>Action implements IAction {
      * listener
      * @description Action Call Back
      */
-    public listener(req: Request, res: Response): Promise<any> {
+    public subscribe(data: unknown): Promise<void> {
         return Promise.resolve();
     }
 

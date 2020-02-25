@@ -5,17 +5,12 @@ import { IForm } from '../../Interface/IForm';
 import cron = require("node-cron");
 import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
 
-interface IData {
-    hour: string;
-    minute: string;
-}
-
 @booster({
     serviceName: "Time",
-    name: "EveryDayAt",
+    name: "EveryHourAt",
     type: "action"
 })
-export class EveryDayAtAction implements IAction {
+export class EveryHourAtAction implements IAction {
 
     private cron: cron.ScheduledTask;
 
@@ -43,7 +38,7 @@ export class EveryDayAtAction implements IAction {
      * @description Get Action Name
      */
     public getName(): string {
-        return "Every Day At";
+        return "Every hour at";
     }
 
     /**
@@ -51,7 +46,7 @@ export class EveryDayAtAction implements IAction {
      * @description Action Description
      */
     public getDescription(): string {
-        return "This Trigger fires every single day at a specific time set by you.";
+        return "This Trigger fires once an hour at :00, :15, :30, or :45 minutes past the hour.";
     }
 
     /**
@@ -61,26 +56,21 @@ export class EveryDayAtAction implements IAction {
     public getForm(): Array<IForm> {
         return [{
             selectionBox: {
-                name: 'hour',
-                title: 'Time',
-                values: [
-                    "00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"
-                ]
-            }
-        }, {
-            selectionBox: {
                 name: 'minute',
-                title: "",
+                title: 'Minutes past the hour',
                 values: [
-                    "00", "15", "30", "45"
+                    '00',
+                    '15',
+                    '30',
+                    '45'
                 ]
             }
         }];
     }
 
     /**
-     * subscribe
-     * @description Subscribe a new user to applets
+     * listener
+     * @description Action Call Back
      */
     public subscribe(): Promise<void> {
         return Promise.resolve();
@@ -88,4 +78,4 @@ export class EveryDayAtAction implements IAction {
 
 }
 
-inject.register("EveryDayAtAction", EveryDayAtAction);
+inject.register("EveryHourAtAction", EveryHourAtAction);
