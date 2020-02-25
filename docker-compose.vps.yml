@@ -8,7 +8,7 @@ services:
     ports:
       - 8081:8081
     volumes:
-      - ./web:/app
+      - ./web/src/:/app/src
 
   back:
     build:
@@ -18,6 +18,6 @@ services:
     ports:
       - 3000:3000
     volumes:
-        - ./server:/app
+      - ./server/src:/app/src
     environment:
       - BASE_URL=area.famille4.com
