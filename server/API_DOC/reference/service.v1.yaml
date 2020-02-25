@@ -95,7 +95,8 @@ paths:
                 - actionData
                 - reactionName
                 - reactionData
-            examples: {}
+            examples:
+              example-1: {}
   '/reactions/{name}':
     parameters:
       - schema:
@@ -226,14 +227,58 @@ paths:
                     text: Actions for Time Service
                     data:
                       actions:
-                        - name: Every Day At
+                        - slugName: EveryDayAt
+                          name: Every Day At
                           description: This Trigger fires every single day at a specific time set by you.
                           form:
                             - selectionBox:
+                                name: hour
                                 title: Time
                                 values:
-                                  - 12am
-                                  - 1pm
+                                  - '00'
+                                  - '01'
+                                  - '02'
+                                  - '03'
+                                  - '04'
+                                  - '05'
+                                  - '06'
+                                  - '07'
+                                  - '08'
+                                  - '09'
+                                  - '10'
+                                  - '11'
+                                  - '12'
+                                  - '13'
+                                  - '14'
+                                  - '15'
+                                  - '16'
+                                  - '17'
+                                  - '18'
+                                  - '19'
+                                  - '20'
+                                  - '21'
+                                  - '22'
+                                  - '23'
+                            - selectionBox:
+                                name: minute
+                                title: ''
+                                values:
+                                  - '00'
+                                  - '15'
+                                  - '30'
+                                  - '45'
+                        - slugName: EveryHourAt
+                          name: Every hour at
+                          description: 'This Trigger fires once an hour at :00, :15, :30, or :45 minutes past the hour.'
+                          form:
+                            - selectionBox:
+                                name: minute
+                                title: Minutes past the hour
+                                values:
+                                  - '00'
+                                  - '15'
+                                  - '30'
+                                  - '45'
         '':
           content:
             application/json:
@@ -283,8 +328,8 @@ paths:
                                   - '05'
                                   - '06'
                                   - '07'
-                                  - 8
-                                  - 9
+                                  - 08
+                                  - 09
                                   - '10'
                                   - '11'
                                   - '12'
