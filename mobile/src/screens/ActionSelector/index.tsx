@@ -16,7 +16,7 @@ import CloseButton from "../../components/CloseButton";
 import { getServiceActions } from "../../api/Services";
 
 export default () => {
-  const { image, color, description, name } = useNavigation().getParam(
+  const { image, color, description, name, type } = useNavigation().getParam(
     "serviceInfo"
   );
 
@@ -24,8 +24,11 @@ export default () => {
   const { navigate } = useNavigation();
 
   useEffect(() => {
-    getServiceActions(name).then(res => setActions(res.data.actions));
-  }, [name]);
+    console.log(type);
+    getServiceActions(name, type).then(res =>
+      setActions(type === "action" ? res.data.actions : res.data.reactions)
+    );
+  }, []);
   return (
     <>
       <SafeAreaView
@@ -62,7 +65,9 @@ export default () => {
               index={index}
               name={item.name}
               color={color}
-              onPress={() => navigate("Form", { item })}
+              image={image}
+              // onPress={() => navigate("Form", { item, image, color, type })}
+              onPress={() => console.log(item)}
             />
           )}
         />

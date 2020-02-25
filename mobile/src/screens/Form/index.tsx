@@ -8,7 +8,8 @@ import {
   View,
   FlatList,
   TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
 import Header from "../../components/Header";
@@ -17,19 +18,25 @@ import ActionButton from "../../components/ActionButton";
 import CloseButton from "../../components/CloseButton";
 import { getServiceActions } from "../../api/Services";
 import { Dropdown } from "react-native-material-dropdown";
+import { observer, inject } from "mobx-react";
+import { action } from "mobx";
 
-export default () => {
+function Form(props) {
   const { navigate } = useNavigation();
-  const item = useNavigation().getParam("item");
+  const actionItem = useNavigation().getParam("item");
+  const image = useNavigation().getParam("image");
+  const color = useNavigation().getParam("color");
+  const type = useNavigation().getParam("type");
+
   let formResult = {};
+  const { setAction, setReaction } = props.store;
 
   const onChangeText = (name, text) => {
     formResult[name] = text;
-    console.log(formResult);
   };
   const renderForm = item => {
-    const values = [];
     console.log(item);
+    const values = [];
     if (item.selectionBox) {
       for (let i = 0; i < item.selectionBox.values.length; i += 1) {
         values.push({ value: item.selectionBox.values[i] });
@@ -41,13 +48,38 @@ export default () => {
           onChangeText={text => onChangeText(item.selectionBox.name, text)}
         />
       );
-    } else if (item.checkbox) {
+    }
+    if (item.checkbox) {
       formResult[item.checkbox.name] = false;
       console.log("checkbox");
+    }
+    if (item.input) {
+      return (
+        <View style={{ marginVertical: 16 }}>
+          <Text>{item.input.title}</Text>
+          <TextInput
+            style={{
+              paddingLeft: 12,
+              height: 45,
+              borderColor: "#eee",
+              borderWidth: 2,
+              marginTop: 6,
+              borderRadius: 8
+            }}
+            onChangeText={text => onChangeText(item.input.name, text)}
+          />
+        </View>
+      );
     }
   };
 
   const isReady = () => {
+    actionItem.form = formResult;
+    actionItem.image = image;
+    actionItem.color = color;
+    console.log(actionItem);
+    if (type === "action") setAction(actionItem);
+    else setReaction(actionItem);
     navigate("New");
   };
 
@@ -62,7 +94,7 @@ export default () => {
           color="black"
         />
         <CloseButton />
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.description}>{actionItem.description}</Text>
         <View
           style={{
             paddingHorizontal: 24,
@@ -71,7 +103,7 @@ export default () => {
           }}
         >
           <FlatList
-            data={item.form}
+            data={actionItem.form}
             style={{ paddingTop: 24 }}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => renderForm(item)}
@@ -85,4 +117,6 @@ export default () => {
       </SafeAreaView>
     </>
   );
-};
+}
+
+export default inject("store")(observer(Form));

@@ -1,7 +1,20 @@
 /* eslint-disable import/prefer-default-export */
-import { db } from "../providers/firebase";
+import Firebase, { db } from "../providers/firebase";
 
-const API_URL = "http://area.famille4.com:3000";
+export const API_URL = "http://area.famille4.com:3000";
+
+export async function getIdToken() {
+  return Firebase.auth().currentUser.getIdToken();
+}
+
+function generateUserRequest(method = "GET") {
+  return {
+    method,
+    headers: {
+      Authorization: getIdToken()
+    }
+  };
+}
 
 export const getAllServices = async () => {
   try {
@@ -12,11 +25,12 @@ export const getAllServices = async () => {
   }
 };
 
-export async function getServiceActions(serviceName) {
+export async function getServiceActions(serviceName, type) {
+  console.log(`${API_URL}/${type}s/${serviceName}`);
   try {
-    const response = await fetch(`${API_URL}/actions/${serviceName}`);
+    const response = await fetch(`${API_URL}/${type}s/${serviceName}`);
     return await response.json();
   } catch (error) {
-    console.error(error);
+    return error;
   }
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, StatusBar } from "react-native";
-import { useNavigation } from "react-navigation-hooks";
 import { FlatGrid } from "react-native-super-grid";
 import ServiceCard from "../../components/ServiceCard";
 import CloseButton from "../../components/CloseButton";
@@ -8,12 +7,28 @@ import Header from "../../components/Header";
 import { getAllServices } from "../../api/Services";
 import styles from "./styles";
 import { ServiceProps } from "../../type/ServiceType";
+import { useNavigation } from "react-navigation-hooks";
 
 export default () => {
   const [services, setServices] = useState([]);
+  const t = useNavigation().getParam("type");
+
+  const filterByValue = (data, t) => {
+    const tmp = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const service of data) {
+      if (service.type === t) {
+        tmp.push(service);
+      }
+    }
+    console.log(tmp);
+    return tmp;
+  };
 
   useEffect(() => {
-    getAllServices().then(result => setServices(result));
+    getAllServices().then(result => {
+      setServices(filterByValue(result, t));
+    });
   }, []);
 
   return (
@@ -36,6 +51,7 @@ export default () => {
                 color={item.color}
                 description={item.description}
                 image={item.image}
+                type={t}
               />
             )}
           />

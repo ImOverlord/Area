@@ -18,22 +18,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginLeft: -56
-  },
-  button: {
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#000000",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 32,
-    marginVertical: 32
-  },
-  buttonText: {
-    fontFamily: "Avenir",
-    fontSize: 22,
-    fontWeight: "900",
-    fontStyle: "normal",
-    color: "#ffffff"
   }
 });
 

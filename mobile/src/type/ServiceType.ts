@@ -4,4 +4,5 @@ export type ServiceProps = {
   description: string;
   image: string;
   name: string;
+  type: string;
 };
