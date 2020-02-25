@@ -3,23 +3,11 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   topSafeAreaView: { flex: 0, backgroundColor: "black" },
   bottomSafeAreaView: { flex: 1, backgroundColor: "white" },
-  header: {
-    backgroundColor: "black",
-    height: "15%",
-    justifyContent: "center",
-    alignItems: "center"
-  },
   container: {
     backgroundColor: "white",
-    height: "85%",
     justifyContent: "center",
-    alignItems: "center"
-  },
-  headerTitle: {
-    color: "white",
-    fontFamily: "Avenir Next",
-    fontSize: 26,
-    fontWeight: "700"
+    alignItems: "center",
+    flex: 1
   },
   body: {
     fontFamily: "Avenir Next",

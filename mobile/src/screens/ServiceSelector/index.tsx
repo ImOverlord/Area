@@ -1,33 +1,47 @@
-import React from "react";
-import {
-  SafeAreaView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput
-} from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import styles from "./styles";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, SafeAreaView, StatusBar } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
+import { FlatGrid } from "react-native-super-grid";
+import ServiceCard from "../../components/ServiceCard";
+import CloseButton from "../../components/CloseButton";
+import Header from "../../components/Header";
+import { getAllServices } from "../../api/Services";
+import styles from "./styles";
+import { ServiceProps } from "../../type/ServiceType";
 
 export default () => {
-  const { navigate } = useNavigation();
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    getAllServices().then(result => setServices(result));
+  }, []);
+
   return (
     <>
-      <SafeAreaView style={styles.safeAreaView}>
+      <SafeAreaView style={styles.topSafeAreaView} />
+      <SafeAreaView style={styles.bottomSafeAreaView}>
         <StatusBar barStyle="light-content" />
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Create your own</Text>
-          <Text style={styles.headerSubTitle}>Select trigger service</Text>
-          <View style={styles.searchBar}>
-            <FontAwesome name="search" size={22} />
-            <TextInput
-              placeholder="Search services"
-              style={styles.searchBarText}
-            />
-          </View>
-        </View>
+        <Header title="Create your own" subTitle="Select trigger service" />
+        <CloseButton />
+        {services.length > 0 ? (
+          <FlatGrid
+            itemDimension={100}
+            items={services}
+            fixed
+            spacing={0}
+            renderItem={({ item }: { item: ServiceProps }) => (
+              <ServiceCard
+                authentification={item.authentification}
+                name={item.name}
+                color={item.color}
+                description={item.description}
+                image={item.image}
+              />
+            )}
+          />
+        ) : (
+          <ActivityIndicator />
+        )}
       </SafeAreaView>
     </>
   );

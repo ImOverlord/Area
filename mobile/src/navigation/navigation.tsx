@@ -7,7 +7,9 @@ import Home from "../screens/Home";
 import Settings from "../screens/Settings";
 import New from "../screens/New";
 import ServiceSelector from "../screens/ServiceSelector";
+import ActionSelector from "../screens/ActionSelector";
 import AppLoading from "../screens/AppLoading";
+import Form from "../screens/Form";
 
 const AuthStack = createStackNavigator(
   {
@@ -25,7 +27,9 @@ const AppStack = createStackNavigator(
     Home,
     Settings,
     New,
-    ServiceSelector
+    ServiceSelector,
+    ActionSelector,
+    Form
   },
   {
     headerMode: "none"

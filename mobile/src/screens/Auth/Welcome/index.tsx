@@ -10,25 +10,24 @@ import {
 import { AuthSession } from "expo";
 import { useNavigation } from "react-navigation-hooks";
 import { loginGoogleStandalone } from "../../../api/Auth";
+import auth from "../../../api/twitter";
+
 import styles from "./styles";
-import { auth } from "@hugocourthias/expo-twitter-login";
 
 export default () => {
   const { navigate } = useNavigation();
 
   const handleTwitter = () => {
-    // Alert.alert(
-    //   "Facebook",
-    //   "Facebook login is not available for the moment.",
-    //   [{ text: "OK" }]
-    // );
-    const consumerKey = "ZlkVLe9NKOIObQYGg0Kx7iIrg";
-    const consumerSecret = "QOukrv2pLC9OEZnumII79FTHom7Vjm4FRWcaUUZJngeLO5iiJq";
-    const callbackUrl = AuthSession.getRedirectUrl();
-    console.log(callbackUrl);
-    auth({ consumerKey, consumerSecret }, callbackUrl)
-      .then(result => console.log(result))
-      .catch(error => console.log(error));
+    Alert.alert("Facebook", "Facebook login is not available for the moment.", [
+      { text: "OK" }
+    ]);
+    // const consumerKey = "ZlkVLe9NKOIObQYGg0Kx7iIrg";
+    // const consumerSecret = "QOukrv2pLC9OEZnumII79FTHom7Vjm4FRWcaUUZJngeLO5iiJq";
+    // const callbackUrl = AuthSession.getRedirectUrl();
+    // console.log(callbackUrl);
+    // auth({ consumerKey, consumerSecret }, callbackUrl)
+    //   .then(result => console.log(result))
+    //   .catch(error => console.log(error));
   };
 
   const handleGoogle = () => {

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -11,10 +11,11 @@ import { useNavigation } from "react-navigation-hooks";
 import RBSheet from "react-native-raw-bottom-sheet";
 import styles from "./styles";
 import Firebase from "../../providers/firebase";
-
+import ServiceCard from "../../components/ServiceCard";
+import { FlatGrid } from "react-native-super-grid";
+import { getAllServices } from "../../api/Services";
 export default () => {
   const { navigate } = useNavigation();
-  const bs = useRef(null);
 
   return (
     <>

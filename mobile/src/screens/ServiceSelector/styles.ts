@@ -1,12 +1,14 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  safeAreaView: { flex: 1, backgroundColor: "black" },
+  topSafeAreaView: { flex: 0, backgroundColor: "black" },
+  bottomSafeAreaView: { flex: 1, backgroundColor: "black" },
   header: {
     backgroundColor: "black",
     height: "15%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: 32
   },
   container: {
     backgroundColor: "white",

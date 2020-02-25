@@ -36,7 +36,7 @@ export const loginGoogleStandalone = async () => {
           .then(data => {
             const token = {
               accessToken: data.access_token,
-              idToken: user.auth.idToken,
+              idToken: user?.auth?.idToken,
               refreshToken: data.refresh_token
             };
             const credential = firebase.auth.GoogleAuthProvider.credential(
