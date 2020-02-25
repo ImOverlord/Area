@@ -41,3 +41,5 @@ export class Firebase {
     }
 
 }
+
+export { firebase };

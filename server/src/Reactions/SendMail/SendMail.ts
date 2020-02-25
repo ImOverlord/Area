@@ -3,13 +3,13 @@ import { inject } from '../../injector';
 import { IReaction } from '../../Interface/IReaction';
 import { IForm } from '../../Interface/IForm';
 import { ISendMail } from './ISendMail';
-import { createTransport, createTestAccount, TestAccount } from 'nodemailer';
+import { createTransport } from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
 
 @booster({
     serviceName: "Mail",
     name: "SendMail",
-    type: "action"
+    type: "reaction"
 })
 export class SendMailAction implements IReaction {
 

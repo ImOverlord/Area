@@ -3,6 +3,7 @@ import { ExpressModule } from './Modules/Express/Express';
 import { IAction } from './Interface/IAction';
 import { Firebase } from './Modules/Firebase/Firebase';
 import { InfoModule } from './Modules/Info/Info';
+import { Monitor } from './Modules/Monitor/Monitor';
 
 /** This is the entrypoint */
 
@@ -16,7 +17,8 @@ Promise.all([
     loadFiles("Reactions/");
     const actions = inject.getByValue<IAction>('type', 'action');
     const promises = [
-        inject.inject(InfoModule).init()
+        inject.inject(InfoModule).init(),
+        inject.inject(Monitor).init()
     ];
     for (const action of actions)
         promises.push(action.init());
