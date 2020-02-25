@@ -26,20 +26,18 @@ export class SendSlackMessageAction implements IAction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.server.get('/slack/webhook', (req: Request, res: Response) => {
-            console.log(req.body);
-            request.get('https://slack.com/api/oauth.access').query({
+        this.server.get('/slack/oauth/authorize', (req: Request, res: Response) => {
+            request.get('https://slack.com/api/oauth.v2.access').query({
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 client_id: '645826239602.957881164305',
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 client_secret: 'ea08a655351fdb6c4b926d29667329b9',
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: 'http://google.com'
+                redirect_uri: `${process.env.BASE_URL}/slack/oauth/authorize`,
+                code: req.query.code
             })
             .end((error, result) => {
-                console.log(error);
-                console.log(result.body);
-                if (error) {
+                if (error || result.body.ok === false) {
                     res.status(500).send({
                         code: '99',
                         text: 'SLACK Error',
