@@ -7,7 +7,7 @@ import { Express, Request, Response } from 'express';
 import request = require("superagent");
 
 @booster({
-    serviceName: "",
+    serviceName: "Slack",
     name: "SendSlackMessage",
     type: "action"
 })
