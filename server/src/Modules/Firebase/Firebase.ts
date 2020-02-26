@@ -27,6 +27,8 @@ export class Firebase {
     }
 
     public validateToken(token: string): Promise<firebase.auth.UserRecord> {
+        if (!token)
+            return Promise.reject(this.error.createError("02", "ValidateToken"));
         return this.app.auth().verifyIdToken(token)
         .then((validation) => {
             return this.app.auth().getUser(validation.uid);

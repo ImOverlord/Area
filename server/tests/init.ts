@@ -8,7 +8,6 @@ export default async() => {
         global['__SERVER_PID__'] = service.pid;
         service.stdout.on('data', (data: Buffer) => {
             const output = data.toString();
-            console.log(output);
             if (output.match(/App Started/))
                 resolve();
         });

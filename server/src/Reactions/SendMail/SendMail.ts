@@ -87,7 +87,8 @@ export class SendMailAction implements IReaction {
             subject: reactionInfo.title,
             text: reactionInfo.content,
         })
-        .catch(() => {
+        .catch((error) => {
+            console.log(error);
             /** Skip Errors */
             return Promise.resolve();
         });
