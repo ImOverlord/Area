@@ -5,7 +5,7 @@
     "main": "dist/app.js",
     "scripts": {
         "build": "tsc",
-        "start": "node -r tsconfig-paths/register .",
+        "start": "node .",
         "serve": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/app.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
         "test:lint": "eslint . --ext .js,.jsx,.ts,.tsx",

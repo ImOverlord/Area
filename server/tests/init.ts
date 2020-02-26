@@ -9,7 +9,7 @@ export default async() => {
         service.stdout.on('data', (data: Buffer) => {
             const output = data.toString();
             console.log(output);
-            if (output.match(/Init/))
+            if (output.match(/App Started/))
                 resolve();
         });
     });
