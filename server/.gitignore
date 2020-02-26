@@ -115,4 +115,8 @@ dist/
 tmp/
 temp/
 
+# Deploy
+deploy.tar
+file.tar
+
 # End of https://www.gitignore.io/api/node,code

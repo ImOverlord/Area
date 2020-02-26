@@ -82,7 +82,7 @@ export class SendSlackMessageAction implements IAction {
      * listener
      * @description Action Call Back
      */
-    public subscribe(data: unknown): Promise<void> {
+    public subscribe(): Promise<void> {
         return Promise.resolve();
     }
 

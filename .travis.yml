@@ -21,3 +21,12 @@ jobs:
             - npm run test:lint
             - npm run build
             - npm run test:func -- --forceExit
+    - stage: Server Deploy
+      node_js: node
+      if: branch = feature/service-endpoints AND type != pull_request
+      script:
+        - cd server/
+        - npm ci
+        - npm run build
+        - tar -czf deploy.tar --exclude deploy.tar .
+        - caprover deploy -h $HOST -p $HOST_PASSWORD -a area -t ./deploy.tar
