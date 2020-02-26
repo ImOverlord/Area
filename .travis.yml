@@ -25,6 +25,7 @@ jobs:
       node_js: node
       if: branch = feature/service-endpoints AND type != pull_request
       script:
+        - npm i -g caprover
         - cd server/
         - npm ci
         - npm run build
