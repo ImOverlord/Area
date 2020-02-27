@@ -8,7 +8,7 @@ import { IForm } from '<%= source %>/Interface/IForm';
     name: "<%= name %>",
     type: "reaction"
 })
-export class <%= name %>Action implements IReaction {
+export class <%= name %>Reaction implements IReaction {
 
     /**
      * init
@@ -52,4 +52,4 @@ export class <%= name %>Action implements IReaction {
 
 }
 
-inject.register("<%= name %>Action", <%= name %>Action);
+inject.register("<%= name %>Reaction", <%= name %>Reaction);

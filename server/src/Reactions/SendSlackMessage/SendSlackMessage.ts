@@ -1,24 +1,28 @@
 import { booster } from '@booster-ts/core';
 import { inject } from '../../injector';
-import { IAction } from '../../Interface/IAction';
 import { IForm } from '../../Interface/IForm';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { Express, Request, Response } from 'express';
 import request = require("superagent");
+import { IReaction } from '../../Interface/IReaction';
+import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 
 @booster({
     serviceName: "Slack",
     name: "SendSlackMessage",
-    type: "action"
+    type: "reaction"
 })
-export class SendSlackMessageAction implements IAction {
+export class SendSlackMessageReaction implements IReaction {
 
     private server: Express;
+    private db: firebase.firestore.Firestore;
 
     constructor(
-        express: ExpressModule
+        express: ExpressModule,
+        firebase: Firebase
     ) {
         this.server = express.getApp();
+        this.db = firebase.getApp().firestore();
     }
 
     /**
@@ -46,7 +50,8 @@ export class SendSlackMessageAction implements IAction {
                 } else {
                     res.send({
                         code: "00",
-                        text: 'OK'
+                        text: 'OK',
+                        data: result.body
                     });
                 }
             });
@@ -59,7 +64,7 @@ export class SendSlackMessageAction implements IAction {
      * @description Get Action Name
      */
     public getName(): string {
-        return "SendSlackMessage";
+        return "Send Slack Message";
     }
 
     /**
@@ -67,7 +72,7 @@ export class SendSlackMessageAction implements IAction {
      * @description Action Description
      */
     public getDescription(): string {
-        return "SendSlackMessage Action";
+        return "This Reaction will send direct message to you.";
     }
 
     /**
@@ -75,17 +80,31 @@ export class SendSlackMessageAction implements IAction {
      * @description get Action form
      */
     public getForm(): Array<IForm> {
-        return [];
+        return [{
+            input: {
+                name: 'content',
+                regex: null,
+                title: 'Message'
+            }
+        }];
     }
 
     /**
      * listener
      * @description Action Call Back
      */
-    public subscribe(): Promise<void> {
-        return Promise.resolve();
+    public execute(data: unknown, idUser: string): Promise<void> {
+        return this.db.collection('/User').where('idUser', '==', idUser)
+        .get()
+        .then((snapshots) => {
+            if (snapshots.empty)
+                return Promise.resolve();
+            const user = snapshots.docs[0].data();
+            console.log(user);
+            return Promise.resolve();
+        });
     }
 
 }
 
-inject.register("SendSlackMessageAction", SendSlackMessageAction);
+inject.register("SendSlackMessageReaction", SendSlackMessageReaction);

@@ -39,7 +39,7 @@ export class Dispatcher {
                 const area = snapshot.data() as IArea;
                 const reaction = inject.getByValue<IReaction>('name', area.reaction.name)[0];
                 if (reaction)
-                    reaction.execute(area.reaction.data);
+                    reaction.execute(area.reaction.data, area.idUser);
             });
             return Promise.resolve();
         });
