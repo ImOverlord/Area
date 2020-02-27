@@ -103,7 +103,10 @@ export class SendSlackMessageReaction implements IReaction {
         .then((snapshots) => {
             if (snapshots.empty)
                 return Promise.resolve();
-            const user = snapshots.docs[0].data() as ISlackInfo;
+            console.log(snapshots.docs[0].data());
+            const user = snapshots.docs[0].data().Slack as ISlackInfo;
+            if (!user)
+                return Promise.resolve();
             return request.post(`https://slack.com/api/chat.postMessage`)
             .set('Authorization', `Bearer ${user.access_token}`)
             .send({
