@@ -31,20 +31,18 @@ export class SendSlackMessageReaction implements IReaction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.server.get('/slack/convert', this.convert.bind(this));
         this.server.get('/slack/oauth/authorize', this.convert.bind(this));
         return Promise.resolve();
     }
 
     private convert(req: Request, res: Response): void {
-        console.log(req.query);
         request.get('https://slack.com/api/oauth.v2.access').query({
             // eslint-disable-next-line @typescript-eslint/camelcase
             client_id: '645826239602.957881164305',
             // eslint-disable-next-line @typescript-eslint/camelcase
             client_secret: 'ea08a655351fdb6c4b926d29667329b9',
             // eslint-disable-next-line @typescript-eslint/camelcase
-            redirect_uri: `https://auth.expo.io/@hugocourthias/AREA`,
+            redirect_uri: req.query.redirect_uri,
             code: req.query.code
         })
         .end((error, result) => {
