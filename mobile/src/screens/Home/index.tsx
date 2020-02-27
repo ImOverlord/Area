@@ -5,17 +5,28 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  View
+  View,
+  FlatList
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
 import RBSheet from "react-native-raw-bottom-sheet";
 import styles from "./styles";
-import Firebase from "../../providers/firebase";
+import Firebase, { db } from "../../providers/firebase";
 import ServiceCard from "../../components/ServiceCard";
 import { FlatGrid } from "react-native-super-grid";
-import { getAllServices } from "../../api/Services";
-export default () => {
+import { getAllServices, getUserAREA } from "../../api/Services";
+import { observer, inject, Observer } from "mobx-react";
+import SubscribeCard from "../../components/SubscribeCard";
+function Home(props) {
   const { navigate } = useNavigation();
+
+  const { subscribe, setSubscribe, deleteSubscribe } = props.store;
+
+  useEffect(() => {
+    getUserAREA(Firebase.auth().currentUser.email).then(res =>
+      setSubscribe(res)
+    );
+  }, []);
 
   return (
     <>
@@ -31,6 +42,20 @@ export default () => {
               </Text>
             </TouchableOpacity>
           </View>
+          <FlatList
+            data={subscribe}
+            style={{ paddingTop: 24 }}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <SubscribeCard
+                action={item.data.action.name}
+                reaction={item.data.reaction.name}
+                email={item.data.user}
+                id={item.id}
+                index={index}
+              />
+            )}
+          />
         </ScrollView>
         <View style={styles.bottomContainer}>
           <TouchableOpacity
@@ -43,4 +68,6 @@ export default () => {
       </SafeAreaView>
     </>
   );
-};
+}
+
+export default inject("store")(observer(Home));

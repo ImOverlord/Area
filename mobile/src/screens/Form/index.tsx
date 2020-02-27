@@ -35,7 +35,6 @@ function Form(props) {
     formResult[name] = text;
   };
   const renderForm = item => {
-    console.log(item);
     const values = [];
     if (item.selectionBox) {
       for (let i = 0; i < item.selectionBox.values.length; i += 1) {

@@ -66,8 +66,8 @@ export default () => {
               name={item.name}
               color={color}
               image={image}
-              // onPress={() => navigate("Form", { item, image, color, type })}
-              onPress={() => console.log(item)}
+              onPress={() => navigate("Form", { item, image, color, type })}
+              // onPress={() => console.log(item)}
             />
           )}
         />

@@ -25,6 +25,29 @@ export const getAllServices = async () => {
   }
 };
 
+export const getUserAREA = email => {
+  return new Promise((resolve, reject) => {
+    const tmp = [];
+    try {
+      db.collection("Area")
+        .where("user", "==", email)
+        .get()
+        .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            tmp.push({ id: doc.id, data: doc.data() });
+          });
+          resolve(tmp);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export async function getServiceActions(serviceName, type) {
   console.log(`${API_URL}/${type}s/${serviceName}`);
   try {

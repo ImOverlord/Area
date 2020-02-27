@@ -11,7 +11,7 @@ class Store {
 
   reaction = null;
 
-  subscribe = null;
+  subscribe = [];
 
   setAction = data => {
     this.action = data;
@@ -22,6 +22,14 @@ class Store {
     this.reaction = data;
     this.reactionStatic = data;
   };
+
+  setSubscribe = data => {
+    this.subscribe = data;
+  };
+
+  deleteSubscribe = index => {
+    this.subscribe.splice(index, 1);
+  };
 }
 
 // another way to decorate variables with observable
@@ -30,7 +38,9 @@ decorate(Store, {
   reaction: observable,
   subscribe: observable,
   setAction: action,
-  setReaction: action
+  setReaction: action,
+  setSubscribe: action,
+  deleteSubscribe: action
 });
 
 // export class

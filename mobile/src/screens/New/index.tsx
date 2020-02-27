@@ -14,37 +14,31 @@ import CloseButton from "../../components/CloseButton";
 import styles from "./styles";
 import CreationButton from "../../components/CreationButton";
 import { action } from "mobx";
-import { getIdToken, API_URL, getServiceActions } from "../../api/Services";
+import {
+  getIdToken,
+  API_URL,
+  getServiceActions,
+  getUserAREA
+} from "../../api/Services";
 import axios from "axios";
+import Firebase from "../../providers/firebase";
 
 function New(props) {
   const { navigate } = useNavigation();
-  const { actionStatic, reactionStatic, action, reaction } = props.store;
+  const {
+    actionStatic,
+    reactionStatic,
+    action,
+    reaction,
+    setSubscribe
+  } = props.store;
 
-  const subscribe = async () => {
-    const actionName = actionStatic.name;
-    const reactionName = reactionStatic.name;
+  const createAREA = async () => {
+    const actionName = actionStatic.slugName;
+    const reactionName = reactionStatic.slugName;
     const actionData = actionStatic.form;
     const reactionData = reactionStatic.form;
     const idToken: string = await getIdToken();
-
-    // const response = fetch(`${API_URL}/subscribe`, {
-    //   method: "put",
-    //   headers: {
-    //     Authorization: idToken
-    //   },
-    //   body: {
-    //     actionName,
-    //     actionData,
-    //     reactionName,
-    //     reactionData
-    //   }
-    // });
-    console.log("actionName", actionStatic);
-    console.log("actiondata", actionData);
-    console.log("reactionName", reactionName);
-    console.log("reactionData", reactionData);
-
     axios
       .put(
         `${API_URL}/subscribe`,
@@ -61,7 +55,14 @@ function New(props) {
           }
         }
       )
-      .then(res => console.log(res))
+      .then(res => {
+        if (res.status === 200) {
+          getUserAREA(Firebase.auth().currentUser.email).then(res => {
+            setSubscribe(res);
+            navigate("Home");
+          });
+        }
+      })
       .catch(e => console.log(e));
   };
 
@@ -81,7 +82,7 @@ function New(props) {
         </View>
         <CloseButton />
         {reaction && action && (
-          <TouchableOpacity onPress={() => subscribe()}>
+          <TouchableOpacity onPress={() => createAREA()}>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Create AREA</Text>
             </View>

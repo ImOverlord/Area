@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     borderRadius: 8,
     justifyContent: "center",
-    paddingLeft: 12
+    paddingLeft: 12,
+    marginBottom: 12
   },
   buttonText: {
     color: "white",
