@@ -6,6 +6,7 @@ import { Express, Request, Response } from 'express';
 import request = require("superagent");
 import { IReaction } from '../../Interface/IReaction';
 import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
+import { ISendSlackMessage, ISlackInfo } from './ISendSlackMessage';
 
 @booster({
     serviceName: "Slack",
@@ -93,15 +94,22 @@ export class SendSlackMessageReaction implements IReaction {
      * listener
      * @description Action Call Back
      */
-    public execute(data: unknown, idUser: string): Promise<void> {
+    public execute(data: ISendSlackMessage, idUser: string): Promise<void> {
         return this.db.collection('/User').where('idUser', '==', idUser)
         .get()
         .then((snapshots) => {
             if (snapshots.empty)
                 return Promise.resolve();
-            const user = snapshots.docs[0].data();
-            console.log(user);
-            return Promise.resolve();
+            const user = snapshots.docs[0].data() as ISlackInfo;
+            return request.post(`https://slack.com/api/chat.postMessage`)
+            .set('Authorization', `Bearer ${user.access_token}`)
+            .send({
+                channel: user.authed_user.id,
+                text: data.content || "Area2020"
+            })
+            .then(() => {
+                return Promise.resolve();
+            });
         });
     }
 
