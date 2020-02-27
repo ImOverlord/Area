@@ -25,8 +25,7 @@ export class EveryHourAtAction implements IAction {
     public init(): Promise<void> {
         this.cron = cron.schedule('*/15 * * * *', () => {
             const time = new Date;
-            this.dispatcher.dispatchAction('EveryDayAt', {
-                hour: time.getHours().toString().padStart(2, '0'),
+            this.dispatcher.dispatchAction('EveryHourAt', {
                 minute: time.getMinutes().toString().padStart(2, '0')
             });
         });

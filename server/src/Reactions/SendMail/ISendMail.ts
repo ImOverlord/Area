@@ -1,5 +1,5 @@
 export interface ISendMail {
-    mail: string;
+    email: string;
     title: string;
     content: string;
 }

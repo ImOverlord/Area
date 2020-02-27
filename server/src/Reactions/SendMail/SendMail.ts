@@ -80,10 +80,9 @@ export class SendMailAction implements IReaction {
      * @description Action Call Back
      */
     public execute(reactionInfo: ISendMail): Promise<void> {
-        console.log(reactionInfo);
         return this.transporter.sendMail({
             from: '"Area" <area2020epi@gmail.com>',
-            to: reactionInfo.mail, // list of receivers
+            to: reactionInfo.email, // list of receivers
             subject: reactionInfo.title,
             text: reactionInfo.content,
         })

@@ -7,7 +7,7 @@ import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
 
 
 @booster({
-    serviceName: "",
+    serviceName: "Time",
     name: "EveryDayOfTheWeek",
     type: "action"
 })
