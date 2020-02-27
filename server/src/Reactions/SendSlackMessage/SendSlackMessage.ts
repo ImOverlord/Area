@@ -31,33 +31,36 @@ export class SendSlackMessageReaction implements IReaction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.server.get('/slack/oauth/authorize', (req: Request, res: Response) => {
-            request.get('https://slack.com/api/oauth.v2.access').query({
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_id: '645826239602.957881164305',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_secret: 'ea08a655351fdb6c4b926d29667329b9',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: `https://area.cap.famille4.com/slack/oauth/authorize`,
-                code: req.query.code
-            })
-            .end((error, result) => {
-                if (error || result.body.ok === false) {
-                    res.status(500).send({
-                        code: '99',
-                        text: 'SLACK Error',
-                        data: result.body
-                    });
-                } else {
-                    res.send({
-                        code: "00",
-                        text: 'OK',
-                        data: result.body
-                    });
-                }
-            });
-        });
+        this.server.get('/slack/convert', this.convert.bind(this));
+        this.server.get('/slack/oauth/authorize', this.convert.bind(this));
         return Promise.resolve();
+    }
+
+    private convert(req: Request, res: Response) {
+        request.get('https://slack.com/api/oauth.v2.access').query({
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            client_id: '645826239602.957881164305',
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            client_secret: 'ea08a655351fdb6c4b926d29667329b9',
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            redirect_uri: `https://area.cap.famille4.com/slack/oauth/authorize`,
+            code: req.query.code
+        })
+        .end((error, result) => {
+            if (error || result.body.ok === false) {
+                res.status(500).send({
+                    code: '99',
+                    text: 'SLACK Error',
+                    data: result.body
+                });
+            } else {
+                res.send({
+                    code: "00",
+                    text: "OK",
+                    data: result.body
+                });
+            }
+        });
     }
 
     /**
