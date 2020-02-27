@@ -36,7 +36,8 @@ export class SendSlackMessageReaction implements IReaction {
         return Promise.resolve();
     }
 
-    private convert(req: Request, res: Response) {
+    private convert(req: Request, res: Response): void {
+        console.log(req.params);
         request.get('https://slack.com/api/oauth.v2.access').query({
             // eslint-disable-next-line @typescript-eslint/camelcase
             client_id: '645826239602.957881164305',

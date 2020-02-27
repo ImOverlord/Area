@@ -1,6 +1,5 @@
 import { booster } from '@booster-ts/core';
 import { inject } from '../../injector';
-import { IAction } from '../../Interface/IAction';
 import { IForm } from '../../Interface/IForm';
 import { IReaction } from '../../Interface/IReaction';
 
