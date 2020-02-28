@@ -50,7 +50,7 @@ export class GithubNewIssueAction implements IAction {
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 client_secret: '6b32a9c27ea2fdbc86c731603dcb5391e89dacd6',
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: `https://area.cap.famille4.com//github/oauth/authorize`,
+                redirect_uri: `https://area.cap.famille4.com/github/oauth/authorize`,
                 code: req.query.code
             })
             .end((error, result) => {
@@ -102,7 +102,7 @@ export class GithubNewIssueAction implements IAction {
             // kit.repos.testPushHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187763532});
             // kit.repos.listHooks({repo: 'Area', owner: 'ImOverlord'})
             // .then(console.log);
-            return kit.repos.list();
+            return kit.repos.list({per_page: 100});
         })
         .then((result) => {
             if (result.status !== 200)
