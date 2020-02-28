@@ -102,6 +102,7 @@ export class GithubNewIssueAction implements IAction {
             // kit.repos.testPushHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187763532});
             // kit.repos.listHooks({repo: 'Area', owner: 'ImOverlord'})
             // .then(console.log);
+            // eslint-disable-next-line @typescript-eslint/camelcase
             return kit.repos.list({per_page: 100});
         })
         .then((result) => {
