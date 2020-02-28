@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import Firebase, { db } from "../providers/firebase";
 
-export const API_URL = "http://area.famille4.com:3000";
+export const API_URL = "https://area.cap.famille4.com";
 
 export async function getIdToken() {
   return Firebase.auth().currentUser.getIdToken();

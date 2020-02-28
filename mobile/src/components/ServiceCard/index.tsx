@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigation } from "react-navigation-hooks";
 import styles from "./styles";
 import { ServiceProps } from "../../type/ServiceType";
+import { loginOauth, handleNotification } from "../../api/Auth";
 
 export default (props: ServiceProps) => {
   const { image, color, name } = props;
@@ -10,7 +11,19 @@ export default (props: ServiceProps) => {
   return (
     <TouchableOpacity
       style={[styles.wrapper, { backgroundColor: color }]}
-      onPress={() => navigate("ActionSelector", { serviceInfo: props })}
+      onPress={() => {
+        if (props.name === "Notification") {
+          handleNotification()
+            .then(() => navigate("ActionSelector", { serviceInfo: props }))
+            .catch(err => console.log(err));
+        } else if (props.authentification) {
+          loginOauth(props.authentification, name)
+            .then(() => navigate("ActionSelector", { serviceInfo: props }))
+            .catch(err => console.log(err));
+        } else {
+          navigate("ActionSelector", { serviceInfo: props });
+        }
+      }}
     >
       <View>
         <Image

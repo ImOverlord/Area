@@ -6,8 +6,14 @@ import firebase from "firebase";
 import Firebase, {
   GOOGLE_CLIENT_IOS_STAND,
   WEB_CLIENT_ID,
-  WEB_CLIENT_SECRET
+  WEB_CLIENT_SECRET,
+  db
 } from "../providers/firebase";
+import { AuthSession, Notifications } from "expo";
+import * as AppAuth from "expo-app-auth";
+import { API_URL } from "./Services";
+import * as Permissions from "expo-permissions";
+import { Platform } from "react-native";
 
 export const loginGoogleStandalone = async () => {
   return new Promise(async (resolve, reject) => {
@@ -68,3 +74,89 @@ export const checkEmailOnFirebase = (email: string): Promise<boolean> => {
       .catch(err => reject(err));
   });
 };
+
+export async function loginOauth(oauthUrl, name: string) {
+  let redirectUrl = AuthSession.getRedirectUrl();
+
+  let result = await AuthSession.startAsync({
+    authUrl: oauthUrl + `&redirect_uri=${encodeURIComponent(redirectUrl)}`
+  });
+
+  const response = await fetch(
+    `${API_URL}/${name.toLowerCase()}/oauth/authorize?code=${
+      result.params.code
+    }&redirect_uri=${redirectUrl}`
+  );
+
+  const tmp = await response.json();
+  db.collection("User")
+    .where("idUser", "==", Firebase.auth().currentUser?.uid)
+    .get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        return db
+          .collection("User")
+          .doc()
+          .set({ idUser: Firebase.auth().currentUser?.uid, [name]: tmp.data });
+      } else {
+        return db
+          .collection("User")
+          .doc(snapshot.docs[0].id)
+          .update({
+            idUser: Firebase.auth().currentUser?.uid,
+            [name]: tmp.data
+          });
+      }
+    });
+}
+
+export async function handleNotification() {
+  const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  if (status !== "granted") {
+    alert("No notification permissions!");
+    return;
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.createChannelAndroidAsync("pushChannel", {
+      name: "pushChannel",
+      priority: "max",
+      vibrate: [0, 250, 250, 250]
+    });
+  }
+
+  // Get the token that identifies this device
+  let token = await Notifications.getExpoPushTokenAsync();
+
+  db.collection("User")
+    .where("idUser", "==", Firebase.auth().currentUser?.uid)
+    .get()
+    .then(snapshot => {
+      const tmp = [];
+      console.log(snapshot.docs[0].data());
+      if (
+        snapshot.docs[0].data().Notification &&
+        snapshot.docs[0].data().Notification.expo
+      )
+        tmp.push(...snapshot.docs[0].data().Notification.expo);
+      if (!tmp.includes(token)) tmp.push(token);
+      console.log(tmp);
+      if (snapshot.empty) {
+        return db
+          .collection("User")
+          .doc()
+          .set({
+            idUser: Firebase.auth().currentUser?.uid,
+            Notification: { expo: tmp }
+          });
+      } else {
+        return db
+          .collection("User")
+          .doc(snapshot.docs[0].id)
+          .update({
+            idUser: Firebase.auth().currentUser?.uid,
+            Notification: { expo: tmp }
+          });
+      }
+    });
+}

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     marginVertical: 32
   },
   buttonText: {
-    fontFamily: "Avenir",
+    fontFamily: "Avenir Next",
     fontSize: 22,
     fontWeight: "900",
     fontStyle: "normal",

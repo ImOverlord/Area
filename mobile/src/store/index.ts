@@ -28,7 +28,7 @@ class Store {
   };
 
   deleteSubscribe = index => {
-    this.subscribe.splice(index, 1);
+    this.subscribe.splice(index);
   };
 }
 

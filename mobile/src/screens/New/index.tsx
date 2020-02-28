@@ -39,6 +39,7 @@ function New(props) {
     const actionData = actionStatic.form;
     const reactionData = reactionStatic.form;
     const idToken: string = await getIdToken();
+    console.log(idToken);
     axios
       .put(
         `${API_URL}/subscribe`,
