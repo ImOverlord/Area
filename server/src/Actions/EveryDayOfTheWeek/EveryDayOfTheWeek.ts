@@ -64,8 +64,8 @@ export class EveryDayOfTheWeekAction implements IAction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
-        return [{
+    public getForm(): Promise<Array<IForm>> {
+        return Promise.resolve([{
             selectionBox: {
                 name: 'hour',
                 title: 'Time of the Day',
@@ -87,7 +87,7 @@ export class EveryDayOfTheWeekAction implements IAction {
                 title: 'day',
                 values: this.weekday
             }
-        }];
+        }]);
     }
 
     /**

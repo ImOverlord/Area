@@ -23,10 +23,11 @@ export class EveryHourAtAction implements IAction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.cron = cron.schedule('*/15 * * * *', () => {
+        this.cron = cron.schedule('* * * * *', () => {
             const time = new Date;
             this.dispatcher.dispatchAction('EveryHourAt', {
-                minute: time.getMinutes().toString().padStart(2, '0')
+                minute: '15'
+                // minute: time.getMinutes().toString().padStart(2, '0')
             });
         });
         return Promise.resolve();
@@ -52,8 +53,8 @@ export class EveryHourAtAction implements IAction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
-        return [{
+    public getForm(): Promise<Array<IForm>> {
+        return Promise.resolve([{
             selectionBox: {
                 name: 'minute',
                 title: 'Minutes past the hour',
@@ -64,7 +65,7 @@ export class EveryHourAtAction implements IAction {
                     '45'
                 ]
             }
-        }];
+        }]);
     }
 
     /**

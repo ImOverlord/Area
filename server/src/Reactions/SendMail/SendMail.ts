@@ -52,8 +52,8 @@ export class SendMailAction implements IReaction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
-        return [{
+    public getForm(): Promise<Array<IForm>> {
+        return Promise.resolve([{
             input: {
                 name: 'email',
                 title: 'Email',
@@ -72,7 +72,7 @@ export class SendMailAction implements IReaction {
                 title: 'Content',
                 regex: null
             }
-        }];
+        }]);
     }
 
     /**

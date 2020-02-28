@@ -3,6 +3,8 @@ import { Request, Response, Express } from 'express';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { inject } from '../../injector';
 import { InfoModule } from '../../Modules/Info/Info';
+import { Firebase } from '../../Modules/Firebase/Firebase';
+import { IError } from '../../Interface/IError';
 
 @booster()
 export class InfoRoute {
@@ -11,7 +13,8 @@ export class InfoRoute {
 
     constructor(
         express: ExpressModule,
-        private info: InfoModule
+        private info: InfoModule,
+        private firebase: Firebase
     ) {
         this.app = express.getApp();
         this.app.get('/actions/:name', this.getActions.bind(this));
@@ -36,26 +39,59 @@ export class InfoRoute {
 
     private getActions(req: Request, res: Response): void {
         const serviceName = req.params.name;
-        const actions = this.info.getActions(serviceName);
-        res.status(200).send({
-            code: "00",
-            text: `Actions for ${serviceName} Service`,
-            data: {
-                actions
-            }
+        const token = req.headers.authorization;
+        this.firebase.validateToken(token)
+        .then((user) => {
+            return this.info.getActions(serviceName, user.uid);
+        })
+        .then((actions) => {
+            res.status(200).send({
+                code: "00",
+                text: `Actions for ${serviceName} Service`,
+                data: {
+                    actions
+                }
+            });
+        })
+        .catch((error: IError) => {
+            res.status(error.httpResponse).send({
+                code: error.code,
+                text: error.why
+            });
         });
     }
 
     private getReactions(req: Request, res: Response): void {
         const serviceName = req.params.name;
-        const reactions = this.info.getReactions(serviceName);
-        res.status(200).send({
-            code: "00",
-            text: `Reactions for ${serviceName} Service`,
-            data: {
-                reactions
-            }
+        const token = req.headers.authorization;
+        this.firebase.validateToken(token)
+        .then((user) => {
+            return this.info.getReactions(serviceName, user.uid);
+        })
+        .then((actions) => {
+            res.status(200).send({
+                code: "00",
+                text: `Reactions for ${serviceName} Service`,
+                data: {
+                    actions
+                }
+            });
+        })
+        .catch((error: IError) => {
+            res.status(error.httpResponse).send({
+                code: error.code,
+                text: error.why
+            });
         });
+        // const serviceName = req.params.name;
+        // const reactions = this.info.getReactions(serviceName);
+        // res.status(200).send({
+        //     code: "00",
+        //     text: `Reactions for ${serviceName} Service`,
+        //     data: {
+        //         reactions
+        //     }
+        // });
     }
 
 }

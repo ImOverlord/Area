@@ -5,6 +5,7 @@ import { IReaction } from '../../Interface/IReaction';
 import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import request = require("superagent");
 import { INotification, INotificationData } from './INotification';
+import { isArray } from 'util';
 
 
 @booster({
@@ -50,8 +51,8 @@ export class NotificationReaction implements IReaction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
-        return [{
+    public getForm(): Promise<Array<IForm>> {
+        return Promise.resolve([{
             input: {
                 title: 'Title',
                 name: 'title',
@@ -63,7 +64,7 @@ export class NotificationReaction implements IReaction {
                 name: 'content',
                 regex: undefined
             }
-        }];
+        }]);
     }
 
     /**
@@ -78,34 +79,60 @@ export class NotificationReaction implements IReaction {
                 return Promise.resolve();
             const user = snapshots.docs[0].data().Notification as INotification;
             const requests = [];
-            user.expo.forEach((token) => {
-                requests.push(
-                    new Promise((resolve, reject) => {
-                        request.post(`https://exp.host/--/api/v2/push/send`)
-                        .set('host', 'exp.host')
-                        .set('accept', 'application/json')
-                        .set('accept-encoding', 'gzip, deflate')
-                        .set('content-type', 'application/json')
-                        .send({
-                            title: data.title,
-                            to: token,
-                            body: data.content,
-                            sound: "default",
-                            channelId: "pushChannel",
-                            priority: "high",
-                            _displayInForeground: true
-                        }).end((err, res) => {
-                            if (err) reject(err);
-                            else resolve(res);
-                        });
-                    })
-                );
-            });
+            // const message = (token): object => {
+            //     return {
+            //         data: {
+            //             score: '850',
+            //             time: '2:45'
+            //         },
+            //         token: token
+            //     };
+            // };
+            // user.firebase.forEach((token) => {
+            //     new Promise((resolve, reject) => {
+            //         request.post(`https://fcm.googleapis.com/fcm/send`)
+            //         .set('Authorisation', 'AAAAVaCCESs:APA91bGBWPV5ZYI9T0du8mKHcvUvQkHAAV2HQyg8kNRvMlaHNKYbcrDqhvIVWi9whqwyEyuJOX04m8AoIa62hwQTOgQDcPlb8W0F8hpdgxigG83LM_s8FHCvHQmxHg65QLxKrc8CLVpz')
+            //         .send(message(token)).end((err, res) => {
+            //             if (err) reject(err);
+            //             else resolve(res);
+            //         });
+            //     });
+            // });
+            if (user.expo && isArray(user.expo))
+                requests.push(...this.sendExpoNotification(user, data));
             return Promise.all(requests)
             .then(() => {
                 return Promise.resolve();
             });
         });
+    }
+
+    private sendExpoNotification(user, data): Promise<request.Response>[] {
+        const requests: Array<Promise<request.Response>> = [];
+        user.expo.forEach((token) => {
+            requests.push(
+                new Promise<request.Response>((resolve, reject) => {
+                    request.post(`https://exp.host/--/api/v2/push/send`)
+                    .set('host', 'exp.host')
+                    .set('accept', 'application/json')
+                    .set('accept-encoding', 'gzip, deflate')
+                    .set('content-type', 'application/json')
+                    .send({
+                        title: data.title,
+                        to: token,
+                        body: data.content,
+                        sound: "default",
+                        channelId: "pushChannel",
+                        priority: "high",
+                        _displayInForeground: true
+                    }).end((err, res) => {
+                        if (err) reject(err);
+                        else resolve(res);
+                    });
+                })
+            );
+        });
+        return requests;
     }
 
 }

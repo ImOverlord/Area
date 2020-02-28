@@ -66,6 +66,7 @@ export class Dispatcher {
             return action.subscribe(actionInfo.data, user.uid);
         })
         .catch((error) => {
+            console.log(error);
             return Promise.reject(this.error.createError("99", "subscribeArea", {}, error));
         });
     }

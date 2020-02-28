@@ -58,8 +58,8 @@ export class EveryDayAtAction implements IAction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
-        return [{
+    public getForm(): Promise<Array<IForm>> {
+        return Promise.resolve([{
             selectionBox: {
                 name: 'hour',
                 title: 'Time',
@@ -75,7 +75,7 @@ export class EveryDayAtAction implements IAction {
                     "00", "15", "30", "45"
                 ]
             }
-        }];
+        }]);
     }
 
     /**

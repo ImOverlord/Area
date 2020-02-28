@@ -57,21 +57,21 @@ export class InfoModule {
     /**
      * getActions
      */
-    public getActions(service: string): unknown {
-        return this.getApplet(service, 'action');
+    public getActions(service: string, idUser: string): Promise<unknown> {
+        return this.getApplet(service, idUser, 'action');
     }
 
     /**
      * getReactions
      */
-    public getReactions(service: string): unknown {
-        return this.getApplet(service, 'reaction');
+    public getReactions(service: string, idUser: string): Promise<unknown> {
+        return this.getApplet(service, idUser, 'reaction');
     }
 
-    private getApplet(service: string, type: 'action' | 'reaction'): unknown {
+    private async getApplet(service: string, idUser: string, type: 'action' | 'reaction'): Promise<unknown> {
         const containers = inject.getContainerByValue<IApplet, {type: string; name: string}>('serviceName', service);
         const applets = [];
-        
+
         for (const container of containers) {
             if (container.data.type !== type)
                 continue;
@@ -79,7 +79,7 @@ export class InfoModule {
                 slugName: container.data.name,
                 name: container.class.getName(),
                 description: container.class.getDescription(),
-                form: container.class.getForm()
+                form: await container.class.getForm(idUser)
             });
         }
         return applets;

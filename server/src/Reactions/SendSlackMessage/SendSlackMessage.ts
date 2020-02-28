@@ -31,12 +31,17 @@ export class SendSlackMessageReaction implements IReaction {
      * @description Init Action
      */
     public init(): Promise<void> {
+        this.server.get('/slack/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
+            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+        });
+        this.server.get('/github/oauth/authorize/proxy/firebase', (req: Request, res: Response) => {
+            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+        });
         this.server.get('/slack/oauth/authorize', this.convert.bind(this));
         return Promise.resolve();
     }
 
     private convert(req: Request, res: Response): void {
-        console.log(req.query);
         request.get('https://slack.com/api/oauth.v2.access').query({
             // eslint-disable-next-line @typescript-eslint/camelcase
             client_id: '645826239602.957881164305',
@@ -83,14 +88,14 @@ export class SendSlackMessageReaction implements IReaction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
-        return [{
+    public getForm(): Promise<Array<IForm>> {
+        return Promise.resolve([{
             input: {
                 name: 'content',
                 regex: null,
                 title: 'Message'
             }
-        }];
+        }]);
     }
 
     /**
@@ -103,10 +108,7 @@ export class SendSlackMessageReaction implements IReaction {
         .then((snapshots) => {
             if (snapshots.empty)
                 return Promise.resolve();
-            console.log(snapshots.docs[0].data());
-            const user = snapshots.docs[0].data().Slack as ISlackInfo;
-            if (!user)
-                return Promise.resolve();
+            const user = snapshots.docs[0].data() as ISlackInfo;
             return request.post(`https://slack.com/api/chat.postMessage`)
             .set('Authorization', `Bearer ${user.access_token}`)
             .send({
