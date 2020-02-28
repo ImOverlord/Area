@@ -15,15 +15,18 @@
         "@booster-ts/core": "^0.2.2",
         "@booster-ts/error-module": "0.1.0-alpha.0",
         "@booster-ts/express-module": "0.0.1",
+        "@octokit/rest": "^17.0.0",
         "express": "^4.17.1",
         "firebase-admin": "^8.9.2",
+        "http-proxy-middleware": "^1.0.0",
         "node-cron": "^2.0.3",
         "nodemailer": "^6.4.3",
-        "tsconfig-paths": "^3.9.0",
-        "superagent": "5.2.2"
+        "superagent": "5.2.2",
+        "tsconfig-paths": "^3.9.0"
     },
     "devDependencies": {
         "@types/express": "^4.17.2",
+        "@types/http-proxy-middleware": "^0.19.3",
         "@types/jest": "^25.1.2",
         "@types/node": "^13.7.4",
         "@types/node-cron": "^2.0.2",
