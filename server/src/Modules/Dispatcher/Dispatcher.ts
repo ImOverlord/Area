@@ -63,7 +63,7 @@ export class Dispatcher {
             return Promise.reject(this.error.createError("04", "subscribeArea", {why: "Action does not exist"}));
         return this.db.collection('/Area').add(info)
         .then(() => {
-            return action.subscribe(actionInfo.data);
+            return action.subscribe(actionInfo.data, user.uid);
         })
         .catch((error) => {
             return Promise.reject(this.error.createError("99", "subscribeArea", {}, error));
