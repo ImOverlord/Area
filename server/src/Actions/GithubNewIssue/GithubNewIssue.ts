@@ -152,7 +152,8 @@ export class GithubNewIssueAction implements IAction {
                 config: {
                     // eslint-disable-next-line @typescript-eslint/camelcase
                     content_type: 'json',
-                    url: 'https://webhook.site/be4fd2d6-1e4d-49f9-820f-bd9fe964cc34'
+                    url: 'https://webhook.site/be4fd2d6-1e4d-49f9-820f-bd9fe964cc34',
+                    secret: idUser
                 },
             });
         })
@@ -162,6 +163,10 @@ export class GithubNewIssueAction implements IAction {
         .catch(() => {
             return Promise.resolve();
         });
+    }
+
+    private listener(req: Request, res: Response): void {
+
     }
 
 }
