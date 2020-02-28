@@ -9,6 +9,7 @@ import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { Octokit } from '@octokit/rest';
 import { ErrorModule } from '@booster-ts/error-module';
 import { RepositoryInfo, IGithubNewIssueData } from './IGithubNewIssue';
+import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
 
 @booster({
     serviceName: "Github",
@@ -23,7 +24,8 @@ export class GithubNewIssueAction implements IAction {
     constructor(
         express: ExpressModule,
         firebase: Firebase,
-        private error: ErrorModule
+        private error: ErrorModule,
+        private dispatcher: Dispatcher
     ) {
         this.server = express.getApp();
         this.db = firebase.getApp().firestore();
@@ -33,6 +35,7 @@ export class GithubNewIssueAction implements IAction {
      * @description Init Action
      */
     public init(): Promise<void> {
+        this.server.post('/github/newissue', this.listener.bind(this));
         this.server.get('/github/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
             res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
         });
@@ -47,7 +50,7 @@ export class GithubNewIssueAction implements IAction {
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 client_secret: '6b32a9c27ea2fdbc86c731603dcb5391e89dacd6',
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: `https://2ee446c6.ngrok.io/github/oauth/authorize`,
+                redirect_uri: `https://area.cap.famille4.com//github/oauth/authorize`,
                 code: req.query.code
             })
             .end((error, result) => {
@@ -94,6 +97,11 @@ export class GithubNewIssueAction implements IAction {
             const kit = new Octokit({
                 auth: `token ${token}`
             });
+            // kit.repos.deleteHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187708612});
+            // kit.repos.deleteHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187762371});
+            // kit.repos.testPushHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187763532});
+            // kit.repos.listHooks({repo: 'Area', owner: 'ImOverlord'})
+            // .then(console.log);
             return kit.repos.list();
         })
         .then((result) => {
@@ -152,7 +160,7 @@ export class GithubNewIssueAction implements IAction {
                 config: {
                     // eslint-disable-next-line @typescript-eslint/camelcase
                     content_type: 'json',
-                    url: 'https://webhook.site/be4fd2d6-1e4d-49f9-820f-bd9fe964cc34',
+                    url: `http://f2892d5e.ngrok.io/github/newissue`,
                     secret: idUser
                 },
             });
@@ -166,7 +174,9 @@ export class GithubNewIssueAction implements IAction {
     }
 
     private listener(req: Request, res: Response): void {
-
+        const id = req.body.repository.full_name;
+        this.dispatcher.dispatchAction('GithubNewIssue', { repo: id }).catch(console.log);
+        res.sendStatus(200);
     }
 
 }
