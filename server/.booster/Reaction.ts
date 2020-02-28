@@ -38,7 +38,7 @@ export class <%= name %>Reaction implements IReaction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
+    public getForm(idUser: string): Array<IForm> {
         return [];
     }
 

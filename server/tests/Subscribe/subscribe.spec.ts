@@ -12,6 +12,7 @@ describe('Subscribe', () => {
         })
         .then((userToken) => {
             token = userToken;
+            console.log(token);
             done();
         });
     })

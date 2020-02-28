@@ -1,7 +1,20 @@
 import request = require("superagent");
-import { BASE_URL } from "../env";
+import { BASE_URL, firebase } from "../env";
 
 describe('Info route', () => {
+
+    let token = '';
+
+    beforeAll((done) => {
+        firebase.auth().signInWithEmailAndPassword('test1@mail.com', 'password')
+        .then((user) => {
+            return user.user.getIdToken();
+        })
+        .then((userToken) => {
+            token = userToken;
+            done();
+        });
+    })
 
     describe('About', () => {
 
@@ -24,6 +37,7 @@ describe('Info route', () => {
             const serviceName = 'random';
 
             request.get(`${BASE_URL}/actions/${serviceName}`)
+            .set('Authorization', token)
             .then((response) => {
                 expect(response.status).toBe(200);
                 done();
@@ -38,6 +52,7 @@ describe('Info route', () => {
             const serviceName = "random";
 
             request.get(`${BASE_URL}/reactions/${serviceName}`)
+            .set('Authorization', token)
             .then((response) => {
                 expect(response.status).toBe(200);
                 done();

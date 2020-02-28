@@ -38,7 +38,7 @@ export class <%= name %>Action implements IAction {
      * getForm
      * @description get Action form
      */
-    public getForm(): Array<IForm> {
+    public getForm(idUser: string): Array<IForm> {
         return [];
     }
 

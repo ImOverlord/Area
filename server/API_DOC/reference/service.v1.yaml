@@ -173,6 +173,13 @@ paths:
                                 regex: null
       operationId: get-actions-name
       description: Endpoint to get all the `Reactions` of a Service.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          required: true
+          description: Firebase User JWT
   '/actions/{name}':
     parameters:
       - schema:
@@ -243,8 +250,8 @@ paths:
                                   - '05'
                                   - '06'
                                   - '07'
-                                  - '08'
-                                  - '09'
+                                  - 8
+                                  - 9
                                   - '10'
                                   - '11'
                                   - '12'
@@ -328,8 +335,8 @@ paths:
                                   - '05'
                                   - '06'
                                   - '07'
-                                  - 08
-                                  - 09
+                                  - 8
+                                  - 9
                                   - '10'
                                   - '11'
                                   - '12'
@@ -370,5 +377,12 @@ paths:
             If the services doesn't exist, il will not return a error 404, it will just show no actions.
       operationId: get-reactions-name
       description: Endpoint to get all the `Actions` of a Service.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorisation
+          description: Firebase User JWT
+          required: true
 components:
   schemas: {}
