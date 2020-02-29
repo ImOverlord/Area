@@ -7,15 +7,15 @@ import { ExpressModule } from '../../Modules/Express/Express';
 import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { Octokit } from '@octokit/rest';
 import { ErrorModule } from '@booster-ts/error-module';
-import { RepositoryInfo, IGithubNewPush } from './IGithubNewPush';
+import { RepositoryInfo, IGithubNewFork } from './IGithubNewFork';
 import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
 
 @booster({
     serviceName: "Github",
-    name: "GithubNewPush",
+    name: "GithubNewFork",
     type: "action"
 })
-export class GithubNewPushAction implements IAction {
+export class GithubNewForkAction implements IAction {
 
     private server: Express;
     private db: firebase.firestore.Firestore;
@@ -34,7 +34,7 @@ export class GithubNewPushAction implements IAction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.server.post('/github/newpush', this.listener.bind(this));
+        this.server.post('/github/newfork', this.listener.bind(this));
         // this.server.get('/github/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
         //     res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
         // });
@@ -75,7 +75,7 @@ export class GithubNewPushAction implements IAction {
      * @description Get Action Name
      */
     public getName(): string {
-        return "Any new Push";
+        return "Any new Fork";
     }
 
     /**
@@ -83,7 +83,7 @@ export class GithubNewPushAction implements IAction {
      * @description Action Description
      */
     public getDescription(): string {
-        return "This Trigger fires every time a push done is done on a specific repo";
+        return "This Trigger fires every time a new fork is created on a specific repo";
     }
 
     /**
@@ -140,7 +140,7 @@ export class GithubNewPushAction implements IAction {
      * listener
      * @description Action Call Back
      */
-    public subscribe(data: IGithubNewPush, idUser: string): Promise<void> {
+    public subscribe(data: IGithubNewFork, idUser: string): Promise<void> {
         return this.getToken(idUser)
         .then((token) => {
             const kit = new Octokit({
@@ -152,7 +152,7 @@ export class GithubNewPushAction implements IAction {
                 owner: parsedRepo[0],
                 name: 'web',
                 active: true,
-                events: ['push'],
+                events: ['fork'],
                 config: {
                     // eslint-disable-next-line @typescript-eslint/camelcase
                     content_type: 'json',
@@ -171,10 +171,10 @@ export class GithubNewPushAction implements IAction {
 
     private listener(req: Request, res: Response): void {
         const id = req.body.repository.full_name;
-        this.dispatcher.dispatchAction('GithubNewPush', { repo: id }).catch(console.log);
+        this.dispatcher.dispatchAction('GithubNewFork', { repo: id }).catch(console.log);
         res.sendStatus(200);
     }
 
 }
 
-inject.register("GithubNewPushAction", GithubNewPushAction);
+inject.register("GithubNewForkAction", GithubNewForkAction);
