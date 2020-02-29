@@ -68,7 +68,6 @@ export class GithubNewPullRequestAction implements IAction {
             return kit.repos.list({per_page: 100, type: 'all'});
         })
         .then((result) => {
-            console.log(result.data.length);
             if (result.status !== 200)
                 return Promise.reject(this.error.createError('02', 'Github GetForm', {}, result));
             const repos = result.data as Array<RepositoryInfo>;

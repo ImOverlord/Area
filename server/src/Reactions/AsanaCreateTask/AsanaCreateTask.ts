@@ -8,6 +8,7 @@ import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { Express, Request, Response } from 'express';
 import { IAsanaCreate } from './IAsanaCreate';
+import { asanaConfig } from '../../config/asana';
 
 @booster({
     serviceName: "Asana",
@@ -37,14 +38,7 @@ export class AsanaCreateTaskReaction implements IReaction {
         this.server.get('/asana/oauth/authorize', (req: Request, res: Response) => {
             request.post('https://app.asana.com/-/oauth_token')
             .query({
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                grant_type: "authorization_code",
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_id: '1164254333734113',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_secret: 'b2925aecc203adebd8a5bd32a98c35c2',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: req.query.redirect_uri,
+                ...asanaConfig,
                 code: req.query.code
             })
             .end((error, result) => {

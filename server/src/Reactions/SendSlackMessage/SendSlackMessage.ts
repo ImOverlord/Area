@@ -7,6 +7,7 @@ import request = require("superagent");
 import { IReaction } from '../../Interface/IReaction';
 import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { ISendSlackMessage, ISlackInfo } from './ISendSlackMessage';
+import { slackConfig } from '../../config/slack';
 
 @booster({
     serviceName: "Slack",
@@ -43,10 +44,7 @@ export class SendSlackMessageReaction implements IReaction {
 
     private convert(req: Request, res: Response): void {
         request.get('https://slack.com/api/oauth.v2.access').query({
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            client_id: '645826239602.957881164305',
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            client_secret: 'ea08a655351fdb6c4b926d29667329b9',
+            ...slackConfig,
             // eslint-disable-next-line @typescript-eslint/camelcase
             redirect_uri: req.query.redirect_uri,
             code: req.query.code

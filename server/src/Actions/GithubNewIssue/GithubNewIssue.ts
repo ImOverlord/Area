@@ -10,6 +10,7 @@ import { Octokit } from '@octokit/rest';
 import { ErrorModule } from '@booster-ts/error-module';
 import { RepositoryInfo, IGithubNewIssueData } from './IGithubNewIssue';
 import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
+import { githubConfig } from '../../config/github';
 
 @booster({
     serviceName: "Github",
@@ -45,12 +46,7 @@ export class GithubNewIssueAction implements IAction {
         this.server.get('/github/oauth/authorize', (req: Request, res: Response) => {
             request.post('https://github.com/login/oauth/access_token')
             .query({
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_id: 'd98405ce896b0f910209',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_secret: '6b32a9c27ea2fdbc86c731603dcb5391e89dacd6',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: `https://area.cap.famille4.com/github/oauth/authorize`,
+                ...githubConfig,
                 code: req.query.code
             })
             .end((error, result) => {
