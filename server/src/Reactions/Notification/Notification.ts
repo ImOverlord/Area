@@ -79,25 +79,6 @@ export class NotificationReaction implements IReaction {
                 return Promise.resolve();
             const user = snapshots.docs[0].data().Notification as INotification;
             const requests = [];
-            // const message = (token): object => {
-            //     return {
-            //         data: {
-            //             score: '850',
-            //             time: '2:45'
-            //         },
-            //         token: token
-            //     };
-            // };
-            // user.firebase.forEach((token) => {
-            //     new Promise((resolve, reject) => {
-            //         request.post(`https://fcm.googleapis.com/fcm/send`)
-            //         .set('Authorisation', 'AAAAVaCCESs:APA91bGBWPV5ZYI9T0du8mKHcvUvQkHAAV2HQyg8kNRvMlaHNKYbcrDqhvIVWi9whqwyEyuJOX04m8AoIa62hwQTOgQDcPlb8W0F8hpdgxigG83LM_s8FHCvHQmxHg65QLxKrc8CLVpz')
-            //         .send(message(token)).end((err, res) => {
-            //             if (err) reject(err);
-            //             else resolve(res);
-            //         });
-            //     });
-            // });
             if (user.firebase && isArray(user.firebase))
                 requests.push(...this.sendFirebaseNotification(user));
             if (user.expo && isArray(user.expo))
