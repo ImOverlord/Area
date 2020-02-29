@@ -22,7 +22,8 @@ export class AsanaCreateTaskReaction implements IReaction {
         firebase: Firebase,
         express: ExpressModule
     ) {
-
+        this.server = express.getApp();
+        this.db = firebase.getApp().firestore();
     }
     /**
      * init
