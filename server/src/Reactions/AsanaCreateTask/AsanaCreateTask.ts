@@ -33,7 +33,7 @@ export class AsanaCreateTaskReaction implements IReaction {
         this.server.get('/asana/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
             res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
         });
-        this.server.get('/github/oauth/authorize', (req: Request, res: Response) => {
+        this.server.get('/asana/oauth/authorize', (req: Request, res: Response) => {
             request.post('https://github.com/login/oauth/access_token')
             .query({
                 // eslint-disable-next-line @typescript-eslint/camelcase
@@ -99,6 +99,19 @@ export class AsanaCreateTaskReaction implements IReaction {
      */
     public execute(data: unknown, idUser: string): Promise<void> {
         return Promise.resolve();
+    }
+
+    private getToken(idUser: string): Promise<string> {
+        return this.db.collection('/User').where('idUser', '==', idUser)
+        .get()
+        .then((snapshots) => {
+            if (snapshots.empty)
+                return Promise.reject();
+            const user = snapshots.docs[0].data().Asana;
+            if (!user)
+                return Promise.reject();
+            return user.access_token;
+        });
     }
 
 }
