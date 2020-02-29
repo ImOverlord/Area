@@ -99,8 +99,8 @@ export class GithubNewIssueAction implements IAction {
             });
             // kit.repos.deleteHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187708612});
             // kit.repos.deleteHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187762371});
-            // kit.repos.testPushHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187763532});
-            // kit.repos.listHooks({repo: 'Area', owner: 'ImOverlord'})
+            // kit.repos.testPushHook({repo: 'EpiTracker', owner: 'HugoCourthias', hook_id: 187780049}).catch(console.log);
+            // kit.repos.listHooks({repo: 'EpiTracker', owner: 'HugoCourthias'})
             // .then(console.log);
             // eslint-disable-next-line @typescript-eslint/camelcase
             return kit.repos.list({per_page: 100});
@@ -157,11 +157,11 @@ export class GithubNewIssueAction implements IAction {
                 owner: parsedRepo[0],
                 name: 'web',
                 active: true,
-                events: ['push'],
+                events: ['issues'],
                 config: {
                     // eslint-disable-next-line @typescript-eslint/camelcase
                     content_type: 'json',
-                    url: `http://f2892d5e.ngrok.io/github/newissue`,
+                    url: `https://area.cap.famille4.com/github/newissue`,
                     secret: idUser
                 },
             });

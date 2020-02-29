@@ -83,15 +83,6 @@ export class InfoRoute {
                 text: error.why
             });
         });
-        // const serviceName = req.params.name;
-        // const reactions = this.info.getReactions(serviceName);
-        // res.status(200).send({
-        //     code: "00",
-        //     text: `Reactions for ${serviceName} Service`,
-        //     data: {
-        //         reactions
-        //     }
-        // });
     }
 
 }
