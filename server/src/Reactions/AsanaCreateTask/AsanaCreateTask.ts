@@ -8,7 +8,6 @@ import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { Express, Request, Response } from 'express';
 import { IAsanaCreate } from './IAsanaCreate';
-import { callbackPromise } from 'nodemailer/lib/shared';
 
 @booster({
     serviceName: "Asana",
@@ -127,7 +126,7 @@ export class AsanaCreateTaskReaction implements IReaction {
                 break;
             }
         request.post(`https://app.asana.com/api/1.0/tasks`)
-        .set('Authorization', `Bearer 0/d9acb933b0cdf110ef01b78e63d30c04`)
+        .set('Authorization', `Bearer ${token}`)
         .send({
             data: {
                 assignee: user.gid,
