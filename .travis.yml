@@ -27,5 +27,6 @@ jobs:
       script:
         - npm i -g caprover
         - cd server/
-        - tar -czf deploy.tar --exclude deploy.tar .
+        - touch deploy.tar
+        - tar --exclude deploy.tar -czf deploy.tar .
         - caprover deploy -h $HOST -p $HOST_PASSWORD -a area -t ./deploy.tar
