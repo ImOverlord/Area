@@ -1,6 +1,7 @@
 import { IForm } from "./IForm";
 
 export interface IApplet {
+    init(): Promise<void>;
     getName(): string;
     getDescription(): string;
     getForm(idUser: string): Promise<Array<IForm>>;

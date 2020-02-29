@@ -40,7 +40,7 @@ export class GithubNewIssueAction implements IAction {
             res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
         });
         this.server.get('/github/oauth/authorize/proxy/firebase', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://area-3e80d.firebaseapp.com/__/auth/handler?code=${req.query.code}`);
         });
         this.server.get('/github/oauth/authorize', (req: Request, res: Response) => {
             request.post('https://github.com/login/oauth/access_token')
