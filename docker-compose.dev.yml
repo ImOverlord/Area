@@ -25,7 +25,6 @@ services:
       - ./server/src:/app/src
     environment:
       - BASE_URL=area.famille4.com
-
   mobile:
     build:
       context: mobile/
