@@ -97,15 +97,11 @@ export class GithubNewIssueAction implements IAction {
             const kit = new Octokit({
                 auth: `token ${token}`
             });
-            // kit.repos.deleteHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187708612});
-            // kit.repos.deleteHook({repo: 'Area', owner: 'ImOverlord', hook_id: 187762371});
-            // kit.repos.testPushHook({repo: 'EpiTracker', owner: 'HugoCourthias', hook_id: 187780049}).catch(console.log);
-            // kit.repos.listHooks({repo: 'EpiTracker', owner: 'HugoCourthias'})
-            // .then(console.log);
             // eslint-disable-next-line @typescript-eslint/camelcase
-            return kit.repos.list({per_page: 100});
+            return kit.repos.list({per_page: 100, type: 'all'});
         })
         .then((result) => {
+            console.log(result.data.length);
             if (result.status !== 200)
                 return Promise.reject(this.error.createError('02', 'Github GetForm', {}, result));
             const repos = result.data as Array<RepositoryInfo>;
@@ -124,6 +120,7 @@ export class GithubNewIssueAction implements IAction {
             }] as Array<IForm>;
         })
         .catch((error) => {
+            console.log(error);
             return Promise.reject(this.error.createError('02', 'Github GetForm', {}, error));
         });
     }
