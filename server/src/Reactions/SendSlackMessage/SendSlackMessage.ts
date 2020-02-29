@@ -48,7 +48,7 @@ export class SendSlackMessageReaction implements IReaction {
             // eslint-disable-next-line @typescript-eslint/camelcase
             client_secret: 'ea08a655351fdb6c4b926d29667329b9',
             // eslint-disable-next-line @typescript-eslint/camelcase
-            redirect_uri: req.query.redirect_uri,
+            redirect_uri: `https://area.cap.famille4.com/slack/oauth/authorize`,
             code: req.query.code
         })
         .end((error, result) => {
