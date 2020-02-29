@@ -7,11 +7,11 @@ export async function getIdToken() {
   return Firebase.auth().currentUser.getIdToken();
 }
 
-function generateUserRequest(method = "GET") {
+async function generateUserRequest(method = "GET") {
   return {
     method,
     headers: {
-      Authorization: getIdToken()
+      Authorization: await getIdToken()
     }
   };
 }
@@ -51,9 +51,15 @@ export const getUserAREA = email => {
 export async function getServiceActions(serviceName, type) {
   console.log(`${API_URL}/${type}s/${serviceName}`);
   try {
-    const response = await fetch(`${API_URL}/${type}s/${serviceName}`);
+    const generated = await generateUserRequest();
+    console.log(generated);
+    const response = await fetch(
+      `${API_URL}/${type}s/${serviceName}`,
+      generated
+    );
+    // console.log(await response.json());
     return await response.json();
   } catch (error) {
-    return error;
+    console.log(error);
   }
 }

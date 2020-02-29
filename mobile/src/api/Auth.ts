@@ -76,35 +76,50 @@ export const checkEmailOnFirebase = (email: string): Promise<boolean> => {
 };
 
 export async function loginOauth(oauthUrl, name: string) {
-  let redirectUrl = AuthSession.getRedirectUrl();
-
-  let result = await AuthSession.startAsync({
-    authUrl: oauthUrl + `&redirect_uri=${encodeURIComponent(redirectUrl)}`
-  });
-
-  const response = await fetch(
-    `${API_URL}/${name.toLowerCase()}/oauth/authorize?code=${
-      result.params.code
-    }&redirect_uri=${redirectUrl}`
-  );
-
-  const tmp = await response.json();
-  db.collection("User")
+  return db
+    .collection("User")
     .where("idUser", "==", Firebase.auth().currentUser?.uid)
     .get()
-    .then(snapshot => {
-      if (snapshot.empty) {
-        return db
-          .collection("User")
-          .doc()
-          .set({ idUser: Firebase.auth().currentUser?.uid, [name]: tmp.data });
+    .then(async snapshot => {
+      if (snapshot.docs[0].get(name) != null) {
+        console.log("alreadyLoggedIn");
       } else {
-        return db
-          .collection("User")
-          .doc(snapshot.docs[0].id)
-          .update({
-            idUser: Firebase.auth().currentUser?.uid,
-            [name]: tmp.data
+        let redirectUrl = AuthSession.getRedirectUrl();
+
+        let result = await AuthSession.startAsync({
+          authUrl:
+            oauthUrl +
+            `&redirect_uri=${API_URL}/${name.toLowerCase()}/oauth/authorize/proxy/expo`
+        });
+
+        const response = await fetch(
+          `${API_URL}/${name.toLowerCase()}/oauth/authorize?code=${
+            result.params.code
+          }&redirect_uri=${API_URL}/${name.toLowerCase()}/oauth/authorize/proxy/expo`
+        );
+
+        const tmp = await response.json();
+        db.collection("User")
+          .where("idUser", "==", Firebase.auth().currentUser?.uid)
+          .get()
+          .then(snapshot => {
+            if (snapshot.empty) {
+              return db
+                .collection("User")
+                .doc()
+                .set({
+                  idUser: Firebase.auth().currentUser?.uid,
+                  [name]: tmp.data
+                });
+            } else {
+              return db
+                .collection("User")
+                .doc(snapshot.docs[0].id)
+                .update({
+                  idUser: Firebase.auth().currentUser?.uid,
+                  [name]: tmp.data
+                });
+            }
           });
       }
     });
