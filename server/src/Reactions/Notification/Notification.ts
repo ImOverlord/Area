@@ -80,7 +80,7 @@ export class NotificationReaction implements IReaction {
             const user = snapshots.docs[0].data().Notification as INotification;
             const requests = [];
             if (user.firebase && isArray(user.firebase))
-                requests.push(...this.sendFirebaseNotification(user));
+                requests.push(...this.sendFirebaseNotification(user, data));
             if (user.expo && isArray(user.expo))
                 requests.push(...this.sendExpoNotification(user, data));
             return Promise.all(requests)
@@ -90,33 +90,22 @@ export class NotificationReaction implements IReaction {
         });
     }
 
-    private sendFirebaseNotification(user: INotification): Promise<request.Response>[] {
-        const requests: Array<Promise<request.Response>> = [];
-        const message = (token): object => {
-            return {
-                data: {
-                    score: '850',
-                    time: '2:45'
-                },
-                token
-            };
-        };
+    private sendFirebaseNotification(user: INotification, data: INotificationData): Promise<unknown>[] {
+        const requests: Array<Promise<unknown>> = [];
         user.firebase.forEach((token) => {
             requests.push(
-                new Promise<request.Response>((resolve, reject) => {
-                    request.post(`https://fcm.googleapis.com/fcm/send`)
-                    .set('Authorisation', 'AAAAVaCCESs:APA91bGBWPV5ZYI9T0du8mKHcvUvQkHAAV2HQyg8kNRvMlaHNKYbcrDqhvIVWi9whqwyEyuJOX04m8AoIa62hwQTOgQDcPlb8W0F8hpdgxigG83LM_s8FHCvHQmxHg65QLxKrc8CLVpz')
-                    .send(message(token)).end((err, res) => {
-                        if (err) reject(err);
-                        else resolve(res);
-                    });
+                firebase.messaging().sendToDevice(token, {
+                    notification: {
+                        title: data.title,
+                        body: data.content
+                    }
                 })
             );
         });
         return requests;
     }
 
-    private sendExpoNotification(user, data): Promise<request.Response>[] {
+    private sendExpoNotification(user, data): Promise<unknown>[] {
         const requests: Array<Promise<request.Response>> = [];
         user.expo.forEach((token) => {
             requests.push(
