@@ -68,12 +68,12 @@ export class InfoRoute {
         .then((user) => {
             return this.info.getReactions(serviceName, user.uid);
         })
-        .then((actions) => {
+        .then((reactions) => {
             res.status(200).send({
                 code: "00",
                 text: `Reactions for ${serviceName} Service`,
                 data: {
-                    actions
+                    reactions
                 }
             });
         })
