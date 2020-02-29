@@ -37,6 +37,7 @@ export class Dispatcher {
                 return Promise.resolve();
             snapshots.forEach((snapshot) => {
                 const area = snapshot.data() as IArea;
+                console.log(area);
                 const reaction = inject.getByValue<IReaction>('name', area.reaction.name)[0];
                 if (reaction && reaction.execute)
                     reaction.execute(area.reaction.data, area.idUser);

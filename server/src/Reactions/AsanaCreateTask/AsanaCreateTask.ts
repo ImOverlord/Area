@@ -7,6 +7,8 @@ import request = require('superagent');
 import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { Express, Request, Response } from 'express';
+import { IAsanaCreate } from './IAsanaCreate';
+import { callbackPromise } from 'nodemailer/lib/shared';
 
 @booster({
     serviceName: "Asana",
@@ -34,14 +36,16 @@ export class AsanaCreateTaskReaction implements IReaction {
             res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
         });
         this.server.get('/asana/oauth/authorize', (req: Request, res: Response) => {
-            request.post('https://github.com/login/oauth/access_token')
+            request.post('https://app.asana.com/-/oauth_token')
             .query({
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                grant_type: "authorization_code",
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 client_id: '1164254333734113',
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 client_secret: 'b2925aecc203adebd8a5bd32a98c35c2',
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: `https://area.cap.famille4.com/asana/oauth/authorize`,
+                redirect_uri: req.query.redirect_uri,
                 code: req.query.code
             })
             .end((error, result) => {
@@ -67,7 +71,7 @@ export class AsanaCreateTaskReaction implements IReaction {
      * @description Get Action Name
      */
     public getName(): string {
-        return "AsanaCreateTask";
+        return "Asana Create A New Task";
     }
 
     /**
@@ -75,30 +79,66 @@ export class AsanaCreateTaskReaction implements IReaction {
      * @description Action Description
      */
     public getDescription(): string {
-        return "AsanaCreateTask Action";
+        return "Create a new Asana Task";
     }
 
     /**
      * getForm
      * @description get Action form
      */
-    public async getForm(): Promise<Array<IForm>> {
-        const client = Client.create().useAccessToken('0/d9acb933b0cdf110ef01b78e63d30c04');
+    public async getForm(idUser: string): Promise<Array<IForm>> {
+        const token = await this.getToken(idUser);
+        const client = Client.create().useAccessToken(token);
         const user = (await client.users.me());
 
-        return [{selectionBox: {
+        return [{
+            selectionBox: {
             title: 'Workspace',
             name: 'workspace',
             values: user.workspaces.map((value) => value.name)
-        }}];
+        }}, {
+            input: {
+                title: 'Task Title',
+                name: 'title',
+                regex: undefined
+            }
+        }, {
+            input: {
+                title: 'Task Content',
+                name: 'content',
+                regex: undefined
+            }
+        }];
     }
 
     /**
      * listener
      * @description Action Call Back
      */
-    public execute(data: unknown, idUser: string): Promise<void> {
-        return Promise.resolve();
+    public async execute(data: IAsanaCreate, idUser: string): Promise<void> {
+        const token = await this.getToken(idUser);
+        const client = Client.create().useAccessToken(token);
+        const user = await client.users.me();
+        const workspaces = await client.workspaces.findAll();
+        let idWorkspace;
+        for (const workspace of workspaces.data)
+            if (workspace.name === data.workspace) {
+                idWorkspace = workspace.gid;
+                break;
+            }
+        request.post(`https://app.asana.com/api/1.0/tasks`)
+        .set('Authorization', `Bearer 0/d9acb933b0cdf110ef01b78e63d30c04`)
+        .send({
+            data: {
+                assignee: user.gid,
+                name: data.title,
+                notes: data.content,
+                workspace: idWorkspace,
+            }
+        })
+        .end((error) => {
+            console.log(error);
+        });
     }
 
     private getToken(idUser: string): Promise<string> {
