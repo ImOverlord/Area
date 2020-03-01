@@ -10,6 +10,7 @@ import ServiceSelector from "../screens/ServiceSelector";
 import ActionSelector from "../screens/ActionSelector";
 import AppLoading from "../screens/AppLoading";
 import Form from "../screens/Form";
+import SubscribeDetails from "../screens/SubscribeDetails";
 
 const AuthStack = createStackNavigator(
   {
@@ -29,7 +30,8 @@ const AppStack = createStackNavigator(
     New,
     ServiceSelector,
     ActionSelector,
-    Form
+    Form,
+    SubscribeDetails
   },
   {
     headerMode: "none"

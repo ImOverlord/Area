@@ -15,7 +15,10 @@ export default function App() {
   useEffect(() => {
     async function fontLoading() {
       await Font.loadAsync({
-        "Avenir Next": require("./assets/font/AvenirNext-Regular.ttf")
+        AvenirNext: require("./assets/font/AvenirNext-Regular.ttf"),
+        "AvenirNext-Bold": require("./assets/font/AvenirNext-Bold.ttf"),
+        "AvenirNext-Demi": require("./assets/font/AvenirNext-Demi.ttf"),
+        "AvenirNext-Heavy": require("./assets/font/AvenirNext-Heavy.ttf")
       });
     }
     fontLoading().then(() => setLoading(false));
@@ -24,7 +27,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
         {loading ? <AppLoading /> : <AppNavigation />}
       </SafeAreaProvider>
     </Provider>

@@ -1,48 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Alert,
+  Platform,
+  ActivityIndicator
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import axios from "axios";
 import { inject, observer } from "mobx-react";
 import { useNavigation } from "react-navigation-hooks";
 import Header from "../../components/Header";
 import CloseButton from "../../components/CloseButton";
 import styles from "./styles";
 import CreationButton from "../../components/CreationButton";
-import { action } from "mobx";
-import {
-  getIdToken,
-  API_URL,
-  getServiceActions,
-  getUserAREA
-} from "../../api/Services";
-import axios from "axios";
+import { getIdToken, getUserAREA } from "../../api/Services";
 import Firebase from "../../providers/firebase";
+import { toJS } from "mobx";
 
 function New(props) {
   const { navigate } = useNavigation();
+  const [loading, setLoading] = useState(false);
+
   const {
-    actionStatic,
-    reactionStatic,
     action,
     reaction,
-    setSubscribe
+    setSubscribe,
+    apiUrl,
+    setAction,
+    setReaction
   } = props.store;
 
   const createAREA = async () => {
-    const actionName = actionStatic.slugName;
-    const reactionName = reactionStatic.slugName;
-    const actionData = actionStatic.form;
-    const reactionData = reactionStatic.form;
+    const actionName = toJS(action).slugName;
+    const reactionName = toJS(reaction).slugName;
+    const actionData = toJS(action).form;
+    const reactionData = toJS(reaction).form;
     const idToken: string = await getIdToken();
-    console.log(idToken);
+
+    setLoading(true);
+
     axios
       .put(
-        `${API_URL}/subscribe`,
+        `${apiUrl}/subscribe`,
         {
           actionName,
           actionData,
@@ -60,18 +62,27 @@ function New(props) {
         if (res.status === 200) {
           getUserAREA(Firebase.auth().currentUser.email).then(res => {
             setSubscribe(res);
+            setAction(null);
+            setReaction(null);
+            setLoading(false);
             navigate("Home");
           });
         }
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        setLoading(false);
+        Alert.alert(
+          "Error message",
+          "Something went wrong during the creation of the AREA"
+        );
+      });
   };
 
   return (
     <>
       <SafeAreaView style={styles.topSafeAreaView} />
       <SafeAreaView style={styles.bottomSafeAreaView}>
-        <StatusBar barStyle="light-content" />
+        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
         <Header title="Create your own" subTitle="" color="black" />
         <View style={styles.container}>
           <View>
@@ -85,7 +96,11 @@ function New(props) {
         {reaction && action && (
           <TouchableOpacity onPress={() => createAREA()}>
             <View style={styles.button}>
-              <Text style={styles.buttonText}>Create AREA</Text>
+              {loading ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : (
+                <Text style={styles.buttonText}>Create AREA</Text>
+              )}
             </View>
           </TouchableOpacity>
         )}

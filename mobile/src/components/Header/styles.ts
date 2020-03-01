@@ -10,15 +10,13 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     color: "white",
-    fontFamily: "Avenir Next",
-    fontSize: 26,
-    fontWeight: "700"
+    fontFamily: "AvenirNext-Bold",
+    fontSize: 26
   },
   headerSubTitle: {
     color: "white",
-    fontFamily: "Avenir Next",
-    fontSize: 16,
-    fontWeight: "500"
+    fontFamily: "AvenirNext-Demi",
+    fontSize: 16
   }
 });
 

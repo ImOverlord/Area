@@ -9,7 +9,8 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Platform
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
 import Header from "../../components/Header";
@@ -40,10 +41,12 @@ function Form(props) {
       for (let i = 0; i < item.selectionBox.values.length; i += 1) {
         values.push({ value: item.selectionBox.values[i] });
       }
+      formResult[item.selectionBox.name] = values[0].value;
       return (
         <Dropdown
           label={item.selectionBox.name}
           data={values}
+          value={values[0].value}
           onChangeText={text => onChangeText(item.selectionBox.name, text)}
         />
       );
@@ -53,6 +56,7 @@ function Form(props) {
       console.log("checkbox");
     }
     if (item.input) {
+      formResult[item.input.name] = "";
       return (
         <View style={{ marginVertical: 16 }}>
           <Text>{item.input.title}</Text>
@@ -86,7 +90,7 @@ function Form(props) {
     <>
       <SafeAreaView style={styles.topSafeAreaView} />
       <SafeAreaView style={styles.bottomSafeAreaView}>
-        <StatusBar barStyle="light-content" />
+        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
         <Header
           title="Create your own"
           subTitle="Configure action"

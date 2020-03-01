@@ -2,6 +2,8 @@ import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { observer, inject } from "mobx-react";
 import { db } from "../../providers/firebase";
+import { toJS } from "mobx";
+import { useNavigation } from "react-navigation-hooks";
 
 export type SubscribeCard = {
   action: string;
@@ -13,21 +15,11 @@ export type SubscribeCard = {
 function SubscribeCard(params) {
   const { subscribe, setSubscribe, deleteSubscribe } = params.store;
 
-  const removeSub = (id, index) => {
-    db.collection("Area")
-      .doc(id)
-      .delete()
-      .then(function() {
-        deleteSubscribe(index);
-        console.log(subscribe);
-      })
-      .catch(function(error) {
-        console.error("Error removing document: ", error);
-      });
-  };
+  const { navigate } = useNavigation();
+
   return (
     <TouchableOpacity
-      onPress={() => removeSub(params.id, params.index)}
+      onPress={() => navigate("SubscribeDetails", { ServiceInfo: params })}
       style={{
         backgroundColor: "black",
         marginHorizontal: 16,
@@ -39,8 +31,7 @@ function SubscribeCard(params) {
       <Text
         style={{
           color: "white",
-          fontFamily: "Avenir Next",
-          fontWeight: "700",
+          fontFamily: "AvenirNext-Bold",
           fontSize: 28
         }}
       >
@@ -49,10 +40,9 @@ function SubscribeCard(params) {
       <Text
         style={{
           color: "white",
-          fontFamily: "Avenir Next",
+          fontFamily: "AvenirNext-Demi",
           fontSize: 16,
-          marginTop: 16,
-          fontWeight: "600"
+          marginTop: 16
         }}
       >
         {`by ${params.email}`}

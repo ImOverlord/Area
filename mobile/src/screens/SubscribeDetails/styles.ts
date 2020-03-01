@@ -1,20 +1,23 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  topSafeAreaView: { flex: 0, backgroundColor: "black" },
-  bottomSafeAreaView: { flex: 1, backgroundColor: "white" },
+  topSafeAreaView: { flex: 0, backgroundColor: "red" },
+  bottomSafeAreaView: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "space-between",
+    paddingBottom: 24
+  },
   description: {
-    color: "black",
+    color: "white",
     fontFamily: "AvenirNext-Demi",
     fontSize: 16,
-    marginHorizontal: 24,
-    marginVertical: 24,
-    textAlign: "center"
+    marginVertical: 24
   },
   button: {
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#000000",
+    backgroundColor: "#ff6961",
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 32,

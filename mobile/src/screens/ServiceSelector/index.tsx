@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, SafeAreaView, StatusBar } from "react-native";
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StatusBar,
+  Platform
+} from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import ServiceCard from "../../components/ServiceCard";
 import CloseButton from "../../components/CloseButton";
@@ -35,7 +40,7 @@ export default () => {
     <>
       <SafeAreaView style={styles.topSafeAreaView} />
       <SafeAreaView style={styles.bottomSafeAreaView}>
-        <StatusBar barStyle="light-content" />
+        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
         <Header title="Create your own" subTitle="Select trigger service" />
         <CloseButton />
         {services.length > 0 ? (

@@ -3,44 +3,47 @@ import { action, decorate, observable } from "mobx";
 import { API_URL, getIdToken } from "../api/Services";
 
 class Store {
-  actionStatic = null;
-
-  reactionStatic = null;
-
   action = null;
 
   reaction = null;
 
   subscribe = [];
 
+  apiUrl = "https://area.cap.famille4.com";
+
   setAction = data => {
     this.action = data;
-    this.actionStatic = data;
   };
 
   setReaction = data => {
     this.reaction = data;
-    this.reactionStatic = data;
+  };
+
+  setApiUrl = data => {
+    this.apiUrl = data;
   };
 
   setSubscribe = data => {
     this.subscribe = data;
   };
 
-  deleteSubscribe = index => {
-    this.subscribe.splice(index);
+  deleteSubscribe = id => {
+    const itemToRemove = this.subscribe.find(i => i.id === id);
+    this.subscribe.remove(itemToRemove);
   };
 }
 
 // another way to decorate variables with observable
 decorate(Store, {
+  apiUrl: observable,
   action: observable,
   reaction: observable,
   subscribe: observable,
   setAction: action,
   setReaction: action,
   setSubscribe: action,
-  deleteSubscribe: action
+  deleteSubscribe: action,
+  setApiUrl: action
 });
 
 // export class

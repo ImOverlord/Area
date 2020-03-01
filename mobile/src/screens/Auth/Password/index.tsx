@@ -7,7 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
+  Alert
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
 import BackArrow from "../../../../assets/left-arrow.svg";
@@ -32,6 +33,8 @@ export default () => {
           navigate("Home");
         })
         .catch(error => {
+          Alert.alert("Login error", error.message);
+          setLoading(false);
           Log(error);
         });
     } else {
@@ -43,6 +46,8 @@ export default () => {
           navigate("Home");
         })
         .catch(error => {
+          Alert.alert("Login error", error.message);
+          setLoading(false);
           Log(error);
         });
     }

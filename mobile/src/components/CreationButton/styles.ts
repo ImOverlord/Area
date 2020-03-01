@@ -10,9 +10,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   body: {
-    fontFamily: "Avenir Next",
-    fontSize: 56,
-    fontWeight: "700"
+    fontFamily: "AvenirNext-Bold",
+    fontSize: 56
   },
   thisButtonWrapper: {
     flexDirection: "row",

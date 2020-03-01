@@ -4,8 +4,9 @@ import { useNavigation } from "react-navigation-hooks";
 import styles from "./styles";
 import { ServiceProps } from "../../type/ServiceType";
 import { loginOauth, handleNotification } from "../../api/Auth";
+import { inject, observer } from "mobx-react";
 
-export default (props: ServiceProps) => {
+function ServiceCard(props: ServiceProps) {
   const { image, color, name } = props;
   const { navigate } = useNavigation();
   return (
@@ -17,7 +18,7 @@ export default (props: ServiceProps) => {
             .then(() => navigate("ActionSelector", { serviceInfo: props }))
             .catch(err => console.log(err));
         } else if (props.authentification) {
-          loginOauth(props.authentification, name)
+          loginOauth(props.authentification, name, props.store.apiUrl)
             .then(() => navigate("ActionSelector", { serviceInfo: props }))
             .catch(err => console.log(err));
         } else {
@@ -27,7 +28,8 @@ export default (props: ServiceProps) => {
     >
       <View>
         <Image
-          style={{ width: 40, height: 40 }}
+          resizeMode="contain"
+          style={{ width: 100, height: 40 }}
           source={{
             uri: image
           }}
@@ -36,4 +38,6 @@ export default (props: ServiceProps) => {
       </View>
     </TouchableOpacity>
   );
-};
+}
+
+export default inject("store")(observer(ServiceCard));

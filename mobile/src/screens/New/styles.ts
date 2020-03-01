@@ -10,9 +10,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   body: {
-    fontFamily: "Avenir Next",
-    fontSize: 56,
-    fontWeight: "700"
+    fontFamily: "AvenirNext-Bold",
+    fontSize: 56
   },
   thisButtonWrapper: {
     flexDirection: "row",
@@ -29,9 +28,8 @@ const styles = StyleSheet.create({
     marginVertical: 32
   },
   buttonText: {
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Bold",
     fontSize: 22,
-    fontWeight: "900",
     fontStyle: "normal",
     color: "#ffffff"
   }

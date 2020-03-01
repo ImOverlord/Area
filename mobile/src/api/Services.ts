@@ -1,8 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import Firebase, { db } from "../providers/firebase";
 
-export const API_URL = "https://area.cap.famille4.com";
-
 export async function getIdToken() {
   return Firebase.auth().currentUser.getIdToken();
 }
@@ -48,7 +46,7 @@ export const getUserAREA = email => {
   });
 };
 
-export async function getServiceActions(serviceName, type) {
+export async function getServiceActions(serviceName, type, API_URL) {
   console.log(`${API_URL}/${type}s/${serviceName}`);
   try {
     const generated = await generateUserRequest();
@@ -60,6 +58,6 @@ export async function getServiceActions(serviceName, type) {
     // console.log(await response.json());
     return await response.json();
   } catch (error) {
-    console.log(error);
+    return error;
   }
 }

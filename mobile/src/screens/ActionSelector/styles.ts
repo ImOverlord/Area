@@ -5,9 +5,8 @@ const styles = StyleSheet.create({
   bottomSafeAreaView: { flex: 1, backgroundColor: "white" },
   description: {
     color: "white",
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Demi",
     fontSize: 16,
-    fontWeight: "500",
     marginVertical: 24
   }
 });

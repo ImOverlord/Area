@@ -2,24 +2,21 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Heavy",
     fontSize: 42,
-    fontWeight: "900",
     marginLeft: 32
   },
   subtitle: {
     marginHorizontal: 32,
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Bold",
     fontSize: 22,
-    fontWeight: "700",
     lineHeight: 40,
     marginTop: 12
   },
   subtitle2: {
     width: "100%",
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Bold",
     fontSize: 22,
-    fontWeight: "700",
     fontStyle: "normal",
     textAlign: "center"
   },
@@ -34,9 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000"
   },
   buttonText: {
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Bold",
     fontSize: 22,
-    fontWeight: "700",
     fontStyle: "normal",
     color: "#ffffff"
   }

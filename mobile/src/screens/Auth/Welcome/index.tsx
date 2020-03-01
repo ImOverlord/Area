@@ -5,7 +5,8 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Platform
 } from "react-native";
 import { AuthSession } from "expo";
 import { useNavigation } from "react-navigation-hooks";
@@ -21,13 +22,6 @@ export default () => {
     Alert.alert("Facebook", "Facebook login is not available for the moment.", [
       { text: "OK" }
     ]);
-    // const consumerKey = "ZlkVLe9NKOIObQYGg0Kx7iIrg";
-    // const consumerSecret = "QOukrv2pLC9OEZnumII79FTHom7Vjm4FRWcaUUZJngeLO5iiJq";
-    // const callbackUrl = AuthSession.getRedirectUrl();
-    // console.log(callbackUrl);
-    // auth({ consumerKey, consumerSecret }, callbackUrl)
-    //   .then(result => console.log(result))
-    //   .catch(error => console.log(error));
   };
 
   const handleGoogle = () => {
@@ -37,7 +31,7 @@ export default () => {
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar barStyle="dark-content" />
+      {Platform.OS === "ios" && <StatusBar barStyle="dark-content" />}
       <View
         style={{
           paddingTop: 32,

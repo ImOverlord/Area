@@ -6,7 +6,9 @@ import {
   StatusBar,
   Text,
   View,
-  FlatList
+  FlatList,
+  ActivityIndicator,
+  Platform
 } from "react-native";
 import { useNavigation } from "react-navigation-hooks";
 import Header from "../../components/Header";
@@ -14,8 +16,11 @@ import styles from "./styles";
 import ActionButton from "../../components/ActionButton";
 import CloseButton from "../../components/CloseButton";
 import { getServiceActions } from "../../api/Services";
+import { inject, observer } from "mobx-react";
+import Placeholder from "../../components/Placeholder";
 
-export default () => {
+function ActionSelector(props) {
+  const [isLoading, setIsLoading] = useState(true);
   const { image, color, description, name, type } = useNavigation().getParam(
     "serviceInfo"
   );
@@ -24,10 +29,12 @@ export default () => {
   const { navigate } = useNavigation();
 
   useEffect(() => {
-    console.log(type);
-    getServiceActions(name, type).then(res =>
-      setActions(type === "action" ? res.data.actions : res.data.reactions)
-    );
+    getServiceActions(name, type, props.store.apiUrl)
+      .then(res => {
+        setActions(type === "action" ? res.data.actions : res.data.reactions);
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
   }, []);
   return (
     <>
@@ -35,7 +42,7 @@ export default () => {
         style={[styles.topSafeAreaView, { backgroundColor: color }]}
       />
       <SafeAreaView style={styles.bottomSafeAreaView}>
-        <StatusBar barStyle="light-content" />
+        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
         <Header
           title="Create your own"
           subTitle="Choose trigger"
@@ -56,22 +63,33 @@ export default () => {
           <Text style={styles.description}>{description}</Text>
         </View>
         <CloseButton />
-        <FlatList
-          data={actions}
-          style={{ paddingTop: 24 }}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <ActionButton
-              index={index}
-              name={item.name}
-              color={color}
-              image={image}
-              onPress={() => navigate("Form", { item, image, color, type })}
-              // onPress={() => console.log(item)}
-            />
-          )}
-        />
+        {isLoading && (
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <ActivityIndicator size="large" color="black" />
+          </View>
+        )}
+        {!isLoading && actions.length === 0 ? (
+          <Placeholder message="Something went wrong." />
+        ) : (
+          <FlatList
+            data={actions}
+            style={{ paddingTop: 24 }}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <ActionButton
+                index={index}
+                name={item.name}
+                color={color}
+                image={image}
+                onPress={() => navigate("Form", { item, image, color, type })}
+                // onPress={() => console.log(item)}
+              />
+            )}
+          />
+        )}
       </SafeAreaView>
     </>
   );
-};
+}
+
+export default inject("store")(observer(ActionSelector));
