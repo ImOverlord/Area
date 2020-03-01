@@ -23,7 +23,7 @@ export class EveryHourAtAction implements IAction {
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.cron = cron.schedule('* * * * *', () => {
+        this.cron = cron.schedule('*/15 * * * *', () => {
             const time = new Date;
             this.dispatcher.dispatchAction('EveryHourAt', {
                 // minute: '15'
