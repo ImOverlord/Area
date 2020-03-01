@@ -8,6 +8,8 @@ import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { ExpressModule } from '../../Modules/Express/Express';
 import { Express, Request, Response } from 'express';
 import { IAsanaCreate } from './IAsanaCreate';
+import { asanaConfig } from '../../config/asana';
+import { ErrorModule } from '@booster-ts/error-module';
 
 @booster({
     serviceName: "Asana",
@@ -21,7 +23,8 @@ export class AsanaCreateTaskReaction implements IReaction {
 
     constructor(
         firebase: Firebase,
-        express: ExpressModule
+        express: ExpressModule,
+        private error: ErrorModule
     ) {
         this.server = express.getApp();
         this.db = firebase.getApp().firestore();
@@ -32,29 +35,23 @@ export class AsanaCreateTaskReaction implements IReaction {
      */
     public init(): Promise<void> {
         this.server.get('/asana/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/asana/oauth/authorize', (req: Request, res: Response) => {
             request.post('https://app.asana.com/-/oauth_token')
             .query({
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                grant_type: "authorization_code",
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_id: '1164254333734113',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_secret: 'b2925aecc203adebd8a5bd32a98c35c2',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: req.query.redirect_uri,
+                ...asanaConfig,
                 code: req.query.code
             })
             .end((error, result) => {
-                if (error)
+                if (error) {
+                    this.error.createError('99', 'Asana failed to convert code', {}, result.body);
                     res.status(500).send({
                         code: '99',
                         text: 'Ouath Error',
                         data: result.body
                     });
-                else
+                } else
                     res.send({
                         code: '00',
                         text: "OK",
@@ -136,7 +133,7 @@ export class AsanaCreateTaskReaction implements IReaction {
             }
         })
         .end((error) => {
-            console.log(error);
+            this.error.createError('99', 'Asana Failed to execute', {}, error);
         });
     }
 
@@ -145,10 +142,10 @@ export class AsanaCreateTaskReaction implements IReaction {
         .get()
         .then((snapshots) => {
             if (snapshots.empty)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Asana Oauth'));
             const user = snapshots.docs[0].data().Asana;
             if (!user)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Asana Oauth'));
             return user.access_token;
         });
     }

@@ -5,6 +5,8 @@ import { IForm } from '../../Interface/IForm';
 import { ISendMail } from './ISendMail';
 import { createTransport } from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
+import { mailConfig } from '../../config/email';
+import { ErrorModule } from '@booster-ts/error-module';
 
 @booster({
     serviceName: "Mail",
@@ -15,20 +17,16 @@ export class SendMailAction implements IReaction {
 
     private transporter: Mail;
 
+    constructor(
+        private error: ErrorModule
+    ) { }
+
     /**
      * init
      * @description Init Action
      */
     public init(): Promise<void> {
-        this.transporter = createTransport({
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false,
-            auth: {
-                user: 'area2020epi@gmail.com',
-                pass: 'Epitech2020'
-            }
-        });
+        this.transporter = createTransport(mailConfig);
         return Promise.resolve();
     }
 
@@ -87,7 +85,7 @@ export class SendMailAction implements IReaction {
             text: reactionInfo.content,
         })
         .catch((error) => {
-            console.log(error);
+            this.error.createError('99', 'Email failed to execute', {}, error);
             /** Skip Errors */
             return Promise.resolve();
         });

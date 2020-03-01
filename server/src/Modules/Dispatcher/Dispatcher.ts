@@ -37,7 +37,6 @@ export class Dispatcher {
                 return Promise.resolve();
             snapshots.forEach((snapshot) => {
                 const area = snapshot.data() as IArea;
-                console.log(area);
                 const reaction = inject.getByValue<IReaction>('name', area.reaction.name)[0];
                 if (reaction && reaction.execute)
                     reaction.execute(area.reaction.data, area.idUser);
@@ -67,7 +66,6 @@ export class Dispatcher {
             return action.subscribe(actionInfo.data, user.uid);
         })
         .catch((error) => {
-            console.log(error);
             return Promise.reject(this.error.createError("99", "subscribeArea", {}, error));
         });
     }

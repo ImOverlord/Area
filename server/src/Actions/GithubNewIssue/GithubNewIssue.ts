@@ -10,6 +10,7 @@ import { Octokit } from '@octokit/rest';
 import { ErrorModule } from '@booster-ts/error-module';
 import { RepositoryInfo, IGithubNewIssueData } from './IGithubNewIssue';
 import { Dispatcher } from '../../Modules/Dispatcher/Dispatcher';
+import { githubConfig } from '../../config/github';
 
 @booster({
     serviceName: "Github",
@@ -30,6 +31,7 @@ export class GithubNewIssueAction implements IAction {
         this.server = express.getApp();
         this.db = firebase.getApp().firestore();
     }
+
     /**
      * init
      * @description Init Action
@@ -37,30 +39,26 @@ export class GithubNewIssueAction implements IAction {
     public init(): Promise<void> {
         this.server.post('/github/newissue', this.listener.bind(this));
         this.server.get('/github/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/github/oauth/authorize/proxy/firebase', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://area-3e80d.firebaseapp.com/__/auth/handler?code=${req.query.code}`);
         });
         this.server.get('/github/oauth/authorize', (req: Request, res: Response) => {
             request.post('https://github.com/login/oauth/access_token')
             .query({
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_id: 'd98405ce896b0f910209',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                client_secret: '6b32a9c27ea2fdbc86c731603dcb5391e89dacd6',
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                redirect_uri: `https://area.cap.famille4.com/github/oauth/authorize`,
+                ...githubConfig,
                 code: req.query.code
             })
             .end((error, result) => {
-                if (error)
+                if (error) {
+                    this.error.createError('99', 'Github failed to convert code', {}, result.body);
                     res.status(500).send({
                         code: '99',
                         text: 'Ouath Error',
                         data: result.body
                     });
-                else
+                } else
                     res.send({
                         code: '00',
                         text: "OK",
@@ -101,7 +99,6 @@ export class GithubNewIssueAction implements IAction {
             return kit.repos.list({per_page: 100, type: 'all'});
         })
         .then((result) => {
-            console.log(result.data.length);
             if (result.status !== 200)
                 return Promise.reject(this.error.createError('02', 'Github GetForm', {}, result));
             const repos = result.data as Array<RepositoryInfo>;
@@ -120,7 +117,6 @@ export class GithubNewIssueAction implements IAction {
             }] as Array<IForm>;
         })
         .catch((error) => {
-            console.log(error);
             return Promise.reject(this.error.createError('02', 'Github GetForm', {}, error));
         });
     }
@@ -130,10 +126,10 @@ export class GithubNewIssueAction implements IAction {
         .get()
         .then((snapshots) => {
             if (snapshots.empty)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             const user = snapshots.docs[0].data().Github;
             if (!user)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             return user.access_token;
         });
     }
@@ -166,7 +162,8 @@ export class GithubNewIssueAction implements IAction {
         .then(() => {
             return Promise.resolve();
         })
-        .catch(() => {
+        .catch((error) => {
+            this.error.createError('04', 'Failed to find Github Oauth', {}, error);
             return Promise.resolve();
         });
     }

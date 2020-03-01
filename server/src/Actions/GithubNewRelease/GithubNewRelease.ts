@@ -86,7 +86,6 @@ export class GithubNewReleaseAction implements IAction {
             }] as Array<IForm>;
         })
         .catch((error) => {
-            console.log(error);
             return Promise.reject(this.error.createError('02', 'Github GetForm', {}, error));
         });
     }
@@ -96,10 +95,10 @@ export class GithubNewReleaseAction implements IAction {
         .get()
         .then((snapshots) => {
             if (snapshots.empty)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             const user = snapshots.docs[0].data().Github;
             if (!user)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             return user.access_token;
         });
     }
@@ -132,7 +131,8 @@ export class GithubNewReleaseAction implements IAction {
         .then(() => {
             return Promise.resolve();
         })
-        .catch(() => {
+        .catch((error) => {
+            this.error.createError('04', 'Failed to find Github Oauth', {}, error);
             return Promise.resolve();
         });
     }
