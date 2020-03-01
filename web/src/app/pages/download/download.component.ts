@@ -12,6 +12,6 @@ export class DownloadComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        window.open('../../../assets/area.apk', '_blank');
+        window.open('../../../assets/builds/build.apk', '_blank');
     }
 }
