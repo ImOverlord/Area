@@ -7,6 +7,8 @@ import request = require("superagent");
 import { IReaction } from '../../Interface/IReaction';
 import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { ISendSlackMessage, ISlackInfo } from './ISendSlackMessage';
+import { slackConfig } from '../../config/slack';
+import { ErrorModule } from '@booster-ts/error-module';
 
 @booster({
     serviceName: "Slack",
@@ -20,7 +22,8 @@ export class SendSlackMessageReaction implements IReaction {
 
     constructor(
         express: ExpressModule,
-        firebase: Firebase
+        firebase: Firebase,
+        private error: ErrorModule
     ) {
         this.server = express.getApp();
         this.db = firebase.getApp().firestore();
@@ -32,10 +35,10 @@ export class SendSlackMessageReaction implements IReaction {
      */
     public init(): Promise<void> {
         this.server.get('/slack/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/github/oauth/authorize/proxy/firebase', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/slack/oauth/authorize', this.convert.bind(this));
         return Promise.resolve();
@@ -43,16 +46,14 @@ export class SendSlackMessageReaction implements IReaction {
 
     private convert(req: Request, res: Response): void {
         request.get('https://slack.com/api/oauth.v2.access').query({
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            client_id: '645826239602.957881164305',
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            client_secret: 'ea08a655351fdb6c4b926d29667329b9',
+            ...slackConfig,
             // eslint-disable-next-line @typescript-eslint/camelcase
             redirect_uri: req.query.redirect_uri,
             code: req.query.code
         })
         .end((error, result) => {
             if (error || result.body.ok === false) {
+                this.error.createError('99', 'Slack failed to convert code', {}, result.body);
                 res.status(500).send({
                     code: '99',
                     text: 'SLACK Error',
@@ -116,6 +117,10 @@ export class SendSlackMessageReaction implements IReaction {
                 text: data.content || "Area2020"
             })
             .then(() => {
+                return Promise.resolve();
+            })
+            .catch((error) => {
+                this.error.createError('99', 'Slack failed to execute', {}, error);
                 return Promise.resolve();
             });
         });
