@@ -15,7 +15,8 @@ export class DownloadComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.http.get('http://localhost:8080/client.apk', {responseType: 'blob'}).toPromise()
+        window.open('../../../assets/area.apk', '_blank'); //'/builds/build.apk', '_blank');
+        this.http.get('../../../assets/area.apk', {responseType: 'blob'}).toPromise()
         .then(() => {
             this.router.navigateByUrl('/');
         })

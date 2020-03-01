@@ -26,40 +26,7 @@ export class AuthService {
             if (user) {
                 this.userData = user;
                 localStorage.setItem('user', JSON.stringify(this.userData));
-                // JSON.parse(localStorage.getItem('user'));
                 this.messagingService.requestPermission();
-
-                // this.firebase.firestore().collection('User')
-                // .where('idUser', '==', this.userData.uid)
-                // .get()
-                // .then(snapshot => {
-                //   const tmp = [];
-                //   console.log(snapshot.docs[0].data());
-                //   if (
-                //     snapshot.docs[0].data().Notification &&
-                //     snapshot.docs[0].data().Notification.firebase
-                //   )
-                //   tmp.push(...snapshot.docs[0].data().Notification.firebase);
-                //   if (!tmp.includes(localStorage.getItem('token_notif'))) tmp.push(localStorage.getItem('token_notif'));
-                //   console.log(tmp);
-                //   if (snapshot.empty) {
-                //     return this.firebase.firestore()
-                //       .collection('User')
-                //       .doc()
-                //       .set({
-                //         idUser: this.userData.uid,
-                //         Notification: { firebase: tmp }
-                //       });
-                //   } else {
-                //     return this.firebase.firestore()
-                //       .collection('User')
-                //       .doc(snapshot.docs[0].id)
-                //       .update({
-                //         idUser: this.userData.uid,
-                //         Notification: { firebase: tmp }
-                //       });
-                //   }
-                // });
             } else {
                 localStorage.setItem('user', null);
             }
@@ -72,10 +39,8 @@ export class AuthService {
 
             provider.addScope('profile');
             provider.addScope('email');
-            this.afAuth.auth.currentUser.linkWithPopup(provider)
-            // firebase.auth().signInWithPopup(provider)
+            firebase.auth().signInWithPopup(provider)
             .then((result: firebase.auth.UserCredential) => {
-                console.log(result);
                 this.router.navigate(['home']);
                 // @ts-ignore
                 localStorage.setItem('google', result.credential.accessToken);
