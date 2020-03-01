@@ -37,6 +37,16 @@ export class ServiceCardComponent implements OnInit {
             this.ifText = `If Every day of the week at ${this.service.action.data.hour}:${this.service.action.data.minute} AM on ${this.service.action.data['Day of the week']}, `;
         if (actionName === 'EveryDayAt')
             this.ifText = `If Every day at ${this.service.action.data.hour}:${this.service.action.data.minute}, `;
+        if (actionName === 'GithubNewFork')
+            this.ifText = `If There is a new fork on the repository ${this.service.action.data.repo}, `;
+        if (actionName === 'GithubNewIssue')
+            this.ifText = `If There is a new issue on the repository ${this.service.action.data.repo}, `;
+        if (actionName === 'GithubNewPullRequest')
+            this.ifText = `If There is a new pull request on the repository ${this.service.action.data.repo}, `;
+        if (actionName === 'FXOver')
+            this.ifText = `If the currency ${this.service.action.data.currency} is over ${this.service.action.data.value}, `;
+        if (actionName === 'FXUnder')
+            this.ifText = `If the currency ${this.service.action.data.currency} is under ${this.service.action.data.value}, `;
         if (reactionName === 'SendMail')
             this.thenText = `else Send email from ${this.service.reaction.data.email}`;
         if (reactionName === 'SendSlackMessage')

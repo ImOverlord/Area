@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
         .then((user) => {
             this.connecting = false;
             this.router.navigateByUrl('/home');
+            location.reload();            
         })
         .catch((err) => {
             this.connecting = false;
