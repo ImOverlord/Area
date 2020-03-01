@@ -131,11 +131,6 @@ export class BuilderService {
             else if (field.hasOwnProperty('input'))
                 this.actionFormResponses[field.input.name] = '';
         }
-        console.log("Responses !");
-        console.log(this.actionFormResponses);
-        // for (let i = 0; i < this.actionForm[id].form.length; i++)
-            // this.actionFormResponses[this.actionForm[id].form[i].name] = '';
-
     }
 
     public setReactionTrigger(id: number) {
@@ -147,8 +142,5 @@ export class BuilderService {
             else if (field.hasOwnProperty('input'))
                 this.reactionFormResponses[field.input.name] = '';
         }
-            // this.reactionFormResponses[field.name] = '';
-        // for (let i = 0; i < this.reactionForm[id].form.length; i++)
-        //     this.reactionFormResponses[this.reactionForm[id].form[i].name] = '';
     }
 }
