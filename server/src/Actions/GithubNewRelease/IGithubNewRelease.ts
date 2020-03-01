@@ -2,7 +2,6 @@ export interface IGithubNewRelease {
     repo: string;
 }
 
-
 export interface Owner {
     login: string;
     id: number;

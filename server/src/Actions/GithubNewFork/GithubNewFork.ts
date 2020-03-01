@@ -35,38 +35,6 @@ export class GithubNewForkAction implements IAction {
      */
     public init(): Promise<void> {
         this.server.post('/github/newfork', this.listener.bind(this));
-        // this.server.get('/github/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
-        //     res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
-        // });
-        // this.server.get('/github/oauth/authorize/proxy/firebase', (req: Request, res: Response) => {
-        //     res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
-        // });
-        // this.server.get('/github/oauth/authorize', (req: Request, res: Response) => {
-        //     request.post('https://github.com/login/oauth/access_token')
-        //     .query({
-        //         // eslint-disable-next-line @typescript-eslint/camelcase
-        //         client_id: 'd98405ce896b0f910209',
-        //         // eslint-disable-next-line @typescript-eslint/camelcase
-        //         client_secret: '6b32a9c27ea2fdbc86c731603dcb5391e89dacd6',
-        //         // eslint-disable-next-line @typescript-eslint/camelcase
-        //         redirect_uri: `https://area.cap.famille4.com/github/oauth/authorize`,
-        //         code: req.query.code
-        //     })
-        //     .end((error, result) => {
-        //         if (error)
-        //             res.status(500).send({
-        //                 code: '99',
-        //                 text: 'Ouath Error',
-        //                 data: result.body
-        //             });
-        //         else
-        //             res.send({
-        //                 code: '00',
-        //                 text: "OK",
-        //                 data: result.body
-        //             });
-        //     });
-        // });
         return Promise.resolve();
     }
 
@@ -118,7 +86,6 @@ export class GithubNewForkAction implements IAction {
             }] as Array<IForm>;
         })
         .catch((error) => {
-            console.log(error);
             return Promise.reject(this.error.createError('02', 'Github GetForm', {}, error));
         });
     }
@@ -128,10 +95,10 @@ export class GithubNewForkAction implements IAction {
         .get()
         .then((snapshots) => {
             if (snapshots.empty)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             const user = snapshots.docs[0].data().Github;
             if (!user)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             return user.access_token;
         });
     }
@@ -164,7 +131,8 @@ export class GithubNewForkAction implements IAction {
         .then(() => {
             return Promise.resolve();
         })
-        .catch(() => {
+        .catch((error) => {
+            this.error.createError('04', 'Failed to find Github Oauth', {}, error);
             return Promise.resolve();
         });
     }
