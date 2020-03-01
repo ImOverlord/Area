@@ -19,3 +19,25 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Why Angular ?
+
+We chose Angular, because:
+ - it separates the DOM manipulation from application logic
+ - it uses Dependency Injection which permits to have much more cleaner code
+
+## Architecture
+
+The web app is composed of 3 services:
+ - BuilderService
+ - MessagingService
+ - AuthService
+
+The BuilderService permits to create from scrach an AREA (Action, Reaction)
+The MessagingService permits to manage notifications (Request permissions, display notifications)
+The AuthService permits to manage all the authentication of the app (oauth2, auth via email/password)
+
+## UI
+
+We chose to be inspired by the ifttt.com website.
+
