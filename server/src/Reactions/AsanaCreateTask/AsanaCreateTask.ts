@@ -84,7 +84,9 @@ export class AsanaCreateTaskReaction implements IReaction {
      */
     public async getForm(idUser: string): Promise<Array<IForm>> {
         const token = await this.getToken(idUser);
-        const client = Client.create().useAccessToken(token);
+        const client = Client.create().useOauth({
+            credentials: {access_token: token.access_token, refresh_token: token.refresh}
+        });
         const user = (await client.users.me());
 
         return [{
@@ -113,7 +115,9 @@ export class AsanaCreateTaskReaction implements IReaction {
      */
     public async execute(data: IAsanaCreate, idUser: string): Promise<void> {
         const token = await this.getToken(idUser);
-        const client = Client.create().useAccessToken(token);
+        const client = Client.create().useOauth({
+            credentials: {access_token: token.access_token, refresh_token: token.refresh}
+        });
         const user = await client.users.me();
         const workspaces = await client.workspaces.findAll();
         let idWorkspace;
@@ -137,7 +141,7 @@ export class AsanaCreateTaskReaction implements IReaction {
         });
     }
 
-    private getToken(idUser: string): Promise<string> {
+    private getToken(idUser: string): Promise<{access_token: string, refresh: string }> {
         return this.db.collection('/User').where('idUser', '==', idUser)
         .get()
         .then((snapshots) => {
@@ -146,7 +150,7 @@ export class AsanaCreateTaskReaction implements IReaction {
             const user = snapshots.docs[0].data().Asana;
             if (!user)
                 return Promise.reject(this.error.createError('04', 'Failed to find Asana Oauth'));
-            return user.access_token;
+            return {access_token: user.access_token, refresh: user.refresh_token };
         });
     }
 
