@@ -6,6 +6,7 @@ import { ISendMail } from './ISendMail';
 import { createTransport } from 'nodemailer';
 import Mail = require('nodemailer/lib/mailer');
 import { mailConfig } from '../../config/email';
+import { ErrorModule } from '@booster-ts/error-module';
 
 @booster({
     serviceName: "Mail",
@@ -15,6 +16,10 @@ import { mailConfig } from '../../config/email';
 export class SendMailAction implements IReaction {
 
     private transporter: Mail;
+
+    constructor(
+        private error: ErrorModule
+    ) { }
 
     /**
      * init
@@ -80,7 +85,7 @@ export class SendMailAction implements IReaction {
             text: reactionInfo.content,
         })
         .catch((error) => {
-            console.log(error);
+            this.error.createError('99', 'Email failed to execute', {}, error);
             /** Skip Errors */
             return Promise.resolve();
         });

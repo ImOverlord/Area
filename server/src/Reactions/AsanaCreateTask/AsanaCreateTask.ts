@@ -9,6 +9,7 @@ import { ExpressModule } from '../../Modules/Express/Express';
 import { Express, Request, Response } from 'express';
 import { IAsanaCreate } from './IAsanaCreate';
 import { asanaConfig } from '../../config/asana';
+import { ErrorModule } from '@booster-ts/error-module';
 
 @booster({
     serviceName: "Asana",
@@ -22,7 +23,8 @@ export class AsanaCreateTaskReaction implements IReaction {
 
     constructor(
         firebase: Firebase,
-        express: ExpressModule
+        express: ExpressModule,
+        private error: ErrorModule
     ) {
         this.server = express.getApp();
         this.db = firebase.getApp().firestore();
@@ -42,13 +44,14 @@ export class AsanaCreateTaskReaction implements IReaction {
                 code: req.query.code
             })
             .end((error, result) => {
-                if (error)
+                if (error) {
+                    this.error.createError('99', 'Asana failed to convert code', {}, result.body);
                     res.status(500).send({
                         code: '99',
                         text: 'Ouath Error',
                         data: result.body
                     });
-                else
+                } else
                     res.send({
                         code: '00',
                         text: "OK",
@@ -130,7 +133,7 @@ export class AsanaCreateTaskReaction implements IReaction {
             }
         })
         .end((error) => {
-            console.log(error);
+            this.error.createError('99', 'Asana Failed to execute', {}, error);
         });
     }
 
@@ -139,10 +142,10 @@ export class AsanaCreateTaskReaction implements IReaction {
         .get()
         .then((snapshots) => {
             if (snapshots.empty)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Asana Oauth'));
             const user = snapshots.docs[0].data().Asana;
             if (!user)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Asana Oauth'));
             return user.access_token;
         });
     }

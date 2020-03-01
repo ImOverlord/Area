@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@booster-ts/core": "^0.2.2",
-        "@booster-ts/error-module": "0.1.0-alpha.0",
+        "@booster-ts/error-module": "^0.2.1",
         "@booster-ts/express-module": "0.0.1",
         "@octokit/rest": "^17.0.0",
         "asana": "^0.18.0",

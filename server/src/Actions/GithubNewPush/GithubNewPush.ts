@@ -86,7 +86,6 @@ export class GithubNewPushAction implements IAction {
             }] as Array<IForm>;
         })
         .catch((error) => {
-            console.log(error);
             return Promise.reject(this.error.createError('02', 'Github GetForm', {}, error));
         });
     }

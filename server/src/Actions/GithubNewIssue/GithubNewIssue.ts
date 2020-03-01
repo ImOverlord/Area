@@ -31,6 +31,7 @@ export class GithubNewIssueAction implements IAction {
         this.server = express.getApp();
         this.db = firebase.getApp().firestore();
     }
+
     /**
      * init
      * @description Init Action
@@ -50,13 +51,14 @@ export class GithubNewIssueAction implements IAction {
                 code: req.query.code
             })
             .end((error, result) => {
-                if (error)
+                if (error) {
+                    this.error.createError('99', 'Github failed to convert code', {}, result.body);
                     res.status(500).send({
                         code: '99',
                         text: 'Ouath Error',
                         data: result.body
                     });
-                else
+                } else
                     res.send({
                         code: '00',
                         text: "OK",
@@ -97,7 +99,6 @@ export class GithubNewIssueAction implements IAction {
             return kit.repos.list({per_page: 100, type: 'all'});
         })
         .then((result) => {
-            console.log(result.data.length);
             if (result.status !== 200)
                 return Promise.reject(this.error.createError('02', 'Github GetForm', {}, result));
             const repos = result.data as Array<RepositoryInfo>;
@@ -116,7 +117,6 @@ export class GithubNewIssueAction implements IAction {
             }] as Array<IForm>;
         })
         .catch((error) => {
-            console.log(error);
             return Promise.reject(this.error.createError('02', 'Github GetForm', {}, error));
         });
     }
@@ -126,10 +126,10 @@ export class GithubNewIssueAction implements IAction {
         .get()
         .then((snapshots) => {
             if (snapshots.empty)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             const user = snapshots.docs[0].data().Github;
             if (!user)
-                return Promise.reject();
+                return Promise.reject(this.error.createError('04', 'Failed to find Github Oauth'));
             return user.access_token;
         });
     }
@@ -162,7 +162,8 @@ export class GithubNewIssueAction implements IAction {
         .then(() => {
             return Promise.resolve();
         })
-        .catch(() => {
+        .catch((error) => {
+            this.error.createError('04', 'Failed to find Github Oauth', {}, error);
             return Promise.resolve();
         });
     }

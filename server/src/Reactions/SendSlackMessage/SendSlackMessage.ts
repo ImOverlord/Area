@@ -8,6 +8,7 @@ import { IReaction } from '../../Interface/IReaction';
 import { Firebase, firebase } from '../../Modules/Firebase/Firebase';
 import { ISendSlackMessage, ISlackInfo } from './ISendSlackMessage';
 import { slackConfig } from '../../config/slack';
+import { ErrorModule } from '@booster-ts/error-module';
 
 @booster({
     serviceName: "Slack",
@@ -21,7 +22,8 @@ export class SendSlackMessageReaction implements IReaction {
 
     constructor(
         express: ExpressModule,
-        firebase: Firebase
+        firebase: Firebase,
+        private error: ErrorModule
     ) {
         this.server = express.getApp();
         this.db = firebase.getApp().firestore();
@@ -51,6 +53,7 @@ export class SendSlackMessageReaction implements IReaction {
         })
         .end((error, result) => {
             if (error || result.body.ok === false) {
+                this.error.createError('99', 'Slack failed to convert code', {}, result.body);
                 res.status(500).send({
                     code: '99',
                     text: 'SLACK Error',
@@ -115,7 +118,11 @@ export class SendSlackMessageReaction implements IReaction {
             })
             .then(() => {
                 return Promise.resolve();
-            });
+            })
+            .catch((error) => {
+                this.error.createError('99', 'Slack failed to execute', {}, error);
+                return Promise.resolve();
+            })
         });
     }
 
