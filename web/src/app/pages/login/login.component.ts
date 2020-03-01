@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
     }
 
     public connectViaGoogle() {
-        this.auth.doGoogleLogin()
+        this.auth.loginViaGoogle()
         .then((user) => {
             console.log('Success');
             console.log(user);

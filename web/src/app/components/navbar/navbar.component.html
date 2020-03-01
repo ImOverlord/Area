@@ -1,8 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" [class.blue]="router.url.indexOf('service') !== -1">
     <a routerLink="/" class="navbar-brand navbar-title" [class.white-logo]="router.url.indexOf('service') !== -1" href="#"><b>AREA</b></a>
-    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button> -->
 
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
@@ -32,7 +29,7 @@
                 </div>
             </li>
             <li *ngIf="auth.isAuthenticated" class="nav-item">
-                <button routerLink="/explore" type="button" [className]="router.url.indexOf('service') !== -1 ? 'btn btn-white' : 'btn btn-black'"><b>Explore</b></button>
+                <button routerLink="/create" type="button" [className]="router.url.indexOf('service') !== -1 ? 'btn btn-white' : 'btn btn-black'"><b>Create</b></button>
             </li>
         </ul>
     </div>
