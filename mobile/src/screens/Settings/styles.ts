@@ -1,16 +1,10 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: "Avenir Next",
-    fontSize: 42,
-    fontWeight: "900"
-  },
   email: {
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Bold",
     margin: 15,
     fontSize: 21,
-    fontWeight: "700",
     alignSelf: "center"
   },
   safeAreaView: { flex: 1, backgroundColor: "white" },
@@ -31,9 +25,24 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   itemText: {
-    fontFamily: "Avenir Next",
+    fontFamily: "AvenirNext-Bold",
     fontSize: 24,
-    fontWeight: "700"
+    color: "#ff6961"
+  },
+  button: {
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#000000",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 32,
+    marginTop: 16
+  },
+  buttonText: {
+    fontFamily: "AvenirNext-Bold",
+    fontSize: 22,
+    fontStyle: "normal",
+    color: "#ffffff"
   }
 });
 

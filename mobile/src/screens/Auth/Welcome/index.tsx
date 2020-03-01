@@ -5,14 +5,24 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Platform
 } from "react-native";
+import { AuthSession } from "expo";
 import { useNavigation } from "react-navigation-hooks";
 import { loginGoogleStandalone } from "../../../api/Auth";
+import auth from "../../../api/twitter";
+
 import styles from "./styles";
 
 export default () => {
   const { navigate } = useNavigation();
+
+  const handleTwitter = () => {
+    Alert.alert("Facebook", "Facebook login is not available for the moment.", [
+      { text: "OK" }
+    ]);
+  };
 
   const handleGoogle = () => {
     loginGoogleStandalone()
@@ -21,7 +31,7 @@ export default () => {
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar barStyle="dark-content" />
+      {Platform.OS === "ios" && <StatusBar barStyle="dark-content" />}
       <View
         style={{
           paddingTop: 32,
@@ -61,13 +71,7 @@ export default () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{ width: "48%" }}
-              onPress={() => {
-                Alert.alert(
-                  "Facebook",
-                  "Facebook login is not available for the moment.",
-                  [{ text: "OK" }]
-                );
-              }}
+              onPress={() => handleTwitter()}
             >
               <View style={[styles.button, { backgroundColor: "#4265a7" }]}>
                 <Text style={styles.buttonText}>Facebook</Text>
