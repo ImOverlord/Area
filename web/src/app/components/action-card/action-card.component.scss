@@ -18,19 +18,15 @@
 .card {
     border-radius: 0.9em;
     box-shadow: 0 1.5px 6px 0 rgba(0,0,0,0.24);
-    background-color: inherit;//rgb(36, 104, 255);
+    background-color: inherit;
     width: 10em;
     height: 10em;
     cursor: pointer;
-    // padding: 2em;
 }
 
 .icon {
     width: 2.81em !important;
     height: 2.81em !important;
-    // border-radius: 6.5em;
-    // border: 0.1em solid
-    // #fff;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -38,7 +34,7 @@
 }
 
 .title {
-    font-size: 4em;//xx-large;
+    font-size: 4em;
     font-weight: 900;
     font-style: normal;
     letter-spacing: 0;
@@ -46,7 +42,7 @@
 }
 
 .sub-title {
-    font-size: 1em;//xx-large;
+    font-size: 1em;
     font-weight: 900;
     font-style: normal;
     letter-spacing: 0;

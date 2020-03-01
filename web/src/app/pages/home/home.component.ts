@@ -22,30 +22,11 @@ export class HomeComponent implements OnInit {
         private afs: AngularFirestore,
         private firebase: FirebaseApp
     ) {
-        // this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-        console.log("Id user");
-        // console.log(this.firebase.auth().currentUser.uid);
-        // db.collection("Area")
-        // .where("user", "==", email)
-        // .get()
-        // .then(function(querySnapshot) {
-        //   querySnapshot.forEach(function(doc) {
-        //     // doc.data() is never undefined for query doc snapshots
-        //     tmp.push({ id: doc.id, data: doc.data() });
-        //   });
-        //   resolve(tmp);
-        // })
-        // .catch(function(error) {
-        //   reject(error);
-        // });
         this.afs.collection('/Area').valueChanges()
         .subscribe((data: Array<IService>) => {
             if (this.firebase.auth().currentUser.uid !== null) {
                 this.services = data.filter((val: any) => val.idUser === this.firebase.auth().currentUser.uid);
-                console.log(this.services);
             }
-
-            console.log(data);
         });
 
     }
@@ -55,6 +36,6 @@ export class HomeComponent implements OnInit {
     }
 
     trackByFn(index, item) {
-        return index; // or item.id
+        return index;
     }
 }

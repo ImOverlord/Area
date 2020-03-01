@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, ActivationStart } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { OAuthService, OAuthErrorEvent } from 'angular-oauth2-oidc';
 import { MessagingService } from '../app/provider/messaging/messaging.service';
 
 @Component({
@@ -16,7 +15,6 @@ export class AppComponent implements OnInit {
     constructor(
         router: Router,
         title: Title,
-        private oauthService: OAuthService,
         private messagingService: MessagingService
     ) {
         router.events.subscribe((event: Event) => {
@@ -27,28 +25,6 @@ export class AppComponent implements OnInit {
                     title.setTitle('AREA');
             }
         });
-        oauthService.events.subscribe(e => e instanceof OAuthErrorEvent ? console.error(e) : console.warn(e));
-
-        // Load information from Auth0 (could also be configured manually)
-        oauthService.loadDiscoveryDocument()
-    
-          // See if the hash fragment contains tokens (when user got redirected back)
-          .then(() => oauthService.tryLogin())
-    
-          // If we're still not logged in yet, try with a silent refresh:
-          .then(() => {
-            if (!oauthService.hasValidAccessToken()) {
-              return oauthService.silentRefresh();
-            }
-          })
-    
-          // Get username, if possible.
-          .then(() => {
-            if (oauthService.getIdentityClaims()) {
-              console.log(oauthService.getIdentityClaims());
-            }
-          });
-        oauthService.setupAutomaticSilentRefresh();
     }
 
     ngOnInit() {

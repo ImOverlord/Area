@@ -1,5 +1,4 @@
 <li *ngFor="let element of this.form.form; index as i; trackBy: trackByFn">
-    <!-- [(ngModel)]="this.builder.actionFormResponses[i]"> -->
     <div *ngIf="isSelectComponent(element)">
         <mat-form-field>
             <mat-label>{{element.selectionBox.title}}</mat-label>

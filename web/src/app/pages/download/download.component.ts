@@ -9,19 +9,9 @@ import { Router } from '@angular/router';
 })
 export class DownloadComponent implements OnInit {
 
-    constructor(
-        private http: HttpClient,
-        private router: Router
-    ) { }
+    constructor() { }
 
     ngOnInit() {
-        window.open('../../../assets/area.apk', '_blank'); //'/builds/build.apk', '_blank');
-        this.http.get('../../../assets/area.apk', {responseType: 'blob'}).toPromise()
-        .then(() => {
-            this.router.navigateByUrl('/');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        window.open('../../../assets/area.apk', '_blank');
     }
 }

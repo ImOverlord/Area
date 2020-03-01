@@ -28,23 +28,18 @@ import { HomeComponent } from './pages/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ExploreComponent } from './pages/explore/explore.component';
 import { ServiceCardComponent } from './components/service-card/service-card.component';
-import { ServiceComponent } from './pages/service/service.component';
+// import { ServiceComponent } from './pages/service/service.component';
 import { AppCardComponent } from './components/app-card/app-card.component';
 import { CreateComponent } from './pages/create/create.component';
 
-// import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ActionCardComponent } from './components/action-card/action-card.component';
 import { FormCardComponent } from './components/form-card/form-card.component';
 import { TriggerCardComponent } from './components/trigger-card/trigger-card.component';
 
-import { OAuthModule, AuthConfig, JwksValidationHandler, ValidationHandler, OAuthStorage, OAuthModuleConfig } from 'angular-oauth2-oidc';
-import { OAuthComponent } from './pages/oauth/oauth.component';
 import { DownloadComponent } from './pages/download/download.component';
 
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
-
-// import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap/dropdown/dropdown';
 
 export function playerFactory() {
     return player;
@@ -62,24 +57,20 @@ export function playerFactory() {
         FooterComponent,
         ExploreComponent,
         ServiceCardComponent,
-        ServiceComponent,
+        // ServiceComponent,
         AppCardComponent,
         CreateComponent,
         ActionCardComponent,
         FormCardComponent,
         TriggerCardComponent,
-        OAuthComponent,
         DownloadComponent
     ],
     imports: [
-        // AngularFireModule.initializeApp(environment.firebase),
         AngularFireMessagingModule,
         AngularFireModule.initializeApp(environment.firebase) as ModuleWithProviders<AngularFireModule>,
         AngularFirestoreModule,
         AngularFireAuthModule,
-        // AngularFireAnalyticsModule, // TMP
         AngularFireStorageModule,
-        // AngularFire
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
@@ -91,28 +82,9 @@ export function playerFactory() {
         MatCardModule,
         MatButtonModule,
         MatDividerModule,
-        MatSelectModule,
-        OAuthModule.forRoot({
-            resourceServer: {
-                allowedUrls: [
-                    'https://github.com/login/oauth/authorize'
-                ],
-                sendAccessToken: true
-            }
-        }) // {
-            // resourceServer: {
-            //     allowedUrls: ['https://slack.com/*',
-            //                   'https://slack.com/oauth/v2/authorize/',
-            //                   'https://localhost:8081'],
-            //     sendAccessToken: true
-            // }
-        // })
+        MatSelectModule
     ],
     providers: [
-        // { provide: OAuthModuleConfig },
-        // { provide: ValidationHandler, useClass: JwksValidationHandler },
-        // { provide: OAuthStorage, useValue: localStorage },
-        // { provide: AuthConfig, useValue: config },
     ],
     bootstrap: [AppComponent]
 })

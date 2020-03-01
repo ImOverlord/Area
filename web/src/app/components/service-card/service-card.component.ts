@@ -10,15 +10,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class ServiceCardComponent implements OnInit {
 
-    // @Input()
-    // public url: string;
-
-    // @Input()
-    // public title: string;
-
-    // @Input()
-    // public id: string;
-
     @Input()
     public service: IService;
 

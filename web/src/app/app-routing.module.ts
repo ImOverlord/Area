@@ -7,9 +7,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { AuthGuardService } from './provider/auth-guard.service';
 import { RedirectGuardService } from './provider/redirect-guard.service';
 import { ExploreComponent } from './pages/explore/explore.component';
-import { ServiceComponent } from './pages/service/service.component';
 import { CreateComponent } from './pages/create/create.component';
-import { OAuthComponent } from './pages/oauth/oauth.component';
 import { DownloadComponent } from './pages/download/download.component';
 
 const routes: Routes = [
@@ -42,24 +40,11 @@ const routes: Routes = [
         data: {title: 'Discover - AREA'}
     },
     {
-        path: 'service/:name',
-        component: ServiceComponent,
-        pathMatch: 'prefix',
-        canActivate: [AuthGuardService],
-        data: {title: 'Service Email - AREA'}
-    },
-    {
         path: 'create',
         component: CreateComponent,
         pathMatch: 'prefix',
         canActivate: [AuthGuardService],
         data: {title: 'Create your own - AREA'}
-    },
-    {
-        path: 'oauth/:name',
-        component: OAuthComponent,
-        pathMatch: 'prefix',
-        data: {title: 'OAuth - AREA'}
     },
     {
         path: 'client.apk',

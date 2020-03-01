@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
 import { FirebaseApp } from '@angular/fire';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import { AuthConfig, OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { AuthService } from 'src/app/provider/auth.service';
 
@@ -26,7 +25,6 @@ export class CreateComponent implements OnInit {
         private http: HttpClient,
         private firebase: FirebaseApp,
         private afAuth: AngularFireAuth,
-        private oauthService: OAuthService,
         private angularFireMessaging: AngularFireMessaging,
         private authService: AuthService
     ) {
@@ -90,12 +88,12 @@ export class CreateComponent implements OnInit {
     }
 
     trackByFn(index, item) {
-        return index; // or item.id
+        return index;
     }
 
 
     public sendData() {
-        this.firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+        this.firebase.auth().currentUser.getIdToken(true)
         .then((idToken) => {
             return this.http.put('/subscribe/', {
                     actionName: this.builder.actionForm[this.builder.actionTriggerId].slugName,
