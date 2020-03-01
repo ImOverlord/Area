@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "AREA",
-    "slug": "AREA",
+    "name": "area",
+    "slug": "area",
+    "scheme": "area",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
