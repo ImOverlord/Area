@@ -8,5 +8,31 @@ services:
     ports:
       - 8081:8081
     volumes:
-      - ./web:/app
-      - /app/node_modules
+      - ./web/src/:/app/src
+      - builds:/builds
+    depends_on:
+      - mobile
+      - back
+
+  back:
+    build:
+      context: server/
+      dockerfile: Dockerfile
+    command: npm run serve
+    ports:
+      - 3000:3000
+    volumes:
+      - ./server/src:/app/src
+    environment:
+      - BASE_URL=area.famille4.com
+  mobile:
+    build:
+      context: mobile/
+      dockerfile: Dockerfile
+    command: 'mv /build.apk /builds/build.apk'
+    volumes:
+      - builds:/builds
+
+volumes:
+  builds:
+    driver: local
