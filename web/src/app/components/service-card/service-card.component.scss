@@ -35,7 +35,7 @@
 }
 
 .title {
-    font-size: 4em;//xx-large;
+    font-size: 2em;//xx-large;
     font-weight: 900;
     font-style: normal;
     letter-spacing: 0;
@@ -43,9 +43,30 @@
 }
 
 .sub-title {
-    font-size: 3em;//xx-large;
+    font-size: 1.3em;//xx-large;
     font-weight: 900;
     font-style: normal;
     letter-spacing: 0;
     color: #332e2e;
+}
+
+.author {
+    position: absolute;
+    bottom: -12px;
+    right: 10px;
+    font-size: 0.9em;
+    font-weight: 450;
+    font-style: normal;
+    letter-spacing: 0;
+    color: #332e2e;
+}
+
+.settings {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.dropdown-toggle::after {
+    content: none;
 }

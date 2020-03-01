@@ -83,28 +83,37 @@ export class AsanaCreateTaskReaction implements IReaction {
      * @description get Action form
      */
     public async getForm(idUser: string): Promise<Array<IForm>> {
-        const token = await this.getToken(idUser);
-        const client = Client.create().useAccessToken(token);
-        const user = (await client.users.me());
-
-        return [{
-            selectionBox: {
-            title: 'Workspace',
-            name: 'workspace',
-            values: user.workspaces.map((value) => value.name)
-        }}, {
-            input: {
-                title: 'Task Title',
-                name: 'title',
-                regex: undefined
-            }
-        }, {
-            input: {
-                title: 'Task Content',
-                name: 'content',
-                regex: undefined
-            }
-        }];
+        return this.getToken(idUser)
+        .then((token) => {
+            return this.refreshToken(token.refresh);
+        })
+        .then((token) => {
+            const client = Client.create().useAccessToken(`${token}`);
+            return client.users.me();
+        })
+        .then((user) => {
+            return [{
+                selectionBox: {
+                title: 'Workspace',
+                name: 'workspace',
+                values: user.workspaces.map((value) => value.name)
+            }}, {
+                input: {
+                    title: 'Task Title',
+                    name: 'title',
+                    regex: undefined
+                }
+            }, {
+                input: {
+                    title: 'Task Content',
+                    name: 'content',
+                    regex: undefined
+                }
+            }];
+        })
+        .catch((error) => {
+            return Promise.reject(this.error.createError('04', 'AsanaGetForm', {}, error));
+        });
     }
 
     /**
@@ -112,32 +121,46 @@ export class AsanaCreateTaskReaction implements IReaction {
      * @description Action Call Back
      */
     public async execute(data: IAsanaCreate, idUser: string): Promise<void> {
-        const token = await this.getToken(idUser);
-        const client = Client.create().useAccessToken(token);
-        const user = await client.users.me();
-        const workspaces = await client.workspaces.findAll();
-        let idWorkspace;
-        for (const workspace of workspaces.data)
-            if (workspace.name === data.workspace) {
-                idWorkspace = workspace.gid;
-                break;
-            }
-        request.post(`https://app.asana.com/api/1.0/tasks`)
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-            data: {
-                assignee: user.gid,
-                name: data.title,
-                notes: data.content,
-                workspace: idWorkspace,
-            }
+        let client;
+        let user;
+        let idWorkspace = 0;
+        let bearer = '';
+        this.getToken(idUser)
+        .then((token) => {
+            return this.refreshToken(token.refresh);
         })
-        .end((error) => {
-            this.error.createError('99', 'Asana Failed to execute', {}, error);
+        .then((token) => {
+            bearer = token;
+            client = Client.create().useAccessToken(`${token}`);
+            return client.users.me();
+        })
+        .then((gotUser) => {
+            user = gotUser;
+            return client.workspaces.findAll();
+        })
+        .then((workspaces) => {
+            for (const workspace of workspaces.data)
+                if (workspace.name === data.workspace) {
+                    idWorkspace = workspace.gid;
+                    break;
+                }
+            request.post(`https://app.asana.com/api/1.0/tasks`)
+            .set('Authorization', `Bearer ${bearer}`)
+            .send({
+                data: {
+                    assignee: user.gid,
+                    name: data.title,
+                    notes: data.content,
+                    workspace: idWorkspace,
+                }
+            })
+            .end((error) => {
+                this.error.createError('99', 'Asana Failed to execute', {}, error);
+            });
         });
     }
 
-    private getToken(idUser: string): Promise<string> {
+    private getToken(idUser: string): Promise<{access_token: string; refresh: string }> {
         return this.db.collection('/User').where('idUser', '==', idUser)
         .get()
         .then((snapshots) => {
@@ -146,7 +169,31 @@ export class AsanaCreateTaskReaction implements IReaction {
             const user = snapshots.docs[0].data().Asana;
             if (!user)
                 return Promise.reject(this.error.createError('04', 'Failed to find Asana Oauth'));
-            return user.access_token;
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            return {access_token: user.access_token, refresh: user.refresh_token };
+        });
+    }
+
+    private refreshToken(refresh): Promise<string> {
+        return new Promise((resolve, reject) => {
+            request.post('https://app.asana.com/-/oauth_token')
+            .query({
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                grant_type: 'refresh_token',
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                client_id: asanaConfig.client_id,
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                client_secret: asanaConfig.client_secret,
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                refresh_token: refresh
+            })
+            .end((error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result.body.access_token);
+                }
+            });
         });
     }
 

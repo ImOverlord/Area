@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { FirebaseApp } from 'angularfire2';
+import { MessagingService } from './messaging/messaging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +18,17 @@ export class AuthService {
         private router: Router,
         private afAuth: AngularFireAuth,
         public afs: AngularFirestore,
-        public ngZone: NgZone
+        public ngZone: NgZone,
+        public firebase: FirebaseApp,
+        private messagingService: MessagingService
     ) {
         this.afAuth.authState.subscribe(user => {
             if (user) {
                 this.userData = user;
                 localStorage.setItem('user', JSON.stringify(this.userData));
-                JSON.parse(localStorage.getItem('user'));
+                this.messagingService.requestPermission();
             } else {
                 localStorage.setItem('user', null);
-                JSON.parse(localStorage.getItem('user'));
             }
         });
     }
@@ -45,7 +48,57 @@ export class AuthService {
             })
             .catch((err) => {
                 reject(err);
+            });
+        });
+    }
+
+    public loginViaGithub() {
+        return new Promise<any>((resolve, reject) => {
+            const provider = new firebase.auth.GithubAuthProvider();
+            provider.addScope('admin:repo_hook, repo');
+            this.afAuth.auth.signInWithPopup(provider)
+            .then((result) => {
+                // @ts-ignore
+                this.SaveGithubToken(result.credential.accessToken)
+                .then(resolve)
+                .catch(reject);
+                localStorage.setItem('github', JSON.stringify(result));
+                resolve(result);
             })
+            .catch((err) => {
+                if (err && err.credential && err.credential.accessToken)
+                    this.SaveGithubToken(err.credential.accessToken)
+                    .then(resolve)
+                    .catch(reject);
+                reject(err);
+            });
+        });
+    }
+
+    private SaveGithubToken(token) {
+        return this.firebase.firestore().collection('User')
+        .where('idUser', '==', this.afAuth.auth.currentUser.uid)
+        .get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                return this.firebase.firestore()
+                    .collection('User')
+                    .doc()
+                    .set({
+                    idUser: this.afAuth.auth.currentUser.uid,
+                    // tslint:disable-next-line: no-string-literal
+                    Github: { access_token: token }
+                    });
+            } else {
+                return this.firebase.firestore()
+                .collection('User')
+                .doc(snapshot.docs[0].id)
+                .update({
+                    idUser: this.afAuth.auth.currentUser.uid,
+                    // tslint:disable-next-line: no-string-literal
+                    Github: { access_token: token }
+                });
+            }
         });
     }
 
