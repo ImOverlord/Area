@@ -22,7 +22,10 @@ export class Monitor {
 
     private reportError(error: IError): void {
         error['time'] = Date.now();
-        this.db.collection('Error').add(error).catch(console.log);
+        try {
+            error.systemError = JSON.stringify(error.systemError);
+        } catch (e) { console.log(e); }
+        this.db.collection('Error').doc().create(error).catch(console.error);
     }
 
 }

@@ -55,7 +55,6 @@ export class InfoRoute {
             });
         })
         .catch((error: IError) => {
-            console.log(error);
             res.status(error.httpResponse).send({
                 code: error.code,
                 text: error.why
@@ -80,7 +79,6 @@ export class InfoRoute {
             });
         })
         .catch((error: IError) => {
-            console.log(error);
             res.status(error.httpResponse).send({
                 code: error.code,
                 text: error.why
