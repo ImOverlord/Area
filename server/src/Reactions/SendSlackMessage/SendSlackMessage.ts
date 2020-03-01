@@ -35,10 +35,10 @@ export class SendSlackMessageReaction implements IReaction {
      */
     public init(): Promise<void> {
         this.server.get('/slack/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/github/oauth/authorize/proxy/firebase', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/slack/oauth/authorize', this.convert.bind(this));
         return Promise.resolve();
@@ -122,7 +122,7 @@ export class SendSlackMessageReaction implements IReaction {
             .catch((error) => {
                 this.error.createError('99', 'Slack failed to execute', {}, error);
                 return Promise.resolve();
-            })
+            });
         });
     }
 

@@ -39,7 +39,7 @@ export class GithubNewIssueAction implements IAction {
     public init(): Promise<void> {
         this.server.post('/github/newissue', this.listener.bind(this));
         this.server.get('/github/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/github/oauth/authorize/proxy/firebase', (req: Request, res: Response) => {
             res.redirect(`https://area-3e80d.firebaseapp.com/__/auth/handler?code=${req.query.code}`);

@@ -35,7 +35,7 @@ export class AsanaCreateTaskReaction implements IReaction {
      */
     public init(): Promise<void> {
         this.server.get('/asana/oauth/authorize/proxy/expo', (req: Request, res: Response) => {
-            res.redirect(`https://auth.expo.io/@tam-epicture/AREA?code=${req.query.code}`);
+            res.redirect(`https://auth.expo.io/@tam-epicture/area?code=${req.query.code}`);
         });
         this.server.get('/asana/oauth/authorize', (req: Request, res: Response) => {
             request.post('https://app.asana.com/-/oauth_token')
