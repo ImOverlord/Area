@@ -1,7 +1,9 @@
 p {
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    left: 0;
+    bottom: -16px;
     width: 100%;
-    background:  white;
+    height: 25px;
+    background: white;
     text-align: center;
 }

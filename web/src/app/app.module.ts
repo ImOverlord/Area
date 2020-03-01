@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule, FirebaseApp } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -18,6 +18,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
 
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
@@ -25,6 +26,25 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ExploreComponent } from './pages/explore/explore.component';
+import { ServiceCardComponent } from './components/service-card/service-card.component';
+import { ServiceComponent } from './pages/service/service.component';
+import { AppCardComponent } from './components/app-card/app-card.component';
+import { CreateComponent } from './pages/create/create.component';
+
+// import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { ActionCardComponent } from './components/action-card/action-card.component';
+import { FormCardComponent } from './components/form-card/form-card.component';
+import { TriggerCardComponent } from './components/trigger-card/trigger-card.component';
+
+import { OAuthModule, AuthConfig, JwksValidationHandler, ValidationHandler, OAuthStorage, OAuthModuleConfig } from 'angular-oauth2-oidc';
+import { OAuthComponent } from './pages/oauth/oauth.component';
+import { DownloadComponent } from './pages/download/download.component';
+
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+
+// import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap/dropdown/dropdown';
 
 export function playerFactory() {
     return player;
@@ -39,12 +59,27 @@ export function playerFactory() {
         LoginComponent,
         RegisterComponent,
         HomeComponent,
-        FooterComponent
+        FooterComponent,
+        ExploreComponent,
+        ServiceCardComponent,
+        ServiceComponent,
+        AppCardComponent,
+        CreateComponent,
+        ActionCardComponent,
+        FormCardComponent,
+        TriggerCardComponent,
+        OAuthComponent,
+        DownloadComponent
     ],
     imports: [
-        AngularFireModule.initializeApp(environment.firebase),
+        // AngularFireModule.initializeApp(environment.firebase),
+        AngularFireMessagingModule,
+        AngularFireModule.initializeApp(environment.firebase) as ModuleWithProviders<AngularFireModule>,
         AngularFirestoreModule,
         AngularFireAuthModule,
+        // AngularFireAnalyticsModule, // TMP
+        AngularFireStorageModule,
+        // AngularFire
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
@@ -56,8 +91,29 @@ export function playerFactory() {
         MatCardModule,
         MatButtonModule,
         MatDividerModule,
+        MatSelectModule,
+        OAuthModule.forRoot({
+            resourceServer: {
+                allowedUrls: [
+                    'https://github.com/login/oauth/authorize'
+                ],
+                sendAccessToken: true
+            }
+        }) // {
+            // resourceServer: {
+            //     allowedUrls: ['https://slack.com/*',
+            //                   'https://slack.com/oauth/v2/authorize/',
+            //                   'https://localhost:8081'],
+            //     sendAccessToken: true
+            // }
+        // })
     ],
-    providers: [],
+    providers: [
+        // { provide: OAuthModuleConfig },
+        // { provide: ValidationHandler, useClass: JwksValidationHandler },
+        // { provide: OAuthStorage, useValue: localStorage },
+        // { provide: AuthConfig, useValue: config },
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

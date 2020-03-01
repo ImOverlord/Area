@@ -1,0 +1,23 @@
+<div class="container" style="text-align: center;">
+    <img
+        class="icon"
+        src="{{service.url}}"
+        alt="Google icon" />
+    <p class="title">
+        {{service.title}}
+    </p>
+    <p class="content" style="margin-top: -10px;">
+        {{service.description}}
+    </p>
+</div>
+<li *ngFor="let app of service.apps; index as i; trackBy: trackByFn">
+    <div fxLayout="column" fxLayoutAlign="start center" style="margin-bottom: 20px;">
+        <app-app-card
+            [id]="'a'"
+            [color]="app.color"
+            [title]="app.title"
+            [author]="app.author"
+            [downloads]="app.downloads"
+            ></app-app-card>
+    </div>
+</li>
