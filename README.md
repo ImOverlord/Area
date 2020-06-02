@@ -1,4 +1,4 @@
-# Area 2020
+# Area
 ![screenshots of app](./.github/readme_images/showcase.png)
 
 ## Description 🤓
